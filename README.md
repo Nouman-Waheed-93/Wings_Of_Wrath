@@ -1,2 +1,3 @@
 # Wings_Of_Wrath
-An aircombat game target for mobile
+An air combat game target for mobile.
+More details in GameDesignDocument found in the repository.
