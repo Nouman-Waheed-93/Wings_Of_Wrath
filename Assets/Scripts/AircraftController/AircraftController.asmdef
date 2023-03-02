@@ -1,0 +1,16 @@
+{
+    "name": "AircraftController",
+    "rootNamespace": "AircraftController",
+    "references": [
+        "GUID:5ee26a330e3aab342913b8743ec272a0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

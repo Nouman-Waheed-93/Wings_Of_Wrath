@@ -4,32 +4,39 @@ using UnityEngine;
 
 namespace Locomotion
 {
-    [RequireComponent(typeof(Rigidbody))]
-    public class MovementHandler : MonoBehaviour, IAcceleratable, ITurnable
+    public class MovementHandler : IAcceleratable, ITurnable
     {
+        [SerializeField]
+        private MovementData movementData;
+
         private float throttle;
         private float turn;
 
+        private Transform transform;
         private Rigidbody rigidbody;
 
-        private void Awake()
+        public MovementHandler(MovementData movementData, Transform transform, Rigidbody rigidbody)
         {
-            rigidbody = GetComponent<Rigidbody>();
+            this.movementData = movementData;
+            this.transform = transform;
+            this.rigidbody = rigidbody;
         }
 
-        private void FixedUpdate()
+        private void Update(float simulationDeltaTime)
         {
             rigidbody.velocity = transform.forward * throttle;
-            rigidbody.angularVelocity = Vector3.up * turn;
+            rigidbody.angularVelocity = Vector3.up * turn * movementData.turnSpeed;
         }
 
         public void Accelerate(float throttle)
         {
-            this.throttle = throttle;
+            throttle = Mathf.Clamp(throttle, 0, 1);
+            this.throttle = Mathf.Lerp(movementData.minThrottle, movementData.maxThrottle, throttle);
         }
 
         public void Turn(float direction)
         {
+            direction = Mathf.Clamp(direction, -1, 1);
             this.turn = direction;
         }
     }
