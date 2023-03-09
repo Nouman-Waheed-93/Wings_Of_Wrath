@@ -37,26 +37,29 @@ namespace FormationSystem
 
             foreach (FormationMember member in members)
             {
+                bool isEven = member.PositionIndex % 2 == 0;
+
                 if (member.PositionIndex > removedMemberIndex)
                 {
-                    bool isEven = member.PositionIndex % 2 == 0;
-                    
-                    if (isEven)
-                    {
-                        evenMemberCount++;
-                        memberWithGreatestEvenIndex = GetMemberWithGreaterIndex(memberWithGreatestEvenIndex, member);
-                    }
-                    else 
-                    {
-                        oddMemberCount++;
-                        memberWithGreatestOddIndex = GetMemberWithGreaterIndex(memberWithGreatestOddIndex, member);
-                    }
-
                     //if the removedmemberIndex and the current Index are both even or are both odd
                     if (isRemovedMemberIndexEven == isEven) 
                     {
                         member.PositionIndex -= 2;
                         member.Position = GetMemberPosition(member.PositionIndex);
+                    }
+                }
+
+                if (member.PositionIndex != 0)
+                {
+                    if (isEven)
+                    {
+                        evenMemberCount++;
+                        memberWithGreatestEvenIndex = GetMemberWithGreaterIndex(memberWithGreatestEvenIndex, member);
+                    }
+                    else
+                    {
+                        oddMemberCount++;
+                        memberWithGreatestOddIndex = GetMemberWithGreaterIndex(memberWithGreatestOddIndex, member);
                     }
                 }
             }
