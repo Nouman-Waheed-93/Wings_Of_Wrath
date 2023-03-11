@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FormationSystem
@@ -10,7 +8,7 @@ namespace FormationSystem
      */
     public abstract class BalancedFormation : Formation
     {
-        public override void RemoveMember(FormationMember memberToRemove)
+        public override void RemoveMember(IFormationMember memberToRemove)
         {
             int removedMemberIndex = memberToRemove.PositionIndex;
             bool isRemovedMemberIndexEven = removedMemberIndex % 2 == 0;
@@ -18,10 +16,10 @@ namespace FormationSystem
 
             int evenMemberCount = 0;
             int oddMemberCount = 0;
-            FormationMember memberWithGreatestEvenIndex = null;
-            FormationMember memberWithGreatestOddIndex = null;
+            IFormationMember memberWithGreatestEvenIndex = null;
+            IFormationMember memberWithGreatestOddIndex = null;
 
-            foreach (FormationMember member in members)
+            foreach (IFormationMember member in members)
             {
                 bool isEven = member.PositionIndex % 2 == 0;
 
@@ -53,7 +51,7 @@ namespace FormationSystem
             EvenOutBothSides(evenMemberCount, oddMemberCount, memberWithGreatestEvenIndex, memberWithGreatestOddIndex);
         }
 
-        private FormationMember GetMemberWithGreaterIndex(FormationMember memberWithGreaterIndex, FormationMember member)
+        private IFormationMember GetMemberWithGreaterIndex(IFormationMember memberWithGreaterIndex, IFormationMember member)
         {
             if (memberWithGreaterIndex == null)
                 memberWithGreaterIndex = member;
@@ -64,7 +62,7 @@ namespace FormationSystem
         }
 
         private void EvenOutBothSides(int evenMemberCount, int oddMemberCount,
-            FormationMember memberWithGreatestEvenIndex, FormationMember memberWithGreatestOddIndex)
+            IFormationMember memberWithGreatestEvenIndex, IFormationMember memberWithGreatestOddIndex)
         {
             //If the difference between left and right side is more than 1
             if (Mathf.Abs(evenMemberCount - oddMemberCount) > 1)

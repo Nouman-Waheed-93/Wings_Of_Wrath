@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace FormationSystem
 {
-    public class FormationMember
+    public interface IFormationMember
     {
         public int PositionIndex { get; set; }// position_0(leader).....
 

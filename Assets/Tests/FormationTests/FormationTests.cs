@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class FormationTests
 {
     Formation formation;
-    List<FormationMember> formationMembers;
+    List<IFormationMember> formationMembers;
 
     [Test]
     public void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
@@ -13,7 +13,7 @@ public class FormationTests
         CreateAFormation(5);
         for (int i = 0; i < formationMembers.Count; i++)
         {
-            Assert.That(formationMembers[i].PositionIndex == i, "Incorrect position index for index number " + i);
+            Assert.AreEqual(i, formationMembers[i].PositionIndex, "Incorrect position index for index number " + i);
         }
     }
 
@@ -42,10 +42,10 @@ public class FormationTests
     private void CreateAFormation(int count)
     {
         formation = new Echelon();
-        formationMembers = new List<FormationMember>();
+        formationMembers = new List<IFormationMember>();
         for (int i = 0; i < count; i++)
         {
-            formationMembers.Add(new FormationMember());
+            formationMembers.Add(NSubstitute.Substitute.For<IFormationMember>());
             formation.AddMember(formationMembers[i]);
         }
     }

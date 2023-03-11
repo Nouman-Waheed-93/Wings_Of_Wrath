@@ -5,9 +5,9 @@ namespace FormationSystem
 {
     public abstract class Formation
     {
-        protected HashSet<FormationMember> members = new HashSet<FormationMember>();
+        protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
          
-        public virtual void AddMember(FormationMember member)
+        public virtual void AddMember(IFormationMember member)
         {
             //Add the member's position index before adding the member in the list. 
             //Because, this member's positionIndex is equal to Count before adding the new member
@@ -18,11 +18,11 @@ namespace FormationSystem
 
         public abstract Vector3 GetMemberPosition(int memberIndex);
 
-        public virtual void RemoveMember(FormationMember memberToRemove)
+        public virtual void RemoveMember(IFormationMember memberToRemove)
         {
             int removedMemberIndex = memberToRemove.PositionIndex;
             members.Remove(memberToRemove);
-            foreach(FormationMember member in members)
+            foreach(IFormationMember member in members)
             {
                 if(member.PositionIndex > removedMemberIndex)
                 {

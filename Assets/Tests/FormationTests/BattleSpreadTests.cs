@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.TestTools;
-using NUnit.Framework;
 using FormationSystem;
+using NUnit.Framework;
+using UnityEngine;
 
 public class BattleSpreadTests : MonoBehaviour
 {

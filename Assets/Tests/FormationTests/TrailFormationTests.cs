@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using FormationSystem;
 using NUnit.Framework;
+using UnityEngine;
 
 
 public class TrailFormationTests
