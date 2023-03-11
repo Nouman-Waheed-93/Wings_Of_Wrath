@@ -6,15 +6,17 @@ namespace FormationSystem
 {
     public abstract class Formation
     {
+        public int MemberCount { get { return members.Count; } }
+
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
 
         public virtual void AddMember(IFormationMember member)
         {
             //Add the member's position index before adding the member in the list. 
             //Because, this member's positionIndex is equal to Count before adding the new member
-            member.PositionIndex = members.Count;
-            member.Position = GetMemberPosition(member.PositionIndex);
             members.Add(member);
+            member.PositionIndex = members.Count-1;
+            member.Position = GetMemberPosition(member.PositionIndex);
         }
 
         public abstract Vector3 GetMemberPosition(int memberIndex);

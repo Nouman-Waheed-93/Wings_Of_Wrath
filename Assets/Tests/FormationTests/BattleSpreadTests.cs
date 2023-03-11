@@ -2,7 +2,7 @@ using FormationSystem;
 using NUnit.Framework;
 using UnityEngine;
 
-public class BattleSpreadTests : MonoBehaviour
+public class BattleSpreadTests
 {
     [Test]
     public void BattleSpread_Formation_Gives_Correct_Position()

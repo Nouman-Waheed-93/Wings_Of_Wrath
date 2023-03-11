@@ -8,6 +8,26 @@ public class FormationTests
     List<IFormationMember> formationMembers;
 
     [Test]
+    public void Member_Cannot_Be_Added_Twice()
+    {
+        Formation formation = new Trail();
+        IFormationMember member = NSubstitute.Substitute.For<IFormationMember>();
+        formation.AddMember(member);
+        formation.AddMember(member);
+        Assert.AreEqual(1, formation.MemberCount);
+    }
+
+    [Test]
+    public void Adding_Member_Twice_Does_Not_Change_Member_Position_Index()
+    {
+        Formation formation = new Trail();
+        IFormationMember member = NSubstitute.Substitute.For<IFormationMember>();
+        formation.AddMember(member);
+        formation.AddMember(member);
+        Assert.AreEqual(member.PositionIndex, 0);
+    }
+
+    [Test]
     public void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
     {
         CreateAFormation(5);
