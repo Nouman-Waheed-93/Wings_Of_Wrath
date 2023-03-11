@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace FormationSystem
 {
     public abstract class Formation
     {
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
-         
+
         public virtual void AddMember(IFormationMember member)
         {
             //Add the member's position index before adding the member in the list. 
@@ -22,14 +23,20 @@ namespace FormationSystem
         {
             int removedMemberIndex = memberToRemove.PositionIndex;
             members.Remove(memberToRemove);
-            foreach(IFormationMember member in members)
+            foreach (IFormationMember member in members)
             {
-                if(member.PositionIndex > removedMemberIndex)
+                if (member.PositionIndex > removedMemberIndex)
                 {
                     member.PositionIndex--;
                     member.Position = GetMemberPosition(member.PositionIndex);
                 }
             }
+        }
+
+        protected void CheckIndexValidity(int memberIndex)
+        {
+            if (memberIndex < 0)
+                throw new ArgumentException("Index cannot be a negative number");
         }
     }
 }

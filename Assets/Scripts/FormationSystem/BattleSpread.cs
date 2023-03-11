@@ -7,8 +7,7 @@ namespace FormationSystem
     {
         public override Vector3 GetMemberPosition(int memberIndex)
         {
-            if (memberIndex < 0)
-                throw new ArgumentException("Index cannot be a negative number");
+            CheckIndexValidity(memberIndex);
 
             if (memberIndex == 0)
                 return Vector3.zero;
