@@ -1,10 +1,9 @@
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.Events;
+using UnityEngine;
 
 namespace ScreenInputControls
 {
-    public abstract class HoldableButton : IPointerDownHandler, IPointerUpHandler
+    public abstract class HoldableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         protected bool isHeldDown;
 

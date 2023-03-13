@@ -11,10 +11,23 @@ namespace AircraftController
         private MovementData movementData;
 
         private AircraftController aircraftController;
+        private MovementHandler movementHandler;
 
         private void Awake()
         {
-            aircraftController = new AircraftController(new MovementHandler(movementData, transform, GetComponent<Rigidbody>()));
+            movementHandler = new MovementHandler(movementData, transform, GetComponent<Rigidbody>());
+            aircraftController = new AircraftController();
+            movementHandler.Accelerate(1);
+        }
+
+        private void Update()
+        {
+            movementHandler.Update(Time.deltaTime);
+        }
+
+        public void Turn(float dir)
+        {
+            movementHandler.Turn(dir);
         }
     }
 }

@@ -17,11 +17,13 @@ namespace ScreenInputControls
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
+            GiveThumbInput(eventData.position);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
+            onDirectionChange?.Invoke(0);
         }
 
         void IPointerMoveHandler.OnPointerMove(PointerEventData eventData)
@@ -29,9 +31,14 @@ namespace ScreenInputControls
             if (!isHeldDown)
                 return;
 
+            GiveThumbInput(eventData.position);
+        }
+        
+        private void GiveThumbInput(Vector2 thumbPosition)
+        {
             Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(target.position);
-            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, eventData.position);
-            onDirectionChange.Invoke(direction);
+            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition);
+            onDirectionChange?.Invoke(direction);
         }
     }
 }

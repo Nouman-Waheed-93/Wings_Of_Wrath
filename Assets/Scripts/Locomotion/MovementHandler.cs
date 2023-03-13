@@ -22,7 +22,7 @@ namespace Locomotion
             this.rigidbody = rigidbody;
         }
 
-        private void Update(float simulationDeltaTime)
+        public void Update(float simulationDeltaTime)
         {
             rigidbody.velocity = transform.forward * throttle;
             rigidbody.angularVelocity = Vector3.up * turn * movementData.turnSpeed;
