@@ -30,8 +30,7 @@ namespace ScreenInputControls
                 return;
 
             Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(target.position);
-            float direction = ThumbDriftLogic.CalculateDirection(target.right, targetScreenPosition, eventData.position); //Vector3.Dot(target.right, (targetScreenPosition - eventData.position).normalized);
-
+            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, eventData.position);
             onDirectionChange.Invoke(direction);
         }
     }

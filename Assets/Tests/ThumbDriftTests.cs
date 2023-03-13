@@ -7,16 +7,56 @@ using ScreenInputControls;
 
 public class ThumbDriftTests
 {
+    Vector2 targetPosition = new Vector2(0, 5);
+
     [Test]
-    public void Thumb_Position_Calculates_Correct_Direction()
+    public void Thumb_Behind_Target_Gives_Zero()
     {
-        Vector3 targetPosition = new Vector3(0, 5, 0);
-        float direction = ThumbDriftLogic.CalculateDirection(Vector3.right, targetPosition, new Vector3(0, 0, 0));
-        Assert.That(direction == 0, "Direction Is zero when the thumb is right behind the player position");
-        direction = ThumbDriftLogic.CalculateDirection(Vector3.right, targetPosition, new Vector3(1, 5, 0));
-        Assert.That(direction == -1, "Direction is -1 when the thumb is on the exact right side of the player");
-        direction = ThumbDriftLogic.CalculateDirection(Vector3.right, targetPosition, new Vector3(-1, 5, 0));
-        Assert.That(direction == 1, "Direction is 1 when the thumb is on the exact left side of the player");
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector2(0, 0), 90);
+        Assert.AreEqual(0, direction);
     }
 
+    [Test]
+    public void Thumb_At_Right_Of_Target_Gives_Negative_One()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector3(1, 5), 90);
+        Assert.AreEqual(-1, direction);
+    }
+
+    [Test]
+    public void Thumb_At_Left_Of_Target_Gives_Positive_One()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector3(-1, 5), 90);
+        Assert.AreEqual(1, direction);
+    }
+
+    [Test]
+    public void Thumb_Ahead_Target_Gives_Positive_One()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector3(0, 6), 90);
+        Assert.AreEqual(1, direction);
+    }
+
+    [Test]
+    public void Angle_Between_Thumb_N_Target_Exceeds_Limit_On_Right_Side()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector2(0.01f, 6), 90);
+        Assert.AreEqual(-1, direction);
+    }
+
+    [Test]
+    public void Angle_Between_Thumb_N_Target_Exceeds_Limit_On_Left_Side()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector2(-0.01f, 6), 90);
+        Assert.AreEqual(1, direction);
+    }
+
+    [Test]
+    public void Diagonal_To_Target_Gives_CorrectValue()
+    {
+        float direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector2(1, 4), 90);
+        Assert.AreEqual(-0.5f, direction);
+        direction = ThumbDriftLogic.CalculateDirection(targetPosition, new Vector2(-1, 4), 90);
+        Assert.AreEqual(0.5f, direction);
+    }
 }
