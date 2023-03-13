@@ -12,6 +12,10 @@ namespace ScreenInputControls
                                   //Input would be calculated as direction
                                   //from pointer(finger position) on screen to the target
 
+        [Tooltip("the Angle between targetForward and (thumbPosition -> targetPosition) at which input would be at maximum")]
+        [SerializeField]
+        private float maxAngle;
+
         public UnityEvent<float> onDirectionChange;
 
         public override void OnPointerDown(PointerEventData eventData)
@@ -37,7 +41,7 @@ namespace ScreenInputControls
         private void GiveThumbInput(Vector2 thumbPosition)
         {
             Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(target.position);
-            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition);
+            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition, maxAngle);
             onDirectionChange?.Invoke(direction);
         }
     }

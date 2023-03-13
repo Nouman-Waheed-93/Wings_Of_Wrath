@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1f607dbf1c15a4b92ed18da809d14b, type: 3}
   m_Name: F-16
   m_EditorClassIdentifier: 
-  maxThrottle: 10
-  minThrottle: 1
-  turnSpeed: 1
-  velocityDirectionChangeFactor: 0
+  maxSpeed: 100
+  maxAcceleration: 1
+  maxTurn: 1
+  velocityDirectionChangeFactor: 0.005
+  turnMaximizationSpeed: 30

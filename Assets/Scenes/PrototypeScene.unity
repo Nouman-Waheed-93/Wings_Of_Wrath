@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1604655155}
+  maxAngle: 100
   onDirectionChange:
     m_PersistentCalls:
       m_Calls:
@@ -688,6 +689,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 685089733575715681, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1782124699198386509, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034807660150556351, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034807660150556351, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034807660150556351, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034807660150556351, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3034807660150556351, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6087905188102575368, guid: d91ac27617af7144d9f31619f2e7210e,
         type: 3}
       propertyPath: m_RootOrder
@@ -747,6 +783,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: F-16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109102479499927331, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}
