@@ -50,7 +50,7 @@ namespace Locomotion
         {
             HandleCurrSpeed(simulationDeltaTime);
             rigidbody.velocity = transform.forward * currSpeed;
-            rigidbody.angularVelocity = Vector3.up * currTurn * movementData.maxTurnSpeed;
+            rigidbody.angularVelocity = Vector3.up * currTurn * movementData.maxTurn;
         }
     
         protected void HandleCurrSpeed(float simulationDeltaTime)
