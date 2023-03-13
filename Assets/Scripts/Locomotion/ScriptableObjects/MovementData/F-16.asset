@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91de429c26345ab4280707bdf9988ee6, type: 3}
-  m_Name: F-16MovementData
+  m_Script: {fileID: 11500000, guid: 5d1f607dbf1c15a4b92ed18da809d14b, type: 3}
+  m_Name: F-16
   m_EditorClassIdentifier: 
   maxThrottle: 10
-  minThrottle: 5
-  turnSpeed: 2
+  minThrottle: 1
+  turnSpeed: 1
+  velocityDirectionChangeFactor: 0

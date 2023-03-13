@@ -7,8 +7,8 @@ namespace Locomotion
     [CreateAssetMenu(fileName = "MovementData", menuName = "ScriptableObjects/MovementData")]
     public class MovementData : ScriptableObject
     {
-        public float maxThrottle;
-        public float minThrottle;
-        public float turnSpeed;
+        public float maxSpeed;
+        public float maxAcceleration;
+        public float maxTurnSpeed;
     }
 }

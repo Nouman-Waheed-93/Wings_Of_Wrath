@@ -8,16 +8,16 @@ namespace AircraftController
     public class Aircraft : MonoBehaviour
     {
         [SerializeField]
-        private MovementData movementData;
+        private AerodynamicMovementData movementData;
 
         private AircraftController aircraftController;
-        private MovementHandler movementHandler;
+        private AerodynamicMovementHandler movementHandler;
 
         private void Awake()
         {
-            movementHandler = new MovementHandler(movementData, transform, GetComponent<Rigidbody>());
+            movementHandler = new AerodynamicMovementHandler(movementData, transform, GetComponent<Rigidbody>());
             aircraftController = new AircraftController();
-            movementHandler.Accelerate(1);
+            movementHandler.SetThrottle(1);
         }
 
         private void Update()
