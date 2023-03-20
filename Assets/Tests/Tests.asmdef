@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "ScreenInputControls",
-        "FormationSystem"
+        "FormationSystem",
+        "Utilities"
     ],
     "includePlatforms": [
         "Editor"

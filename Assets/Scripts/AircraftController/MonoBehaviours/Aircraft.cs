@@ -17,7 +17,7 @@ namespace AircraftController
         private void Awake()
         {
             movementHandler = new AerodynamicMovementHandler(movementData, transform, GetComponent<Rigidbody>());
-            orientationController = new AircraftOrientationController(transform.GetChild(0), 1, 1);
+            orientationController = new AircraftOrientationController(movementHandler, transform.GetChild(0));
             aircraftController = new AircraftController();
             movementHandler.SetThrottle(1);
         }
@@ -31,7 +31,6 @@ namespace AircraftController
         public void Turn(float dir)
         {
             movementHandler.Turn(dir);
-            orientationController.TargetTurn = dir;
         }
     }
 }
