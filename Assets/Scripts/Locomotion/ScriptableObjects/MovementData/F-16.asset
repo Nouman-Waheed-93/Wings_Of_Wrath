@@ -17,3 +17,5 @@ MonoBehaviour:
   maxTurn: 1
   velocityDirectionChangeFactor: 0.005
   turnMaximizationSpeed: 30
+  takeOffSpeed: 5
+  maxPitch: 1

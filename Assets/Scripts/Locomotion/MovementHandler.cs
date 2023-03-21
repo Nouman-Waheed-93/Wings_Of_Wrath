@@ -13,9 +13,13 @@ namespace Locomotion
         private float currAcceleration;
         
         protected float currSpeed;
+        public float CurrSpeed { get => currSpeed; }
+
         protected float currTurn;
 
         protected Transform transform;
+        public Transform Transform { get => transform; }
+
         protected Rigidbody rigidbody;
 
         public MovementHandler(MovementData movementData, Transform transform, Rigidbody rigidbody)

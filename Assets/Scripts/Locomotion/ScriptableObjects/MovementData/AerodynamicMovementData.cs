@@ -12,5 +12,10 @@ namespace Locomotion
 
         [Tooltip("the speed at which turn can reach full potential")]
         public float turnMaximizationSpeed;
+
+        [Tooltip("the speed at which plane will take off")]
+        public float takeOffSpeed;
+
+        public float maxPitch;
     }
 }

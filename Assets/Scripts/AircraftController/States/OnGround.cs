@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace AircraftController
 {
     public class OnGround : State
@@ -15,12 +13,16 @@ namespace AircraftController
 
         public override void Update(float simulationTime)
         {
-
+            float throttle = aircraftController.IsThrottleOn ? 1 : 0;
+            aircraftController.MovementHandler.SetThrottle(throttle);
+            if(aircraftController.MovementHandler.CurrSpeed > aircraftController.MovementHandler.AerodynamicMovementData.takeOffSpeed)
+            {
+                stateMachine.ChangeState(aircraftController.StateTakeOff);
+            }
         }
 
         public override void Exit()
         {
-            //Play Airborn dialog sequence
         }
     }
 }

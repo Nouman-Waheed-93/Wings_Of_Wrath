@@ -18,19 +18,24 @@ namespace AircraftController
         {
             movementHandler = new AerodynamicMovementHandler(movementData, transform, GetComponent<Rigidbody>());
             orientationController = new AircraftOrientationController(movementHandler, transform.GetChild(0));
-            aircraftController = new AircraftController();
-            movementHandler.SetThrottle(1);
+            aircraftController = new AircraftController(movementHandler);
         }
 
         private void Update()
         {
             movementHandler.Update(Time.deltaTime);
             orientationController.Update(Time.deltaTime);
+            aircraftController.Update(Time.deltaTime);
         }
 
         public void Turn(float dir)
         {
-            movementHandler.Turn(dir);
+            aircraftController.Turn = dir;
+        }
+
+        public void SetThrottle(bool isOn)
+        {
+            aircraftController.IsThrottleOn = isOn;
         }
     }
 }

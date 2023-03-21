@@ -7,13 +7,13 @@ namespace AircraftController
 {
     public class AircraftOrientationController
     {
-        public ITurnFactor turnFactor;
+        public IPitchYaw turnFactor;
 
         private Transform transform;
 
         private float currPitch;
 
-        public AircraftOrientationController(ITurnFactor turnFactorCalculator, Transform transform)
+        public AircraftOrientationController(IPitchYaw turnFactorCalculator, Transform transform)
         {
             this.turnFactor = turnFactorCalculator;
             this.transform = transform;

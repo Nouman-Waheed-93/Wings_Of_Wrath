@@ -13,7 +13,7 @@ namespace AircraftController
             currentState = initState;
         }
 
-        private void ChangeState(State newState)
+        public void ChangeState(State newState)
         {
             currentState?.Exit();
 
