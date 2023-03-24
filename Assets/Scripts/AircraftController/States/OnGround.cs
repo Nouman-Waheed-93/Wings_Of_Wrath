@@ -13,8 +13,9 @@ namespace AircraftController
 
         public override void Update(float simulationTime)
         {
-            float throttle = aircraftController.IsThrottleOn ? 1 : 0;
-            aircraftController.MovementHandler.SetThrottle(throttle);
+            //first screen touch -> engine start
+            //if screen touched -> afterburner
+            //on screen touch lifted -> dry thrust
             if(aircraftController.MovementHandler.CurrSpeed > aircraftController.MovementHandler.AerodynamicMovementData.takeOffSpeed)
             {
                 stateMachine.ChangeState(aircraftController.StateTakeOff);

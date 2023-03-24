@@ -7,7 +7,6 @@ namespace AircraftController
 {
     public class TakeOff : State
     {
-        private PIDController heightPIDController = new PIDController();
         public TakeOff(AircraftStateMachine stateMachine, AircraftController aircraftController) : base(stateMachine, aircraftController)
         {
         }

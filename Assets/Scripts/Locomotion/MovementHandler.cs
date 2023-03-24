@@ -11,7 +11,8 @@ namespace Locomotion
 
         private float targetSpeed;
         private float currAcceleration;
-        
+        private float currBrake;
+
         protected float currSpeed;
         public float CurrSpeed { get => currSpeed; }
 
@@ -44,6 +45,11 @@ namespace Locomotion
             this.currAcceleration = Mathf.Lerp(0, movementData.maxAcceleration, throttle);
         }
 
+        public void SetBrake(float brakePressure)
+        {
+            this.currBrake = Mathf.Lerp(0, movementData.maxBrake, brakePressure);
+        }
+
         public void Turn(float direction)
         {
             direction = Mathf.Clamp(direction, -1, 1);
@@ -60,6 +66,7 @@ namespace Locomotion
         protected void HandleCurrSpeed(float simulationDeltaTime)
         {
             currSpeed += currAcceleration * simulationDeltaTime;
+            currSpeed -= currBrake * simulationDeltaTime;
             currSpeed = Mathf.Clamp(currSpeed, 0, movementData.maxSpeed);
         }
     }

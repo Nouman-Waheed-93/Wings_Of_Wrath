@@ -9,6 +9,7 @@ namespace Locomotion
     {
         public float maxSpeed;
         public float maxAcceleration;
+        public float maxBrake;
         public float maxTurn;
     }
 }

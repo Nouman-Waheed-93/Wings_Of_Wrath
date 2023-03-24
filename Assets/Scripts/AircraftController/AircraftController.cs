@@ -12,6 +12,7 @@ namespace AircraftController
         private AerodynamicMovementHandler movementHandler;
         public AerodynamicMovementHandler MovementHandler { get => movementHandler; }
 
+        #region States
         private OnGround stateOnGround;
         public OnGround StateOnGround { get => stateOnGround; }
 
@@ -21,11 +22,24 @@ namespace AircraftController
         private InAir stateInAir;
         public InAir StateInAir { get => stateInAir; }
 
+        private FinalApproach stateFinalApproach;
+        public FinalApproach StateFinalApproach { get => stateFinalApproach; }
+
+        private TouchDown stateTouchDown;
+        public TouchDown StateTouchDown { get => stateTouchDown; }
+
+        private Landed stateLanded;
+        public Landed StateLanded { get => stateLanded; }
+        #endregion
+
         private float turn;
         public float Turn { get => turn; set => turn = value; }
 
-        private bool isThrottleOn;
-        public bool IsThrottleOn { get => isThrottleOn; set => isThrottleOn = value; }
+        private float throttle;
+        public float Throttle { get => throttle; set => throttle = value; }
+
+        private Airstrip airstripToLandOn;
+        public Airstrip AirStripToLandOn { get => airstripToLandOn; set => airstripToLandOn = value; }
 
         public AircraftController(AerodynamicMovementHandler movementHandler)
         {

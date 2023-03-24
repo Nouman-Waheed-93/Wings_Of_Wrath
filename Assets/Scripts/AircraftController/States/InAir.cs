@@ -25,8 +25,15 @@ namespace AircraftController
             //Can Fire Weapons
             //Can be Controlled
             //Keep Height
+            MoveToFinalApproachIfInitialApproachDone();
             KeepAltitude();
             aircraftController.MovementHandler.Turn(aircraftController.Turn);
+        }
+
+        private void MoveToFinalApproachIfInitialApproachDone()
+        {
+            if (aircraftController.AirStripToLandOn)
+                stateMachine.ChangeState(aircraftController.StateFinalApproach);
         }
 
         private void KeepAltitude()
