@@ -9,31 +9,18 @@ namespace AircraftController
     {
         [SerializeField]
         private Team team;
+        public Team Team { get => team; }
 
         [SerializeField]
         private Transform initialApproach;
-        public Transform InitialApproach;
+        public Transform InitialApproach { get => initialApproach; }
 
         [SerializeField]
         private Transform finalApproach;
-        public Transform FinalApproach;
+        public Transform FinalApproach { get => finalApproach; }
 
         [SerializeField]
         private Transform touchDownPoint;
-        public Transform TouchDownPoint;
-
-        private void OnTriggerEnter(Collider other)
-        {
-            //initial approach done
-            Aircraft landingAircraft = other.GetComponentInParent<Aircraft>();
-            if (landingAircraft.Team != team)
-                return;
-
-            //if the aircraft does not have LandingIntent. return
-            if (Vector3.Dot(initialApproach.forward, landingAircraft.transform.forward) < 0.5f)
-                return;
-
-            landingAircraft.PrepareToLand(this);
-        }
+        public Transform TouchDownPoint { get => touchDownPoint; }
     }
 }

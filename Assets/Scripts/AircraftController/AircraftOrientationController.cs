@@ -14,7 +14,7 @@ namespace AircraftController
         private float currPitch;
 
         private float pitchOffset; //angle in degrees
-        public float PitchOffset { get => pitchOffset; }
+        public float PitchOffset { get => pitchOffset; set => pitchOffset = value; }
 
         public AircraftOrientationController(IPitchYaw turnFactorCalculator, Transform transform)
         {

@@ -24,8 +24,8 @@ namespace AircraftController
         public override void Update(float simulationDeltaTime)
         {
             CalculateAndSetPitch();
-            float gearRetractHeight = 50;
-            float inAirHeight = 100;
+            float gearRetractHeight = 20;
+            float inAirHeight = 30;
             if(aircraftController.MovementHandler.Height > gearRetractHeight)
             {
                 //retract gear
@@ -44,7 +44,7 @@ namespace AircraftController
             transformForward.y = 0;
             transformForward.Normalize();
             float distance = Mathf.Abs(100 - aircraftController.MovementHandler.Transform.position.y);
-            targetPosition += transformForward * 50;
+            targetPosition += transformForward * 300f;
             Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
             float targetPitch = Mathf.Atan2(relative.y, relative.z);
             aircraftController.MovementHandler.SetPitch(-targetPitch);

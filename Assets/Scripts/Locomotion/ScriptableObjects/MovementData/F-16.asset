@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: F-16
   m_EditorClassIdentifier: 
   maxSpeed: 100
-  maxAcceleration: 1
+  maxAcceleration: 10
+  maxBrake: 15
   maxTurn: 1
   velocityDirectionChangeFactor: 0.005
   turnMaximizationSpeed: 30
-  takeOffSpeed: 5
+  takeOffSpeed: 30
   maxPitch: 1

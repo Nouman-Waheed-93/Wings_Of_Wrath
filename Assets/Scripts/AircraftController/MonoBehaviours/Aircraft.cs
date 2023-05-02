@@ -16,21 +16,14 @@ namespace AircraftController
         public Team Team { get => team; set => team = value; }
 
         private AircraftController aircraftController;
-        private AerodynamicMovementHandler movementHandler;
-        private AircraftOrientationController orientationController;
-        private Airstrip airstripToLandAt;
 
         private void Awake()
         {
-            movementHandler = new AerodynamicMovementHandler(movementData, transform, GetComponent<Rigidbody>());
-            orientationController = new AircraftOrientationController(movementHandler, transform.GetChild(0));
-            aircraftController = new AircraftController(movementHandler);
+            aircraftController = new AircraftController(movementData, transform, GetComponent<Rigidbody>());
         }
 
         private void Update()
         {
-            movementHandler.Update(Time.deltaTime);
-            orientationController.Update(Time.deltaTime);
             aircraftController.Update(Time.deltaTime);
         }
 
@@ -46,7 +39,7 @@ namespace AircraftController
 
         public void PrepareToLand(Airstrip airstrip)
         {
-            airstripToLandAt = airstrip;
+            aircraftController.AirStripToLandOn = airstrip;
         }
     }
 }
