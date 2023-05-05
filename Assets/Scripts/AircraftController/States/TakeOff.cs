@@ -43,7 +43,6 @@ namespace AircraftController
             Vector3 transformForward = aircraftController.MovementHandler.Transform.forward;
             transformForward.y = 0;
             transformForward.Normalize();
-            float distance = Mathf.Abs(100 - aircraftController.MovementHandler.Transform.position.y);
             targetPosition += transformForward * 300f;
             Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
             float targetPitch = Mathf.Atan2(relative.y, relative.z);

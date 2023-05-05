@@ -12,7 +12,7 @@ namespace AircraftController
 
         public override void Enter()
         {
-            aircraftController.Throttle = 0;
+            aircraftController.MovementHandler.SetThrottle(0);
             aircraftController.MovementHandler.SetBrake(1);
             //Play the particle effect
             //Play the screeching tyres SFX

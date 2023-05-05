@@ -13,6 +13,8 @@ namespace AircraftController
 
         public override void Enter()
         {
+            aircraftController.MovementHandler.SetThrottle(1);
+            aircraftController.MovementHandler.SetBrake(0);
         }
 
         public override void Exit()
@@ -25,7 +27,9 @@ namespace AircraftController
             //Can Fire Weapons
             //Keep Height
             if (IsInitialApproachDone())
+            {
                 MoveToFinalApproach();
+            }
             KeepAltitude();
             aircraftController.MovementHandler.Turn(aircraftController.Turn);
         }

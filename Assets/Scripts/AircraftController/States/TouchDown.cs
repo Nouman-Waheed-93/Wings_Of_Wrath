@@ -12,6 +12,8 @@ namespace AircraftController
 
         public override void Enter()
         {
+            aircraftController.MovementHandler.SetThrottle(0.5f);
+            aircraftController.MovementHandler.SetBrake(1);
         }
 
         public override void Exit()
@@ -22,25 +24,34 @@ namespace AircraftController
         {
             LowerAltitude();
 
+            aircraftController.MovementHandler.Turn(aircraftController.Turn);
             if (IsAbortIntended())
             {
+                Debug.Log("Aborting");
                 if (CanAbort())
+                {
+                    Debug.Log("Do Abort");
                     DoAbort();
+                }
                 else
+                {
+                    Debug.Log("Do Crash");
                     DoCrash();
+                }
             }
             else if (IsTouchDownDone())
             {
+                Debug.Log("Done touch down");
                 DoLand();
             }
         }
 
         private bool IsAbortIntended()
         {
-            Vector3 planePosition = Vector3.zero;
+            Vector3 planePosition = aircraftController.MovementHandler.Transform.position;
             Vector3 pointOnApproachLine = Vector3Extensions.FindNearestPointOnLine(aircraftController.AirStripToLandOn.FinalApproach.position,
                 aircraftController.AirStripToLandOn.TouchDownPoint.position, planePosition);
-            if (Vector3.Distance(planePosition, pointOnApproachLine) > 100)
+            if (Vector3.Distance(planePosition, pointOnApproachLine) > 200)
                 return true;
             return false;
         }
@@ -74,12 +85,7 @@ namespace AircraftController
         private void LowerAltitude()
         {
             Vector3 touchDownPosition = aircraftController.AirStripToLandOn.TouchDownPoint.position;
-            Vector3 transformForward = aircraftController.MovementHandler.Transform.forward;
-            transformForward.y = 0;
-            transformForward.Normalize();
-            float distance = Vector3.Distance(aircraftController.MovementHandler.Transform.position, touchDownPosition);
-            Vector3 targetPosition = transformForward * distance + new Vector3(0, touchDownPosition.y, 0);
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
+            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(touchDownPosition);
             float targetPitch = Mathf.Atan2(relative.y, relative.z);
             aircraftController.MovementHandler.SetPitch(-targetPitch);
         }

@@ -24,6 +24,7 @@ namespace AircraftController
             float brakePressure = (aircraftController.MovementHandler.CurrSpeed - targetSpeed) / 20;
             aircraftController.MovementHandler.SetBrake(brakePressure);
             LowerAltitude();
+            aircraftController.MovementHandler.Turn(aircraftController.Turn);
             if (IsFinalApproachDone())
             {
                 MoveToTouchDown();
@@ -41,7 +42,7 @@ namespace AircraftController
             Vector3 planePosition = aircraftController.MovementHandler.Transform.position;
             Vector3 pointOnApproachLine = Vector3Extensions.FindNearestPointOnLine(aircraftController.AirStripToLandOn.InitialApproach.position,
                 aircraftController.AirStripToLandOn.FinalApproach.position, planePosition);
-            if (Vector3.Distance(planePosition, pointOnApproachLine) > 100)
+            if (Vector3.Distance(planePosition, pointOnApproachLine) > 200)
                 return true;
             return false;
         }
@@ -68,14 +69,11 @@ namespace AircraftController
         
         private void LowerAltitude()
         {
+            Debug.Log("lowering altitude");
             Vector3 finalApproach = aircraftController.AirStripToLandOn.FinalApproach.position;
-            Vector3 transformForward = aircraftController.MovementHandler.Transform.forward;
-            transformForward.y = 0;
-            transformForward.Normalize();
-            float distance = Vector3.Distance(aircraftController.MovementHandler.Transform.position, finalApproach);
-            Vector3 targetPosition = transformForward * distance + new Vector3(0, finalApproach.y, 0);
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
+            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(finalApproach);
             float targetPitch = Mathf.Atan2(relative.y, relative.z);
+            Debug.Log("target pitch  : " + targetPitch);
             aircraftController.MovementHandler.SetPitch(-targetPitch);
         }
     }

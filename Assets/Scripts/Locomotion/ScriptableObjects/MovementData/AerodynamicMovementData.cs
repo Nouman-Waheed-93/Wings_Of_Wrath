@@ -16,6 +16,12 @@ namespace Locomotion
         [Tooltip("the speed at which plane will take off")]
         public float takeOffSpeed;
 
+        [Tooltip("The factor to reduce the speed when the plane is turning")]
+        public float turnSpeedReductionFactor;
+
+        [Tooltip("The minimum speed that can be reached when turning the plane")]
+        public float minimumSpeedOnTurn;
+
         public float maxPitch;
     }
 }
