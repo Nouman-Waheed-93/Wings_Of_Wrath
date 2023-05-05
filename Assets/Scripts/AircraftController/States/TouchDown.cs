@@ -12,8 +12,8 @@ namespace AircraftController
 
         public override void Enter()
         {
-            aircraftController.MovementHandler.SetThrottle(0.5f);
-            aircraftController.MovementHandler.SetBrake(1);
+            aircraftController.MovementHandler.SetThrottle(0.2f);
+            aircraftController.MovementHandler.SetBrake(0.3f);
         }
 
         public override void Exit()
