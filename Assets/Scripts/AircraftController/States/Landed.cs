@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace AircraftController
+﻿namespace AircraftController
 {
     public class Landed : State
     {

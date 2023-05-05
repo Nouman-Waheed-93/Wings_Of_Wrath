@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
@@ -17,7 +15,7 @@ namespace Locomotion
         { 
             get
             {
-                return turnSeeker.CurrValue * Mathf.Clamp01(currSpeed / aerodynamicMovementData.turnMaximizationSpeed);
+                return turnSeeker.CurrValue;
             } 
         }
 
@@ -45,35 +43,16 @@ namespace Locomotion
 
         protected override void HandleMovement(float simulationDeltaTime)
         {
-            float speedDependentTurnFactor = Mathf.Clamp01(currSpeed / aerodynamicMovementData.turnMaximizationSpeed);
             turnSeeker.Target = currTurn;
             turnSeeker.Seek(simulationDeltaTime);
             pitchSeeker.Seek(simulationDeltaTime);
             HandleCurrSpeed(simulationDeltaTime);
-            ReduceSpeedWRTTurn(simulationDeltaTime);
 
-            Vector3 currVelocityDirection = rigidbody.velocity.normalized;
+            rigidbody.velocity = transform.forward * currSpeed;
 
-            if (currVelocityDirection.sqrMagnitude == 0) 
-                currVelocityDirection = transform.forward;
-
-            Vector3 targetVelocityDirection = transform.forward;
-            Vector3 velocityDirection = Vector3.RotateTowards(currVelocityDirection, targetVelocityDirection,
-                    Mathf.PI * aerodynamicMovementData.velocityDirectionChangeFactor * speedDependentTurnFactor, 0);
-            rigidbody.velocity = velocityDirection * currSpeed;
-
-            float airFlowingUnderTheWings = Vector3.Dot(transform.forward, currVelocityDirection.normalized);
-            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch * speedDependentTurnFactor;
-            Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn * speedDependentTurnFactor * airFlowingUnderTheWings;
+            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch;
+            Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn;
             rigidbody.angularVelocity = pitchVelocity + turnVelocity;
         }
-
-        private void ReduceSpeedWRTTurn(float simulationDeltaTime)
-        {
-            if (currSpeed <= aerodynamicMovementData.minimumSpeedOnTurn)
-                return;
-            currSpeed -= Mathf.Abs(currTurn) * aerodynamicMovementData.turnSpeedReductionFactor * simulationDeltaTime;
-        }
-
     }
 }

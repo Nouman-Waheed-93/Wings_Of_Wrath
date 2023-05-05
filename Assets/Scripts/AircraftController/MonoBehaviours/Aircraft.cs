@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Locomotion;
 using Common;
 
 namespace AircraftController
 {
-    public class Aircraft : MonoBehaviour
+    public class Aircraft : MonoBehaviour, ISpeedProvider
     {
         [SerializeField]
         private AerodynamicMovementData movementData;
@@ -14,6 +12,8 @@ namespace AircraftController
         [SerializeField]
         private Team team;
         public Team Team { get => team; set => team = value; }
+
+        public float CurrSpeed { get { return aircraftController.MovementHandler.CurrSpeed; } }
 
         private AircraftController aircraftController;
 
