@@ -11,20 +11,23 @@ namespace AircraftController
 
         private Transform transform;
 
+        private AircraftMovementData movementData;
+
         private float currPitch;
 
         private float pitchOffset; //angle in degrees
         public float PitchOffset { get => pitchOffset; set => pitchOffset = value; }
 
-        public AircraftOrientationController(IPitchYaw turnFactorCalculator, Transform transform)
+        public AircraftOrientationController(AircraftMovementData movementData, IPitchYaw turnFactorCalculator, Transform transform)
         {
+            this.movementData = movementData;
             this.turnFactor = turnFactorCalculator;
             this.transform = transform;
         }
 
         public void Update(float simulationDeltaTime)
         {
-            transform.localEulerAngles = new Vector3(pitchOffset + 30f * currPitch, 0, 90f * -turnFactor.TurnFactor);
+            transform.localEulerAngles = new Vector3(pitchOffset + movementData.maxPitchAngle * currPitch, 0, movementData.maxRollAngle * -turnFactor.TurnFactor);
         }
     }
 }

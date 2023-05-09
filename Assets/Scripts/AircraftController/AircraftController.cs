@@ -12,8 +12,8 @@ namespace AircraftController
         private AircraftOrientationController orientationController;
         public AircraftOrientationController OrientationController { get => orientationController; }
 
-        private AerodynamicMovementHandler movementHandler;
-        public AerodynamicMovementHandler MovementHandler { get => movementHandler; }
+        private AircraftMovementHandler movementHandler;
+        public AircraftMovementHandler MovementHandler { get => movementHandler; }
 
         private Transform transform;
         private Rigidbody rigidbody;
@@ -54,14 +54,14 @@ namespace AircraftController
         private Airstrip airstripToLandOn;
         public Airstrip AirStripToLandOn { get => airstripToLandOn; set => airstripToLandOn = value; }
 
-        public AircraftController(AerodynamicMovementData movementData, Transform transform, Rigidbody rigidbody)
+        public AircraftController(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;
 
             stateMachine = new AircraftStateMachine();
-            movementHandler = new AerodynamicMovementHandler(movementData, transform, rigidbody);
-            orientationController = new AircraftOrientationController(movementHandler, transform.GetChild(0));
+            movementHandler = new AircraftMovementHandler(movementData, transform, rigidbody);
+            orientationController = new AircraftOrientationController(movementData, movementHandler, transform.GetChild(0));
 
             stateOnGround = new OnGround(stateMachine, this);
             stateMachine.Initialize(stateOnGround);

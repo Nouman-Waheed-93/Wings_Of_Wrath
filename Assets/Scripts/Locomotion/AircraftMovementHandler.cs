@@ -3,10 +3,10 @@ using Utilities;
 
 namespace Locomotion
 {
-    public class AerodynamicMovementHandler : MovementHandler, IPitchYaw
+    public class AircraftMovementHandler : MovementHandler, IPitchYaw
     {
-        private AerodynamicMovementData aerodynamicMovementData;
-        public AerodynamicMovementData AerodynamicMovementData { get => aerodynamicMovementData; }
+        private AircraftMovementData aerodynamicMovementData;
+        public AircraftMovementData AerodynamicMovementData { get => aerodynamicMovementData; }
 
         private TargetValueSeeker pitchSeeker;
         private TargetValueSeeker turnSeeker;
@@ -29,11 +29,11 @@ namespace Locomotion
 
         public float Height { get { return transform.position.y; } }
 
-        public AerodynamicMovementHandler(AerodynamicMovementData aerodynamicMovementData, Transform transform, Rigidbody rigidbody):base(aerodynamicMovementData, transform, rigidbody)
+        public AircraftMovementHandler(AircraftMovementData aerodynamicMovementData, Transform transform, Rigidbody rigidbody):base(aerodynamicMovementData, transform, rigidbody)
         {
             this.aerodynamicMovementData = aerodynamicMovementData;
-            pitchSeeker = new TargetValueSeeker(1);
-            turnSeeker = new TargetValueSeeker(1);
+            pitchSeeker = new TargetValueSeeker(aerodynamicMovementData.pitchSpeed);
+            turnSeeker = new TargetValueSeeker(aerodynamicMovementData.rollSpeed);
         }
 
         public void SetPitch(float pitch)
@@ -50,7 +50,7 @@ namespace Locomotion
 
             rigidbody.velocity = transform.forward * currSpeed;
 
-            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch;
+            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitchAngle;
             Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn;
             rigidbody.angularVelocity = pitchVelocity + turnVelocity;
         }

@@ -7,7 +7,7 @@ namespace AircraftController
     public class Aircraft : MonoBehaviour, ISpeedProvider
     {
         [SerializeField]
-        private AerodynamicMovementData movementData;
+        private AircraftMovementData movementData;
 
         [SerializeField]
         private Team team;
