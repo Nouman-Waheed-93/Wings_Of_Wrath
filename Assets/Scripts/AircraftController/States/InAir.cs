@@ -11,8 +11,6 @@ namespace AircraftController
 
         public override void Enter()
         {
-            aircraftController.MovementHandler.SetThrottle(1);
-            aircraftController.MovementHandler.SetBrake(0);
         }
 
         public override void Exit()
@@ -23,12 +21,12 @@ namespace AircraftController
         public override void Update(float simulationDeltaTime)
         {
             //Can Fire Weapons
-            //Keep Height
             if (IsInitialApproachDone())
             {
                 MoveToFinalApproach();
             }
-            KeepAltitude();
+            aircraftController.SeekSpeed(aircraftController.MovementHandler.AerodynamicMovementData.normalAirSpeed);
+            aircraftController.CalculateAndSetPitch(GlobalAircraftControllerSettings.flightAltitude, 100);
             aircraftController.MovementHandler.Turn(aircraftController.Turn);
         }
 
@@ -39,20 +37,6 @@ namespace AircraftController
         private void MoveToFinalApproach()
         {
             stateMachine.ChangeState(aircraftController.StateFinalApproach);
-        }
-
-        private void KeepAltitude()
-        {
-            Vector3 targetPosition = aircraftController.MovementHandler.Transform.position;
-            targetPosition.y = 100;
-            Vector3 transformForward = aircraftController.MovementHandler.Transform.forward;
-            transformForward.y = 0;
-            transformForward.Normalize();
-            float distance = Mathf.Abs(100 - aircraftController.MovementHandler.Transform.position.y);
-            targetPosition += transformForward * 100;
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
-            float targetPitch = Mathf.Atan2(relative.y, relative.z);
-            aircraftController.MovementHandler.SetPitch(-targetPitch);
         }
     }
 }

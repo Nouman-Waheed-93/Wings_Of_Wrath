@@ -10,7 +10,6 @@ namespace AircraftController
 
         public override void Enter()
         {
-            aircraftController.Throttle = 0.3f;
             //deploy landing gear
         }
 
@@ -20,9 +19,7 @@ namespace AircraftController
 
         public override void Update(float simulationDeltaTime)
         {
-            float targetSpeed = 10;
-            float brakePressure = (aircraftController.MovementHandler.CurrSpeed - targetSpeed) / 20;
-            aircraftController.MovementHandler.SetBrake(brakePressure);
+            aircraftController.SeekSpeed(GlobalAircraftControllerSettings.finalApproachSpeed);
             LowerAltitude();
             aircraftController.MovementHandler.Turn(aircraftController.Turn);
             if (IsFinalApproachDone())
@@ -39,18 +36,12 @@ namespace AircraftController
 
         private bool IsAbortIntended()
         {
-            Vector3 planePosition = aircraftController.MovementHandler.Transform.position;
-            Vector3 pointOnApproachLine = Vector3Extensions.FindNearestPointOnLine(aircraftController.AirStripToLandOn.InitialApproach.position,
-                aircraftController.AirStripToLandOn.FinalApproach.position, planePosition);
-            if (Vector3.Distance(planePosition, pointOnApproachLine) > 200)
-                return true;
-            return false;
+            return aircraftController.HasDeviatedFromLine(aircraftController.AirStripToLandOn.InitialApproach.position, 
+                aircraftController.AirStripToLandOn.FinalApproach.position, GlobalAircraftControllerSettings.finalApproachAcceptableDeviation);
         }
 
         private void AbortLanding()
         {
-            aircraftController.MovementHandler.SetBrake(0);
-            aircraftController.Throttle = 1;
             stateMachine.ChangeState(aircraftController.StateInAir);
             aircraftController.AirStripToLandOn = null;
             //retract landing gear
@@ -59,7 +50,7 @@ namespace AircraftController
         private bool IsFinalApproachDone()
         {
             return (Vector3.Distance(aircraftController.MovementHandler.Transform.position,
-                aircraftController.AirStripToLandOn.FinalApproach.position) < 10);
+                aircraftController.AirStripToLandOn.FinalApproach.position) < GlobalAircraftControllerSettings.wayPointReachedDistance);
         }
 
         private void MoveToTouchDown()
@@ -69,12 +60,7 @@ namespace AircraftController
         
         private void LowerAltitude()
         {
-            Debug.Log("lowering altitude");
-            Vector3 finalApproach = aircraftController.AirStripToLandOn.FinalApproach.position;
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(finalApproach);
-            float targetPitch = Mathf.Atan2(relative.y, relative.z);
-            Debug.Log("target pitch  : " + targetPitch);
-            aircraftController.MovementHandler.SetPitch(-targetPitch);
+            aircraftController.CalculateAndSetPitch(aircraftController.AirStripToLandOn.FinalApproach.position);
         }
     }
 }

@@ -16,9 +16,12 @@ MonoBehaviour:
   maxAcceleration: 10
   maxBrake: 15
   maxTurn: 3
-  velocityDirectionChangeFactor: 1
-  turnMaximizationSpeed: 30
   takeOffSpeed: 30
-  turnSpeedReductionFactor: 30
-  minimumSpeedOnTurn: 50
+  lowAirSpeed: 40
+  normalAirSpeed: 70
+  highAirSpeed: 100
   maxPitch: 1
+  maxPitchAngle: 30
+  pitchSpeed: 1
+  maxRollAngle: 90
+  rollSpeed: 1

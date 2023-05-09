@@ -27,7 +27,7 @@ namespace Locomotion
             }
         }
 
-        public float Height { get { return transform.position.y; } }
+        public float Altitude { get { return transform.position.y; } }
 
         public AircraftMovementHandler(AircraftMovementData aerodynamicMovementData, Transform transform, Rigidbody rigidbody):base(aerodynamicMovementData, transform, rigidbody)
         {
@@ -50,7 +50,7 @@ namespace Locomotion
 
             rigidbody.velocity = transform.forward * currSpeed;
 
-            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitchAngle;
+            Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch;
             Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn;
             rigidbody.angularVelocity = pitchVelocity + turnVelocity;
         }

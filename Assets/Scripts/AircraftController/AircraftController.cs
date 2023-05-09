@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Locomotion;
+using Utilities;
 
 namespace AircraftController
 {
@@ -77,6 +78,48 @@ namespace AircraftController
             stateMachine.currentState.Update(simulationDeltaTime);
             movementHandler.Update(simulationDeltaTime);
             orientationController.Update(simulationDeltaTime);
+        }
+
+        public void CalculateAndSetPitch(float targetAltitude, float targetDistance)
+        {
+            Vector3 targetPosition = transform.position;
+            targetPosition.y = targetAltitude;
+            Vector3 transformForward = transform.forward;
+            transformForward.y = 0;
+            transformForward.Normalize();
+            targetPosition += transformForward * targetDistance;
+            Vector3 relative = transform.InverseTransformPoint(targetPosition);
+            float targetPitch = -Mathf.Atan2(relative.y, relative.z);
+            movementHandler.SetPitch(targetPitch);
+        }
+
+        public void CalculateAndSetPitch(Vector3 targetPosition)
+        {
+            Vector3 relative = transform.InverseTransformPoint(targetPosition);
+            float targetPitch = -Mathf.Atan2(relative.y, relative.z);
+            movementHandler.SetPitch(targetPitch);
+        }
+
+        public bool HasDeviatedFromLine(Vector3 lineStart, Vector3 lineEnd, float acceptableDeviation)
+        {
+            Vector3 planePosition = transform.position;
+            Vector3 pointOnApproachLine = Vector3Extensions.FindNearestPointOnLine(lineStart,
+                lineEnd, planePosition);
+            if (Vector3.Distance(planePosition, pointOnApproachLine) > acceptableDeviation)
+                return true;
+            return false;
+        }
+
+        public void SeekSpeed(float targetSpeed)
+        {
+            //calculate required throttle
+            float requiredThrottle = Mathf.InverseLerp(0, movementHandler.AerodynamicMovementData.maxSpeed, targetSpeed);
+
+            //calculate required brakePressure
+            float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;
+
+            movementHandler.SetBrake(requiredBrakePressure);
+            movementHandler.SetThrottle(requiredThrottle);
         }
 
     }

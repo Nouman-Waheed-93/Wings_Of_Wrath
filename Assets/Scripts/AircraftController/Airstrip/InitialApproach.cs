@@ -8,16 +8,16 @@ namespace AircraftController
         Airstrip airstrip;
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("here running");
-            //initial approach done
             Aircraft landingAircraft = other.GetComponentInParent<Aircraft>();
             if (landingAircraft.Team != airstrip.Team)
                 return;
 
             //if the aircraft does not have LandingIntent. return
-            if (Vector3.Dot(transform.forward, landingAircraft.transform.forward) < 0.5f)
+            if (Vector3.Angle(transform.forward, landingAircraft.transform.forward) > GlobalAircraftControllerSettings.maxAngleErrorOnInitialApproach)
                 return;
 
+            Debug.Log("Initial Approach done");
+            //initial approach done
             landingAircraft.PrepareToLand(airstrip);
         }
     }

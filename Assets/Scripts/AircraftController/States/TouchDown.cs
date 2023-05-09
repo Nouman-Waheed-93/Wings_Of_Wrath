@@ -1,5 +1,4 @@
 using UnityEngine;
-using Utilities;
 
 namespace AircraftController
 {
@@ -12,8 +11,6 @@ namespace AircraftController
 
         public override void Enter()
         {
-            aircraftController.MovementHandler.SetThrottle(0.2f);
-            aircraftController.MovementHandler.SetBrake(0.3f);
         }
 
         public override void Exit()
@@ -23,7 +20,7 @@ namespace AircraftController
         public override void Update(float simulationDeltaTime)
         {
             LowerAltitude();
-
+            aircraftController.SeekSpeed(GlobalAircraftControllerSettings.touchDownSpeed);
             aircraftController.MovementHandler.Turn(aircraftController.Turn);
             if (IsAbortIntended())
             {
@@ -48,12 +45,8 @@ namespace AircraftController
 
         private bool IsAbortIntended()
         {
-            Vector3 planePosition = aircraftController.MovementHandler.Transform.position;
-            Vector3 pointOnApproachLine = Vector3Extensions.FindNearestPointOnLine(aircraftController.AirStripToLandOn.FinalApproach.position,
-                aircraftController.AirStripToLandOn.TouchDownPoint.position, planePosition);
-            if (Vector3.Distance(planePosition, pointOnApproachLine) > 200)
-                return true;
-            return false;
+            return aircraftController.HasDeviatedFromLine(aircraftController.AirStripToLandOn.FinalApproach.position,
+                aircraftController.AirStripToLandOn.TouchDownPoint.position, GlobalAircraftControllerSettings.touchDownAcceptableDeviation);
         }
 
         private bool CanAbort()
@@ -74,7 +67,7 @@ namespace AircraftController
         private bool IsTouchDownDone()
         {
             return (Vector3.Distance(aircraftController.MovementHandler.Transform.position,
-                aircraftController.AirStripToLandOn.TouchDownPoint.position) < 10);
+                aircraftController.AirStripToLandOn.TouchDownPoint.position) < GlobalAircraftControllerSettings.wayPointReachedDistance);
         }
 
         private void DoLand()
@@ -84,10 +77,7 @@ namespace AircraftController
 
         private void LowerAltitude()
         {
-            Vector3 touchDownPosition = aircraftController.AirStripToLandOn.TouchDownPoint.position;
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(touchDownPosition);
-            float targetPitch = Mathf.Atan2(relative.y, relative.z);
-            aircraftController.MovementHandler.SetPitch(-targetPitch);
+            aircraftController.CalculateAndSetPitch(aircraftController.AirStripToLandOn.TouchDownPoint.position);
         }
     }
 }

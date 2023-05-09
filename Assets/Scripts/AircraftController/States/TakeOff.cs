@@ -23,30 +23,15 @@ namespace AircraftController
 
         public override void Update(float simulationDeltaTime)
         {
-            CalculateAndSetPitch();
-            float gearRetractHeight = 20;
-            float inAirHeight = 30;
-            if(aircraftController.MovementHandler.Height > gearRetractHeight)
+            aircraftController.CalculateAndSetPitch(GlobalAircraftControllerSettings.flightAltitude, 300);
+            if(aircraftController.MovementHandler.Altitude > GlobalAircraftControllerSettings.retractGearAltitude)
             {
                 //retract gear
             }
-            if(aircraftController.MovementHandler.Height >= inAirHeight)
+            if(aircraftController.MovementHandler.Altitude >= GlobalAircraftControllerSettings.airborneAltitude)
             {
                 stateMachine.ChangeState(aircraftController.StateInAir);
             }
-        }
-
-        private void CalculateAndSetPitch()
-        {
-            Vector3 targetPosition = aircraftController.MovementHandler.Transform.position;
-            targetPosition.y = 100;
-            Vector3 transformForward = aircraftController.MovementHandler.Transform.forward;
-            transformForward.y = 0;
-            transformForward.Normalize();
-            targetPosition += transformForward * 300f;
-            Vector3 relative = aircraftController.MovementHandler.Transform.InverseTransformPoint(targetPosition);
-            float targetPitch = Mathf.Atan2(relative.y, relative.z);
-            aircraftController.MovementHandler.SetPitch(-targetPitch);
         }
     }
 }
