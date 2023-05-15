@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Locomotion;
 using Utilities;
@@ -17,7 +15,7 @@ namespace AircraftController
         public AircraftMovementHandler MovementHandler { get => movementHandler; }
 
         private Transform transform;
-        private Rigidbody rigidbody;
+        private Rigidbody rigidbody; //do not remove even if it is not used. Only remove it in production review.
 
         #region States
         private OnGround stateOnGround;

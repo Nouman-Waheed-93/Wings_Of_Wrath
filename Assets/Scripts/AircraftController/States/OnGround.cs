@@ -1,5 +1,3 @@
-using Locomotion;
-
 namespace AircraftController
 {
     public class OnGround : State
