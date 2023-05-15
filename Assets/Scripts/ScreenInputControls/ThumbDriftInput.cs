@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
@@ -12,16 +11,22 @@ namespace ScreenInputControls
                                   //Input would be calculated as direction
                                   //from pointer(finger position) on screen to the target
 
+        [Tooltip("the Angle between targetForward and (thumbPosition -> targetPosition) at which input would be at maximum")]
+        [SerializeField]
+        private float maxAngle;
+
         public UnityEvent<float> onDirectionChange;
 
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
+            GiveThumbInput(eventData.position);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
+            onDirectionChange?.Invoke(0);
         }
 
         void IPointerMoveHandler.OnPointerMove(PointerEventData eventData)
@@ -29,10 +34,14 @@ namespace ScreenInputControls
             if (!isHeldDown)
                 return;
 
+            GiveThumbInput(eventData.position);
+        }
+        
+        private void GiveThumbInput(Vector2 thumbPosition)
+        {
             Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(target.position);
-            float direction = ThumbDriftLogic.CalculateDirection(target.right, targetScreenPosition, eventData.position); //Vector3.Dot(target.right, (targetScreenPosition - eventData.position).normalized);
-
-            onDirectionChange.Invoke(direction);
+            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition, maxAngle);
+            onDirectionChange?.Invoke(direction);
         }
     }
 }

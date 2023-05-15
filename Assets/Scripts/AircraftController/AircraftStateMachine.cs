@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace AircraftController
 {
     public class AircraftStateMachine
@@ -13,7 +9,7 @@ namespace AircraftController
             currentState = initState;
         }
 
-        private void ChangeState(State newState)
+        public void ChangeState(State newState)
         {
             currentState?.Exit();
 

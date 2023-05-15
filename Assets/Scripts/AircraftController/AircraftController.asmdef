@@ -2,7 +2,9 @@
     "name": "AircraftController",
     "rootNamespace": "AircraftController",
     "references": [
-        "GUID:5ee26a330e3aab342913b8743ec272a0"
+        "GUID:5ee26a330e3aab342913b8743ec272a0",
+        "GUID:3b1a0fd6a33a2ae439ba5e01824de41c",
+        "GUID:6011dc511b9c287468b167eba0106732"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

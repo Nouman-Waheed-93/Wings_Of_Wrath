@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace AircraftController
 {
     public class OnGround : State
@@ -15,12 +13,17 @@ namespace AircraftController
 
         public override void Update(float simulationTime)
         {
-
+            //first screen touch -> engine start
+            //if screen touched -> afterburner
+            //on screen touch lifted -> dry thrust
+            if(aircraftController.MovementHandler.CurrSpeed > aircraftController.MovementHandler.AerodynamicMovementData.takeOffSpeed)
+            {
+                stateMachine.ChangeState(aircraftController.StateTakeOff);
+            }
         }
 
         public override void Exit()
         {
-            //Play Airborn dialog sequence
         }
     }
 }
