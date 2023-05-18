@@ -5,8 +5,8 @@ namespace AircraftController
         public const float finalApproachAcceptableDeviation = 200f;
         public const float touchDownAcceptableDeviation = 200f;
         public const float wayPointReachedDistance = 20f;
-        public const float retractGearAltitude = 30f; //The altitude at which the landing gear will be retracted
-        public const float airborneAltitude = 60f; //The altitude at which the aircraft will be considered airborne
+        public const float retractGearAltitude = 20f; //The altitude at which the landing gear will be retracted
+        public const float airborneAltitude = 30f; //The altitude at which the aircraft will be considered airborne
         public const float flightAltitude = 100f;
         public const float finalApproachSpeed = 50f;
         public const float touchDownSpeed = 30f;

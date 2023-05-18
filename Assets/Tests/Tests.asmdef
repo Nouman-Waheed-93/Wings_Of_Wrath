@@ -6,7 +6,9 @@
         "UnityEditor.TestRunner",
         "ScreenInputControls",
         "FormationSystem",
-        "Utilities"
+        "Utilities",
+        "AircraftController",
+        "Locomotion"
     ],
     "includePlatforms": [
         "Editor"

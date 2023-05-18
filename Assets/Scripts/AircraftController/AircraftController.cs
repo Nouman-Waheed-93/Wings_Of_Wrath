@@ -7,6 +7,7 @@ namespace AircraftController
     public class AircraftController
     {
         private AircraftStateMachine stateMachine;
+        public AircraftStateMachine StateMachine { get => stateMachine; }
 
         private AircraftOrientationController orientationController;
         public AircraftOrientationController OrientationController { get => orientationController; }
