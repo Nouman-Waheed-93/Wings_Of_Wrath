@@ -7,14 +7,12 @@ using AircraftController;
 using NSubstitute;
 using Locomotion;
 
-public class AircraftStateTests
+public class AircraftControllerTests
 {
     [Test]
     public void AircraftStateTestsSimplePasses()
     {
-
         AircraftStateMachine stateMachine = new AircraftStateMachine();
-        
         State stateA = Substitute.For<State>(stateMachine, null);
         State stateB = Substitute.For<State>(stateMachine, null);
         stateMachine.Initialize(stateA);
@@ -42,6 +40,20 @@ public class AircraftStateTests
         
 
         Assert.AreEqual(aircraftController.StateInAir, aircraftController.StateMachine.currentState);
+    }
+
+    [Test]
+    public void Speed_Does_Not_Go_In_Reverse_With_Brakes()
+    {
+        GameObject gameObject = new GameObject();
+        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+        rb.useGravity = false;
+        AircraftMovementData movementData = ScriptableObject.CreateInstance<AircraftMovementData>();
+        AircraftMovementHandler movementHandler = new AircraftMovementHandler(movementData, gameObject.transform, rb);
+
+        movementHandler.SetBrake(1);
+        movementHandler.Update(1);
+        Assert.AreEqual(0, movementHandler.CurrSpeed, "Speed Going negative with brakes.");
     }
 
     [Test]
@@ -77,9 +89,4 @@ public class AircraftStateTests
         return movementHandler.CurrSpeed;
     }
 
-    //[UnityTest]
-    //public IEnumerator State_Changes_To_InAir_After_Climbing_Above_AirborneAltitude()
-    //{
-    //    yield return null;
-    //}
 }
