@@ -29,7 +29,7 @@ namespace AircraftController
 
         public void Turn(float dir)
         {
-            aircraftController.Turn = dir;
+            aircraftController.TurnInput = dir;
         }
 
         public void SetThrottle(float throttle)

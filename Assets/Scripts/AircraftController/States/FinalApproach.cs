@@ -20,7 +20,7 @@ namespace AircraftController
         {
             aircraftController.SeekSpeed(GlobalAircraftControllerSettings.finalApproachSpeed);
             LowerAltitude();
-            aircraftController.MovementHandler.Turn(aircraftController.Turn);
+            aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
             if (IsFinalApproachDone())
             {
                 MoveToTouchDown();

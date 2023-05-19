@@ -38,8 +38,8 @@ namespace AircraftController
         public Landed StateLanded { get => stateLanded; }
         #endregion
 
-        private float turn;
-        public float Turn { get => turn; set => turn = value; }
+        private float turnInput;
+        public float TurnInput { get => turnInput; set => turnInput = value; }
 
         private float throttle;
         public float Throttle { 

@@ -21,7 +21,7 @@ namespace AircraftController
         {
             LowerAltitude();
             aircraftController.SeekSpeed(GlobalAircraftControllerSettings.touchDownSpeed);
-            aircraftController.MovementHandler.Turn(aircraftController.Turn);
+            aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
             if (IsAbortIntended())
             {
                 Debug.Log("Aborting");

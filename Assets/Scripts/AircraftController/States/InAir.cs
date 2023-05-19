@@ -25,7 +25,7 @@ namespace AircraftController
             }
             aircraftController.SeekSpeed(aircraftController.MovementHandler.AerodynamicMovementData.normalAirSpeed);
             aircraftController.CalculateAndSetPitch(GlobalAircraftControllerSettings.flightAltitude, 100);
-            aircraftController.MovementHandler.Turn(aircraftController.Turn);
+            aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
         }
 
         private bool IsInitialApproachDone()

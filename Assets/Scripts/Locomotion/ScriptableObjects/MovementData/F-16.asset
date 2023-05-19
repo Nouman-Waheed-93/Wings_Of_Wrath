@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 100
   maxAcceleration: 10
-  maxBrake: 15
+  maxDeceleration: 1
+  maxBrake: 2
   maxTurn: 3
   takeOffSpeed: 30
   lowAirSpeed: 40
-  normalAirSpeed: 70
+  normalAirSpeed: 80
   highAirSpeed: 100
   maxPitch: 1
   maxPitchAngle: 30
