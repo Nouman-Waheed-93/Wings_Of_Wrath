@@ -20,7 +20,7 @@ namespace AircraftController
         {
             aircraftController.SeekSpeed(GlobalAircraftControllerSettings.finalApproachSpeed);
             LowerAltitude();
-            aircraftController.MovementHandler.Turn(aircraftController.Turn);
+            aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
             if (IsFinalApproachDone())
             {
                 MoveToTouchDown();
@@ -48,7 +48,7 @@ namespace AircraftController
 
         private bool IsFinalApproachDone()
         {
-            return (Vector3.Distance(aircraftController.MovementHandler.Transform.position,
+            return (Vector3.Distance(aircraftController.Transform.position,
                 aircraftController.AirStripToLandOn.FinalApproach.position) < GlobalAircraftControllerSettings.wayPointReachedDistance);
         }
 

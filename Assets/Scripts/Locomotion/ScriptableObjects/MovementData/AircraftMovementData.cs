@@ -6,25 +6,25 @@ namespace Locomotion
     public class AircraftMovementData : MovementData
     {
         [Tooltip("The speed at which aircraft will take off.")]
-        public float takeOffSpeed;
+        public float takeOffSpeed = 30f;
         [Tooltip("The minimum speed the aircraft can fly at.")]
-        public float lowAirSpeed;
+        public float lowAirSpeed = 30f;
         [Tooltip("The normal speed the aircraft will fly at.")]
-        public float normalAirSpeed;
+        public float normalAirSpeed = 60f;
         [Tooltip("The top speed the aircraft can fly at.")]
-        public float highAirSpeed;
+        public float highAirSpeed = 80f;
 
         [Tooltip("Pitch Multiplier")]
-        public float maxPitch;
+        public float maxPitch = 1f;
 
         [Tooltip("The maximum pitch angle the aircraft can achieve.")]
-        public float maxPitchAngle;
+        public float maxPitchAngle = 45f;
         [Tooltip("The speed with which the target pitch would be achieved.")]
-        public float pitchSpeed;
+        public float pitchSpeed = 1f;
 
         [Tooltip("The maximum roll angle the aircraft can achieve.")]
-        public float maxRollAngle;
+        public float maxRollAngle = 90f;
         [Tooltip("The speed with which the target roll angle would be achieved")]
-        public float rollSpeed;
+        public float rollSpeed = 1f;
     }
 }

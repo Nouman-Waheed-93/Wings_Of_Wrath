@@ -21,7 +21,7 @@ namespace AircraftController
         {
             LowerAltitude();
             aircraftController.SeekSpeed(GlobalAircraftControllerSettings.touchDownSpeed);
-            aircraftController.MovementHandler.Turn(aircraftController.Turn);
+            aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
             if (IsAbortIntended())
             {
                 Debug.Log("Aborting");
@@ -66,7 +66,7 @@ namespace AircraftController
 
         private bool IsTouchDownDone()
         {
-            return (Vector3.Distance(aircraftController.MovementHandler.Transform.position,
+            return (Vector3.Distance(aircraftController.Transform.position,
                 aircraftController.AirStripToLandOn.TouchDownPoint.position) < GlobalAircraftControllerSettings.wayPointReachedDistance);
         }
 

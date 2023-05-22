@@ -5,9 +5,12 @@ namespace Locomotion
     [CreateAssetMenu(fileName = "MovementData", menuName = "ScriptableObjects/MovementData")]
     public class MovementData : ScriptableObject
     {
-        public float maxSpeed;
-        public float maxAcceleration;
-        public float maxBrake;
-        public float maxTurn;
+        public float maxSpeed = 50f;
+        public float maxAcceleration = 3f;
+
+        [Tooltip("Normal deceleration on releasing throttle.")]
+        public float maxDeceleration = 1f;
+        public float maxBrake = 2f;
+        public float maxTurn = 1f;
     }
 }

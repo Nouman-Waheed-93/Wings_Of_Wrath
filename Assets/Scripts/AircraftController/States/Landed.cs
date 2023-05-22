@@ -9,7 +9,7 @@
 
         public override void Enter()
         {
-            aircraftController.MovementHandler.SetThrottle(0);
+            aircraftController.SeekSpeed(0);
             //Play the particle effect
             //Play the screeching tyres SFX
         }
