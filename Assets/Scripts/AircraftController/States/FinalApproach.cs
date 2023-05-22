@@ -48,7 +48,7 @@ namespace AircraftController
 
         private bool IsFinalApproachDone()
         {
-            return (Vector3.Distance(aircraftController.MovementHandler.Transform.position,
+            return (Vector3.Distance(aircraftController.Transform.position,
                 aircraftController.AirStripToLandOn.FinalApproach.position) < GlobalAircraftControllerSettings.wayPointReachedDistance);
         }
 

@@ -32,9 +32,9 @@ namespace AircraftController
             aircraftController.TurnInput = dir;
         }
 
-        public void SetThrottle(float throttle)
+        public void SetAfterBurner(bool isOn)
         {
-            aircraftController.Throttle = throttle;
+            aircraftController.AfterBurnerInput = isOn;
         }
 
         public void PrepareToLand(Airstrip airstrip)

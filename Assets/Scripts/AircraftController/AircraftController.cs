@@ -16,6 +16,8 @@ namespace AircraftController
         public AircraftMovementHandler MovementHandler { get => movementHandler; }
 
         private Transform transform;
+        public Transform Transform { get => transform; }
+
         private Rigidbody rigidbody; //do not remove even if it is not used. Only remove it in production review.
 
         #region States
@@ -40,6 +42,9 @@ namespace AircraftController
 
         private float turnInput;
         public float TurnInput { get => turnInput; set => turnInput = value; }
+
+        private bool afterBurnerInput;
+        public bool AfterBurnerInput { get => afterBurnerInput; set => afterBurnerInput = value; }
 
         private float throttle;
         public float Throttle { 
@@ -87,9 +92,7 @@ namespace AircraftController
             transformForward.y = 0;
             transformForward.Normalize();
             targetPosition += transformForward * targetDistance;
-            Vector3 relative = transform.InverseTransformPoint(targetPosition);
-            float targetPitch = -Mathf.Atan2(relative.y, relative.z);
-            movementHandler.SetPitch(targetPitch);
+            CalculateAndSetPitch(targetPosition);
         }
 
         public void CalculateAndSetPitch(Vector3 targetPosition)
@@ -112,7 +115,7 @@ namespace AircraftController
         public void SeekSpeed(float targetSpeed)
         {
             //calculate required throttle
-            float requiredThrottle = Mathf.InverseLerp(0, movementHandler.AerodynamicMovementData.maxSpeed, targetSpeed);
+            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed; // Mathf.InverseLerp(0, movementHandler.AerodynamicMovementData.maxSpeed, targetSpeed);
 
             //calculate required brakePressure
             float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;

@@ -18,7 +18,6 @@ namespace Locomotion
         protected float currTurn;
 
         protected Transform transform;
-        public Transform Transform { get => transform; }
 
         protected Rigidbody rigidbody;
 
