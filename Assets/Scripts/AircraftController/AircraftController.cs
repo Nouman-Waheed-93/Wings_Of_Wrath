@@ -115,8 +115,7 @@ namespace AircraftController
         public void SeekSpeed(float targetSpeed)
         {
             //calculate required throttle
-            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed; // Mathf.InverseLerp(0, movementHandler.AerodynamicMovementData.maxSpeed, targetSpeed);
-
+            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed; 
             //calculate required brakePressure
             float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;
 

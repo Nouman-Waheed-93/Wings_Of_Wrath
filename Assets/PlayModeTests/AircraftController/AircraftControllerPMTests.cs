@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Locomotion;
 using NUnit.Framework;
 using UnityEngine;
