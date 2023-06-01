@@ -9,6 +9,10 @@ namespace Common
 
         public Transform Target { get => target; set => target = value; }
 
+        [SerializeField]
+        private float edgeDistance;
+        [SerializeField]
+        private Transform player;
 
         private RectTransform canvas;
         private Camera cam;
@@ -24,18 +28,23 @@ namespace Common
             screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             Vector3 newPos = cam.WorldToScreenPoint(target.position);
-            float angle = 0;
-            //GetArrowIndicatorPositionAndAngle(ref newPos, ref angle, screenCentre, screenCentre * 0.9f);
             if (newPos.z < 0)
                 newPos *= -1;
 
-            newPos.x = Mathf.Clamp(newPos.x, 0, Screen.width);
-            newPos.y = Mathf.Clamp(newPos.y, 0, Screen.height);
+            newPos.x = Mathf.Clamp(newPos.x, 0 + edgeDistance, Screen.width - edgeDistance);
+            newPos.y = Mathf.Clamp(newPos.y, 0 + edgeDistance, Screen.height - edgeDistance);
 
             transform.position = newPos;
+            UpdateRotation();
+        }
+
+        private void UpdateRotation()
+        {
+            float angle = Vector3.SignedAngle(player.forward, target.forward, Vector3.down);
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
 }
