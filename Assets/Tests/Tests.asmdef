@@ -8,7 +8,8 @@
         "FormationSystem",
         "Utilities",
         "AircraftController",
-        "Locomotion"
+        "Locomotion",
+        "HealthSystemAssembly"
     ],
     "includePlatforms": [
         "Editor"
