@@ -12,16 +12,17 @@ namespace HealthSystem
         [SerializeField]
         private float damageMultiplier;
 
-        private Health health;
+        private DamageablePartController controller;
 
         private void Awake()
         {
-            health = HealthObject.GetComponent<IHealthProvider>().health;
+            Health health = HealthObject.GetComponent<IHealthProvider>().health;
+            controller = new DamageablePartController(health, damageMultiplier);
         }
 
         public void Damage(float amount)
         {
-            health.ReduceHealth(amount * damageMultiplier);
+            controller.Damage(amount);
         }
     }
 }

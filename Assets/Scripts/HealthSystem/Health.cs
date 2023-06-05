@@ -5,7 +5,9 @@ namespace HealthSystem
     public class Health
     {
         private float maxHealth;
+
         private float currHealth;
+        public float CurrHealth { get => currHealth; }
 
         public event Action onHealthDepleted;
         public event Action onHealthReplenished;
@@ -34,6 +36,7 @@ namespace HealthSystem
 
             if (currHealth <= 0)
             {
+                currHealth = 0;
                 onHealthDepleted?.Invoke();
             }
         }
