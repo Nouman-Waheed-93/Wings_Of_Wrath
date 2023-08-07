@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace WeaponSystem
+{
+    public class HomingProjectile : Projectile
+    {
+        private Transform target;
+        public Transform Target { get => target; set => target = value; }
+
+        [SerializeField]
+        private float turningSpeed;
+
+        private void Awake()
+        {
+            base.Awake();
+        }
+
+        private void FixedUpdate()
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turningSpeed * Time.fixedDeltaTime);
+            base.FixedUpdate();
+        }
+    }
+}
