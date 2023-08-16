@@ -7,31 +7,25 @@ namespace WeaponSystem
     public class GuidedProjectileLauncher : Weapon
     {
 
-        private HomingProjectile projectile;
+        private IProjectileFactory projectileFactory;
 
         private Transform target;
         public Transform Target { get => target; set => target = value; }
 
-        public GuidedProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, HomingProjectile projectilePrefab) : base(barrel, maximumAmmo, bulletsPerSecond)
+        public GuidedProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory) : base(barrel, maximumAmmo, bulletsPerSecond)
         {
-            projectile = projectilePrefab;
+            this.projectileFactory = projectileFactory;
         }
 
-        public override void Fire()
+        public override bool Fire()
         {
-            if (HasAmmoRanOut())
+            if (base.Fire())
             {
-                return;
+                IHomingProjectile newProjectile = projectileFactory.GetHomingProjectile(); // GameObject.Instantiate<HomingProjectile>(projectile);
+                newProjectile.Target = target;
+                return true;
             }
-
-            if (!HasShotIntervalPassed())
-            {
-                return;
-            }
-
-            base.Fire();
-            HomingProjectile newProjectile = GameObject.Instantiate<HomingProjectile>(projectile);
-            newProjectile.Target = target;
+            return false;
         }
     }
 }

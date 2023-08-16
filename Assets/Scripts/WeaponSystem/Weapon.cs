@@ -9,6 +9,8 @@ namespace WeaponSystem
         
         protected int remainingAmmo;
 
+        public int RemainingAmmo { get => remainingAmmo; }
+
         protected float lastFireTime;
 
         private float shotInterval;
@@ -17,17 +19,32 @@ namespace WeaponSystem
         private Transform barrel;
         protected Transform Barrel { get => barrel; }
 
-        public Weapon(Transform barrel, int maximumAmmo, float bulletsPerSecond)
+        public Weapon(int maximumAmmo, float bulletsPerSecond)
         {
-            this.barrel = barrel;
             this.maximumAmmo = maximumAmmo;
             remainingAmmo = maximumAmmo;
             shotInterval = 1f / bulletsPerSecond;
+            lastFireTime = -300f;
         }
 
-        public virtual void Fire()
+        public Weapon(Transform barrel, int maximumAmmo, float bulletsPerSecond) : this(maximumAmmo, bulletsPerSecond)
         {
+            this.barrel = barrel;
+        }
+
+        public virtual bool Fire()
+        {
+            if (HasAmmoRanOut())
+            {
+                return false;
+            }
+            if (!HasShotIntervalPassed())
+            {
+                return false;
+            }
+            remainingAmmo--;
             lastFireTime = Time.time;
+            return true;
         }
 
         public virtual void Reload()

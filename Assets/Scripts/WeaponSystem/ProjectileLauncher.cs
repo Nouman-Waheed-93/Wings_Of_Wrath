@@ -7,28 +7,23 @@ namespace WeaponSystem
 {
     public class ProjectileLauncher : Weapon
     {
-        private Projectile projectile;
+        private IProjectileFactory projectileFactory;
         
-        public ProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, Projectile projectilePrefab):base(barrel, maximumAmmo, bulletsPerSecond)
+        public ProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory):base(barrel, maximumAmmo, bulletsPerSecond)
         {
-            projectile = projectilePrefab;
+            this.projectileFactory = projectileFactory;
         }
 
-        public override void Fire()
+        public override bool Fire()
         {
-            if(HasAmmoRanOut())
+            if (base.Fire())
             {
-                return;
+                IProjectile newProjectile = projectileFactory.GetProjectile(); // GameObject.Instantiate<Projectile>(projectile);
+                newProjectile.position = Barrel.position; // newProjectile.transform.position = Barrel.position;
+                newProjectile.rotation = Barrel.rotation; // newProjectile.transform.rotation = Barrel.rotation;
+                return true;
             }
-            if (!HasShotIntervalPassed())
-            {
-                return;
-            }
-
-            base.Fire();
-            Projectile newProjectile = GameObject.Instantiate<Projectile>(projectile);
-            newProjectile.transform.position = Barrel.position;
-            newProjectile.transform.rotation = Barrel.rotation;
+            return false;
         }
     }
 }
