@@ -16,8 +16,8 @@ namespace WeaponSystem
         private float shotInterval;
         public float ShotInterval { get => shotInterval; }
 
-        private Transform barrel;
-        protected Transform Barrel { get => barrel; }
+        private ITransform barrel;
+        protected ITransform Barrel { get => barrel; }
 
         public Weapon(int maximumAmmo, float bulletsPerSecond)
         {
@@ -27,7 +27,7 @@ namespace WeaponSystem
             lastFireTime = -300f;
         }
 
-        public Weapon(Transform barrel, int maximumAmmo, float bulletsPerSecond) : this(maximumAmmo, bulletsPerSecond)
+        public Weapon(ITransform barrel, int maximumAmmo, float bulletsPerSecond) : this(maximumAmmo, bulletsPerSecond)
         {
             this.barrel = barrel;
         }

@@ -10,8 +10,7 @@ public class ProjectileLauncherTests : WeaponTests
     [SetUp]
     public void SetUp()
     {
-        Transform barrel = new GameObject().transform;
-        weapon = new ProjectileLauncher(barrel, 100, 1, Substitute.For<IProjectileFactory>());
+        weapon = new ProjectileLauncher(Substitute.For<ITransform>(), 100, 1, Substitute.For<IProjectileFactory>());
     }
 
     [Test]

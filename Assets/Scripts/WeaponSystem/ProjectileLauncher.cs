@@ -9,7 +9,7 @@ namespace WeaponSystem
     {
         private IProjectileFactory projectileFactory;
         
-        public ProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory):base(barrel, maximumAmmo, bulletsPerSecond)
+        public ProjectileLauncher(ITransform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory):base(barrel, maximumAmmo, bulletsPerSecond)
         {
             this.projectileFactory = projectileFactory;
         }
@@ -18,7 +18,7 @@ namespace WeaponSystem
         {
             if (base.Fire())
             {
-                IProjectile newProjectile = projectileFactory.GetProjectile(); // GameObject.Instantiate<Projectile>(projectile);
+                ITransform newProjectile = projectileFactory.GetProjectile(); // GameObject.Instantiate<Projectile>(projectile);
                 newProjectile.position = Barrel.position; // newProjectile.transform.position = Barrel.position;
                 newProjectile.rotation = Barrel.rotation; // newProjectile.transform.rotation = Barrel.rotation;
                 return true;

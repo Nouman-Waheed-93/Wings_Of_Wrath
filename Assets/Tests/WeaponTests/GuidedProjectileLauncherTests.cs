@@ -10,10 +10,8 @@ public class GuidedProjectileLauncherTests : WeaponTests
     [SetUp]
     public void SetUp()
     {
-        Transform barrel = new GameObject().transform;
-        weapon = new GuidedProjectileLauncher(barrel, 100, 1, Substitute.For<IProjectileFactory>());
+        weapon = new GuidedProjectileLauncher(Substitute.For<ITransform>(), 100, 1, Substitute.For<IProjectileFactory>());
     }
-
 
     [Test]
     public void Gun_Instance_Can_Be_Created()

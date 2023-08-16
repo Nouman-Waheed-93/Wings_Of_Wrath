@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using NUnit.Framework;
 using WeaponSystem;
+using NSubstitute;
 
 public class RaycastGunTests : WeaponTests
 {
     [SetUp]
     public void SetUp()
     {
-        Transform barrel = new GameObject().transform;
-        weapon = new GunRaycastBased(barrel, 100, 1, 10);
+        weapon = new GunRaycastBased(Substitute.For<ITransform>(), 100, 1, 10);
     }
-
 
     [Test]
     public void Gun_Instance_Can_Be_Created()

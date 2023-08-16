@@ -12,7 +12,7 @@ namespace WeaponSystem
         private Transform target;
         public Transform Target { get => target; set => target = value; }
 
-        public GuidedProjectileLauncher(Transform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory) : base(barrel, maximumAmmo, bulletsPerSecond)
+        public GuidedProjectileLauncher(ITransform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory) : base(barrel, maximumAmmo, bulletsPerSecond)
         {
             this.projectileFactory = projectileFactory;
         }

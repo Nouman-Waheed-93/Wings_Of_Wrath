@@ -13,7 +13,7 @@ namespace WeaponSystem
             this.range = range;
         }
 
-        public GunRaycastBased(Transform barrel, int maximumAmmo, float bulletsPerSecond, float range) : base(barrel, maximumAmmo, bulletsPerSecond)
+        public GunRaycastBased(ITransform barrel, int maximumAmmo, float bulletsPerSecond, float range) : base(barrel, maximumAmmo, bulletsPerSecond)
         {
             this.range = range;
         }

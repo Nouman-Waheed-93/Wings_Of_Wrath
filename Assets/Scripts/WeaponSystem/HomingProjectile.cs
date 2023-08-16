@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace WeaponSystem
 {
-    public class HomingProjectile : Projectile
+    public class HomingProjectile : Projectile, IHomingProjectile
     {
         private Transform target;
         public Transform Target { get => target; set => target = value; }
