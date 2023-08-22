@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine;
+using Common;
 
 namespace WeaponSystem
 {
@@ -9,7 +9,7 @@ namespace WeaponSystem
     {
         private IProjectileFactory projectileFactory;
         
-        public ProjectileLauncher(ITransform barrel, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory):base(barrel, maximumAmmo, bulletsPerSecond)
+        public ProjectileLauncher(ITransform barrel, ITimeProvider timeProvider, int maximumAmmo, float bulletsPerSecond, IProjectileFactory projectileFactory):base(barrel, timeProvider, maximumAmmo, bulletsPerSecond)
         {
             this.projectileFactory = projectileFactory;
         }

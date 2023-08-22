@@ -1,4 +1,5 @@
 using UnityEngine;
+using Common;
 
 namespace WeaponSystem
 {
@@ -19,17 +20,17 @@ namespace WeaponSystem
         private ITransform barrel;
         protected ITransform Barrel { get => barrel; }
 
-        public Weapon(int maximumAmmo, float bulletsPerSecond)
+        private ITimeProvider timeProvider;
+        public ITimeProvider TimeProvider { get => timeProvider; }
+
+        public Weapon(ITransform barrel, ITimeProvider timeProvider, int maximumAmmo, float bulletsPerSecond)
         {
+            this.barrel = barrel;
+            this.timeProvider = timeProvider;
             this.maximumAmmo = maximumAmmo;
             remainingAmmo = maximumAmmo;
             shotInterval = 1f / bulletsPerSecond;
             lastFireTime = -300f;
-        }
-
-        public Weapon(ITransform barrel, int maximumAmmo, float bulletsPerSecond) : this(maximumAmmo, bulletsPerSecond)
-        {
-            this.barrel = barrel;
         }
 
         public virtual bool Fire()
@@ -43,7 +44,7 @@ namespace WeaponSystem
                 return false;
             }
             remainingAmmo--;
-            lastFireTime = Time.time;
+            lastFireTime = timeProvider.GetTime();
             return true;
         }
 
@@ -54,7 +55,7 @@ namespace WeaponSystem
 
         protected bool HasShotIntervalPassed()
         {
-            return lastFireTime + ShotInterval <= Time.time;
+            return lastFireTime + ShotInterval <= timeProvider.GetTime();
         }
 
         protected bool HasAmmoRanOut()

@@ -12,12 +12,12 @@ namespace WeaponSystem
         [SerializeField]
         private float turningSpeed;
 
-        private void Awake()
+        private new void Awake()
         {
             base.Awake();
         }
 
-        private void FixedUpdate()
+        private new void FixedUpdate()
         {
             Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turningSpeed * Time.fixedDeltaTime);

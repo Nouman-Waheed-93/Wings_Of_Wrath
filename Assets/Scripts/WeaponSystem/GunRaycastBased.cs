@@ -1,5 +1,6 @@
 using UnityEngine;
 using HealthSystem;
+using Common;
 
 namespace WeaponSystem
 {
@@ -8,12 +9,7 @@ namespace WeaponSystem
         private float range;
         private float damageAmount;
 
-        public GunRaycastBased(int maximumAmmo, float bulletsPerSecond, float range) : base(maximumAmmo, bulletsPerSecond)
-        {
-            this.range = range;
-        }
-
-        public GunRaycastBased(ITransform barrel, int maximumAmmo, float bulletsPerSecond, float range) : base(barrel, maximumAmmo, bulletsPerSecond)
+        public GunRaycastBased(ITransform barrel, ITimeProvider timeProvider, int maximumAmmo, float bulletsPerSecond, float range) : base(barrel, timeProvider, maximumAmmo, bulletsPerSecond)
         {
             this.range = range;
         }

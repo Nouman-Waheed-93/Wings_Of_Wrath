@@ -928,10 +928,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1218614833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f9f453f8933b9d4193f1d9e4ca6db7d, type: 3}
+  m_Script: {fileID: 11500000, guid: c11f214f6329c684fa04605cafca374e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 6181623509617587279, guid: 496e07e73018fce41a4554815e7a2229, type: 3}
+  maxAmmo: 100
+  bulletsPerSecond: 1
+  barrelGO: {fileID: 1218614833}
+  range: 50
 --- !u!1 &1277962998
 GameObject:
   m_ObjectHideFlags: 0
