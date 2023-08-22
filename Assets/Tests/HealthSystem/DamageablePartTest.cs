@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 using HealthSystem;
-using UnityEngine.TestTools;
 
 public class DamageablePartTest
 {
