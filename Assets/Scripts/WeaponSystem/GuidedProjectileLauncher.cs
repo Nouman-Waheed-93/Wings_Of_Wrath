@@ -20,7 +20,7 @@ namespace WeaponSystem
         {
             if (base.Fire())
             {
-                IHomingProjectile newProjectile = projectileFactory.GetHomingProjectile(); // GameObject.Instantiate<HomingProjectile>(projectile);
+                IHomingProjectile newProjectile = projectileFactory.GetHomingProjectile();
                 newProjectile.position = Barrel.position;
                 newProjectile.rotation = Barrel.rotation;
                 newProjectile.Target = target;
