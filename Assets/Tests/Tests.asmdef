@@ -9,7 +9,9 @@
         "Utilities",
         "AircraftController",
         "Locomotion",
-        "HealthSystemAssembly"
+        "HealthSystemAssembly",
+        "WeaponSystem",
+        "Common"
     ],
     "includePlatforms": [
         "Editor"
