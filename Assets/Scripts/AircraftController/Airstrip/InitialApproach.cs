@@ -9,7 +9,9 @@ namespace AircraftController
         private void OnTriggerEnter(Collider other)
         {
             Aircraft landingAircraft = other.GetComponentInParent<Aircraft>();
-            if (landingAircraft.Team != airstrip.Team)
+            if (landingAircraft == null)
+                return;
+            if(landingAircraft.Team != airstrip.Team)
                 return;
 
             //if the aircraft does not have LandingIntent. return

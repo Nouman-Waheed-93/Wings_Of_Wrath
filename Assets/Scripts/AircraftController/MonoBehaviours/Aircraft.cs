@@ -12,6 +12,12 @@ namespace AircraftController
         [SerializeField]
         private Team team;
         public Team Team { get => team; set => team = value; }
+        [SerializeField]
+        private bool startsInAir;
+        [SerializeField]
+        private float startAltitude;
+        [SerializeField]
+        private float startSpeed;
 
         public float CurrSpeed { get { return aircraftController.MovementHandler.CurrSpeed; } }
 
@@ -20,7 +26,7 @@ namespace AircraftController
 
         private void Awake()
         {
-            aircraftController = new AircraftController(movementData, transform, GetComponent<Rigidbody>());
+            aircraftController = new AircraftController(movementData, transform, GetComponent<Rigidbody>(), startsInAir, startAltitude, startSpeed);
         }
 
         private void Update()
