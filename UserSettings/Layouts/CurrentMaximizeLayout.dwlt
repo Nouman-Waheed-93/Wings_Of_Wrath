@@ -188,8 +188,8 @@ MonoBehaviour:
     y: 0
     width: 788
     height: 391
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -455,9 +455,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -17.11445, y: 20.764866, z: -119.94828}
+    m_Target: {x: 1.336521, y: 5.2270336, z: -109.188835}
     speed: 2
-    m_Value: {x: -17.11445, y: 20.764866, z: -119.94828}
+    m_Value: {x: 1.336521, y: 5.2270336, z: -109.188835}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -504,9 +504,9 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.015049153, y: -0.8729151, z: 0.026979815, w: 0.48689425}
+    m_Target: {x: 0.47623873, y: 0.054013796, z: -0.029325662, w: 0.87716556}
     speed: 2
-    m_Value: {x: 0.015049144, y: -0.87291455, z: 0.026979798, w: 0.48689395}
+    m_Value: {x: 0.47623867, y: 0.05401379, z: -0.029325658, w: 0.87716544}
   m_Size:
     m_Target: 10
     speed: 2
@@ -585,7 +585,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 25
+  controlID: 102
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -645,9 +645,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 4a820000
-      m_LastClickedID: 0
-      m_ExpandedIDs: 40d4ffff2ae3ffff
+      m_SelectedIDs: d8680000
+      m_LastClickedID: 26840
+      m_ExpandedIDs: 2afbffff0e690000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -740,22 +740,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts/WeaponSystem/MonoBehaviours
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts/WeaponSystem/MonoBehaviours
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\dell\Documents\GitHub\Wings_Of_Wrath
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 31}
-    m_SelectedIDs: ea810000
-    m_LastClickedID: 33258
-    m_ExpandedIDs: 000000003c800000
+    scrollPos: {x: 0, y: 197}
+    m_SelectedIDs: 126c0000
+    m_LastClickedID: 27666
+    m_ExpandedIDs: 00000000fe690000006a0000026a0000206a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -783,7 +783,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003c800000
+    m_ExpandedIDs: 00000000fe690000006a0000026a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -808,8 +808,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 4a820000
-    m_LastClickedInstanceID: 33354
+    m_SelectedInstanceIDs: d8680000
+    m_LastClickedInstanceID: 26840
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000aa6b0000b06b0000
     m_RenameOverlay:
@@ -827,7 +827,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 7}
+      m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
