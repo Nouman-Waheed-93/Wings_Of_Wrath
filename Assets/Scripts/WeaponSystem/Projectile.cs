@@ -1,4 +1,6 @@
+using Common;
 using UnityEngine;
+
 namespace WeaponSystem
 {
     [RequireComponent(typeof(Rigidbody))]

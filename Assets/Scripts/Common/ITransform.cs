@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WeaponSystem
+namespace Common
 {
     public interface ITransform
     {

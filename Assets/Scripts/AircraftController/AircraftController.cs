@@ -4,7 +4,7 @@ using Utilities;
 
 namespace AircraftController
 {
-    public class AircraftController
+    public class AircraftController : IAircraftController
     {
         private AircraftStateMachine stateMachine;
         public AircraftStateMachine StateMachine { get => stateMachine; }
@@ -47,13 +47,14 @@ namespace AircraftController
         public bool AfterBurnerInput { get => afterBurnerInput; set => afterBurnerInput = value; }
 
         private float throttle;
-        public float Throttle { 
-            get => throttle; 
-            set 
-            { 
+        public float Throttle
+        {
+            get => throttle;
+            set
+            {
                 throttle = value;
                 movementHandler.SetThrottle(value);
-            } 
+            }
         }
 
         private Airstrip airstripToLandOn;
@@ -115,7 +116,7 @@ namespace AircraftController
         public void SeekSpeed(float targetSpeed)
         {
             //calculate required throttle
-            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed; 
+            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed;
             //calculate required brakePressure
             float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;
 

@@ -16,6 +16,7 @@ namespace AircraftController
         public float CurrSpeed { get { return aircraftController.MovementHandler.CurrSpeed; } }
 
         private AircraftController aircraftController;
+        public AircraftController AircraftController { get => aircraftController; }
 
         private void Awake()
         {
