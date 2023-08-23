@@ -4,7 +4,7 @@ using Utilities;
 
 namespace AircraftController
 {
-    public class AircraftController
+    public class AircraftController : IAircraftController
     {
         private AircraftStateMachine stateMachine;
         public AircraftStateMachine StateMachine { get => stateMachine; }
@@ -47,19 +47,20 @@ namespace AircraftController
         public bool AfterBurnerInput { get => afterBurnerInput; set => afterBurnerInput = value; }
 
         private float throttle;
-        public float Throttle { 
-            get => throttle; 
-            set 
-            { 
+        public float Throttle
+        {
+            get => throttle;
+            set
+            {
                 throttle = value;
                 movementHandler.SetThrottle(value);
-            } 
+            }
         }
 
         private Airstrip airstripToLandOn;
         public Airstrip AirStripToLandOn { get => airstripToLandOn; set => airstripToLandOn = value; }
 
-        public AircraftController(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody)
+        public AircraftController(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;
@@ -69,12 +70,21 @@ namespace AircraftController
             orientationController = new AircraftOrientationController(movementData, movementHandler, transform.GetChild(0));
 
             stateOnGround = new OnGround(stateMachine, this);
-            stateMachine.Initialize(stateOnGround);
             stateTakeOff = new TakeOff(stateMachine, this);
             stateInAir = new InAir(stateMachine, this);
             stateFinalApproach = new FinalApproach(stateMachine, this);
             stateTouchDown = new TouchDown(stateMachine, this);
             stateLanded = new Landed(stateMachine, this);
+
+            if (startsInAir) 
+            {
+                stateMachine.Initialize(stateInAir);
+                movementHandler.Initialize(startSpeed, startAltitude);
+            } 
+            else
+            {
+                stateMachine.Initialize(stateOnGround);
+            }
         }
 
         public void Update(float simulationDeltaTime)
@@ -115,7 +125,7 @@ namespace AircraftController
         public void SeekSpeed(float targetSpeed)
         {
             //calculate required throttle
-            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed; 
+            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed;
             //calculate required brakePressure
             float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;
 

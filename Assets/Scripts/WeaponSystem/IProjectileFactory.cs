@@ -1,3 +1,5 @@
+using Common;
+
 namespace WeaponSystem
 {
     public interface IProjectileFactory

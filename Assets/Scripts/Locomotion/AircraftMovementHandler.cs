@@ -36,6 +36,15 @@ namespace Locomotion
             turnSeeker = new TargetValueSeeker(aerodynamicMovementData.rollSpeed);
         }
 
+        public void Initialize(float startSpeed, float startAltitude)
+        {
+            Vector3 newPosition = transform.position;
+            newPosition.y = startAltitude;
+            transform.position = newPosition;
+
+            currSpeed = startSpeed;
+        }
+
         public void SetPitch(float pitch)
         {
             pitchSeeker.Target = Mathf.Clamp(pitch, -1, 1);
@@ -53,6 +62,7 @@ namespace Locomotion
             Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch;
             Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn;
             rigidbody.angularVelocity = pitchVelocity + turnVelocity;
+         //   transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0);
         }
     }
 }
