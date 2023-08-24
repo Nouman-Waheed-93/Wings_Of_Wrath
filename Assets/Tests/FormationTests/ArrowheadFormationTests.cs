@@ -1,8 +1,9 @@
 using FormationSystem;
 using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class ArrowheadFormationTests
+public class ArrowheadFormationTests : BalancedFormationTests
 {
 
     [Test]
@@ -15,5 +16,14 @@ public class ArrowheadFormationTests
         Assert.AreEqual(new Vector3(0.707f, 0, -0.707f) * 2, arrowHeadFormation.GetMemberPosition(3), "index 3 position does not give correct position");
         Assert.AreEqual(new Vector3(-0.707f, 0, -0.707f) * 2, arrowHeadFormation.GetMemberPosition(4), "index 4 position does not give correct position");
     }
-
+    protected override void CreateAFormation(int count)
+    {
+        formation = new ArrowHead();
+        formationMembers = new List<IFormationMember>();
+        for (int i = 0; i < count; i++)
+        {
+            formationMembers.Add(NSubstitute.Substitute.For<IFormationMember>());
+            formation.AddMember(formationMembers[i]);
+        }
+    }
 }

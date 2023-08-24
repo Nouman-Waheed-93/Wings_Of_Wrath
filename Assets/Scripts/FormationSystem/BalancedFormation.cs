@@ -29,6 +29,7 @@ namespace FormationSystem
                     if (isRemovedMemberIndexEven == isEven)
                     {
                         member.PositionIndex -= 2;
+                        TryResetLeader(member);
                         member.Position = GetMemberPosition(member.PositionIndex);
                     }
                 }
@@ -70,11 +71,13 @@ namespace FormationSystem
                 if (evenMemberCount > oddMemberCount)
                 {
                     memberWithGreatestEvenIndex.PositionIndex--;
+                    TryResetLeader(memberWithGreatestEvenIndex);
                     memberWithGreatestEvenIndex.Position = GetMemberPosition(memberWithGreatestEvenIndex.PositionIndex);
                 }
                 else
                 {
                     memberWithGreatestOddIndex.PositionIndex--;
+                    TryResetLeader(memberWithGreatestOddIndex);
                     memberWithGreatestOddIndex.Position = GetMemberPosition(memberWithGreatestOddIndex.PositionIndex);
                 }
             }

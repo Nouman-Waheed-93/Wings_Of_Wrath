@@ -2,15 +2,15 @@ using FormationSystem;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-public class FormationTests
+public abstract class FormationTests
 {
-    Formation formation;
-    List<IFormationMember> formationMembers;
+    protected Formation formation;
+    protected List<IFormationMember> formationMembers;
 
     [Test]
     public void Member_Cannot_Be_Added_Twice()
     {
-        Formation formation = new Trail();
+        CreateAFormation(0);
         IFormationMember member = NSubstitute.Substitute.For<IFormationMember>();
         formation.AddMember(member);
         formation.AddMember(member);
@@ -28,7 +28,7 @@ public class FormationTests
     }
 
     [Test]
-    public void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
+    public virtual void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
     {
         CreateAFormation(5);
         for (int i = 0; i < formationMembers.Count; i++)
@@ -38,7 +38,7 @@ public class FormationTests
     }
 
     [Test]
-    public void Members_Shuffle_Positions_Correctly_After_A_Member_Is_Removed()
+    public virtual void Members_Shuffle_Positions_Correctly_After_A_Member_Is_Removed()
     {
         CreateAFormation(10);
 
@@ -51,22 +51,15 @@ public class FormationTests
     }
 
     [Test]
-    public void Removing_The_leader_Refills_The_Spot_Correctly()
+    public virtual void Removing_The_leader_Refills_The_Spot_Correctly()
     {
         CreateAFormation(6);
+        Assert.AreEqual(formationMembers[0], formation.leader);
         formation.RemoveMember(formationMembers[0]);
         int[] newIndexes = { 1, 2, 3, 4, 5 };
+        Assert.AreEqual(formationMembers[1], formation.leader);
         FormationTestsUtility.Are_Indexes_At_The_Correct_Position(newIndexes, formationMembers);
     }
 
-    private void CreateAFormation(int count)
-    {
-        formation = new Echelon();
-        formationMembers = new List<IFormationMember>();
-        for (int i = 0; i < count; i++)
-        {
-            formationMembers.Add(NSubstitute.Substitute.For<IFormationMember>());
-            formation.AddMember(formationMembers[i]);
-        }
-    }
+    protected abstract void CreateAFormation(int count);
 }

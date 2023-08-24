@@ -1,7 +1,9 @@
 {
     "name": "FormationSystem",
     "rootNamespace": "FormationSystem",
-    "references": [],
+    "references": [
+        "GUID:6011dc511b9c287468b167eba0106732"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -8,6 +8,8 @@ namespace FormationSystem
     {
         public int MemberCount { get { return members.Count; } }
 
+        public IFormationMember leader { get; private set; }
+
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
 
         public virtual void AddMember(IFormationMember member)
@@ -16,6 +18,7 @@ namespace FormationSystem
             //Because, this member's positionIndex is equal to Count before adding the new member
             members.Add(member);
             member.PositionIndex = members.Count-1;
+            TryResetLeader(member);
             member.Position = GetMemberPosition(member.PositionIndex);
         }
 
@@ -30,6 +33,7 @@ namespace FormationSystem
                 if (member.PositionIndex > removedMemberIndex)
                 {
                     member.PositionIndex--;
+                    TryResetLeader(member);
                     member.Position = GetMemberPosition(member.PositionIndex);
                 }
             }
@@ -39,6 +43,14 @@ namespace FormationSystem
         {
             if (memberIndex < 0)
                 throw new ArgumentException("Index cannot be a negative number");
+        }
+
+        protected void TryResetLeader(IFormationMember member)
+        {
+            if (member.PositionIndex == 0)
+            {
+                leader = member;
+            }
         }
     }
 }

@@ -62,7 +62,12 @@ namespace Locomotion
             Vector3 pitchVelocity = transform.right * pitchSeeker.CurrValue * aerodynamicMovementData.maxPitch;
             Vector3 turnVelocity = Vector3.up * turnSeeker.CurrValue * aerodynamicMovementData.maxTurn;
             rigidbody.angularVelocity = pitchVelocity + turnVelocity;
-         //   transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0);
+            CorrectYRotation();
+        }
+
+        private void CorrectYRotation()
+        {
+            transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         }
     }
 }

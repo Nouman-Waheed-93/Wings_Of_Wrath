@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FormationSystem;
 using Common;
 
 namespace AircraftController
@@ -10,7 +11,7 @@ namespace AircraftController
         [SerializeField]
         private Transform[] wayPoints;
 
-        private AircraftAIController aiController;
+        public AircraftAIController aiController { get; private set; }
         
         private new Transform transform;
 

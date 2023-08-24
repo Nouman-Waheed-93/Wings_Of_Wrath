@@ -2,13 +2,10 @@ using FormationSystem;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-public class BalancedFormationTests
+public abstract class BalancedFormationTests : FormationTests
 {
-    BalancedFormation formation;
-    List<IFormationMember> formationMembers;
-
     [Test]
-    public void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
+    public override void Members_Get_Correct_PositionIndex_After_Adding_In_Formation()
     {
         CreateAFormation(5);
         for (int i = 0; i < formationMembers.Count; i++)
@@ -18,7 +15,7 @@ public class BalancedFormationTests
     }
 
     [Test]
-    public void Members_Shuffle_Positions_Correctly_After_A_Member_Is_Removed()
+    public override void Members_Shuffle_Positions_Correctly_After_A_Member_Is_Removed()
     {
         CreateAFormation(10);
 
@@ -60,22 +57,13 @@ public class BalancedFormationTests
     }
 
     [Test]
-    public void Removing_The_leader_Shuffles_The_Formation_Correctly()
+    public override void Removing_The_leader_Refills_The_Spot_Correctly()
     {
         CreateAFormation(6);
+        Assert.AreEqual(formationMembers[0], formation.leader);
         formation.RemoveMember(formationMembers[0]);
+        Assert.AreEqual(formationMembers[2], formation.leader);
         int[] newIndexes = { 2, 1, 4, 3, 5 };
         FormationTestsUtility.Are_Indexes_At_The_Correct_Position(newIndexes, formationMembers);
-    }
-
-    private void CreateAFormation(int count)
-    {
-        formation = new BattleSpread();
-        formationMembers = new List<IFormationMember>();
-        for (int i = 0; i < count; i++)
-        {
-            formationMembers.Add(NSubstitute.Substitute.For<IFormationMember>());
-            formation.AddMember(formationMembers[i]);
-        }
     }
 }
