@@ -1,8 +1,8 @@
 ﻿namespace AircraftController
 {
-    public class Landed : State
+    public class Landed : AircraftState
     {
-        public Landed(AircraftStateMachine stateMachine, AircraftController aircraftController) 
+        public Landed(AircraftStateMachine stateMachine, Aircraft aircraftController) 
             : base(stateMachine, aircraftController)
         {
         }

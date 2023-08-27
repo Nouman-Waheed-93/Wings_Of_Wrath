@@ -9,15 +9,26 @@ namespace AircraftController
     {
         private Formation currentFormation;
         [SerializeField]
-        private AircraftAI[] aircraftAI;
+        private AircraftMonoBehaviour aircraftPrefab;
+        [SerializeField]
+        private int count;
+        [SerializeField]
+        private Vector3 position;
+        [SerializeField]
+        private Transform[] wayPoints;
 
-        private void Awake()
+        private IEnumerator Start()
         {
             currentFormation = new ArrowHead();
-            for (int i = 0; i < aircraftAI.Length; i++)
+            for (int i = 0; i < count; i++)
             {
-                currentFormation.AddMember(aircraftAI[i].aiController);
+                AircraftMonoBehaviour newAircraft = Instantiate(aircraftPrefab, position + currentFormation.GetMemberPosition(i), Quaternion.identity, transform);
+                newAircraft.Init(wayPoints, true, 100, 100, null);
+                yield return null;
+                currentFormation.AddMember(newAircraft.Aircraft);
+                newAircraft.Aircraft.Formation = currentFormation;
             }
+            yield return null;
         }
     }
 }

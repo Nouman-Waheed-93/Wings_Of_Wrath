@@ -8,7 +8,7 @@ using Assert = UnityEngine.Assertions.Assert;
 public class AircraftControllerTests
 {
 
-    private AircraftController.AircraftController aircraftController;
+    private AircraftController.Aircraft aircraftController;
     private GameObject aircraftGameObject;
 
     [SetUp]
@@ -21,15 +21,15 @@ public class AircraftControllerTests
         rigidbody.useGravity = false;
         
         aircraftController =
-            new AircraftController.AircraftController(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
+            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
     }
 
     [Test]
     public void AircraftStateTestsSimplePasses()
     {
         AircraftStateMachine stateMachine = new AircraftStateMachine();
-        State stateA = Substitute.For<State>(stateMachine, null);
-        State stateB = Substitute.For<State>(stateMachine, null);
+        AircraftState stateA = Substitute.For<AircraftState>(stateMachine, null);
+        AircraftState stateB = Substitute.For<AircraftState>(stateMachine, null);
         stateMachine.Initialize(stateA);
         Assert.AreEqual(stateA, stateMachine.currentState, "Initial state is incorrect.");
         stateMachine.ChangeState(stateB);

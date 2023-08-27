@@ -1,10 +1,12 @@
 using UnityEngine;
 using Locomotion;
 using Utilities;
+using Common;
+using FormationSystem;
 
 namespace AircraftController
 {
-    public class AircraftController : IAircraftController
+    public class Aircraft : IAircraft, IRelativePositionProvider, IFormationMember
     {
         private AircraftStateMachine stateMachine;
         public AircraftStateMachine StateMachine { get => stateMachine; }
@@ -14,6 +16,9 @@ namespace AircraftController
 
         private AircraftMovementHandler movementHandler;
         public AircraftMovementHandler MovementHandler { get => movementHandler; }
+
+        private IAircraftController aircraftInputController;
+        public IAircraftController AircraftInputController { get => aircraftInputController; set => aircraftInputController = value; }
 
         private Transform transform;
         public Transform Transform { get => transform; }
@@ -40,11 +45,10 @@ namespace AircraftController
         public Landed StateLanded { get => stateLanded; }
         #endregion
 
-        private float turnInput;
-        public float TurnInput { get => turnInput; set => turnInput = value; }
+        public float TurnInput { get => aircraftInputController.GetTurn(); }
+        public float DesiredSpeed { get => aircraftInputController.GetDesiredSpeed(); }
 
-        private bool afterBurnerInput;
-        public bool AfterBurnerInput { get => afterBurnerInput; set => afterBurnerInput = value; }
+        public bool AfterBurnerInput { get => aircraftInputController.IsAfterBurnerOn; }
 
         private float throttle;
         public float Throttle
@@ -60,7 +64,17 @@ namespace AircraftController
         private Airstrip airstripToLandOn;
         public Airstrip AirStripToLandOn { get => airstripToLandOn; set => airstripToLandOn = value; }
 
-        public AircraftController(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
+        Vector3 ITransform.position { get => transform.position; set => transform.position = value; }
+        Quaternion ITransform.rotation { get => transform.rotation; set => transform.rotation = value; }
+        Vector3 ITransform.forward => transform.forward;
+
+        public IFormationMember formationMember { get => this; }
+        int IFormationMember.PositionIndex { get; set; }
+        Vector3 IFormationMember.Position { get; set; }
+        IRelativePositionProvider IFormationMember.Transform => this;
+        public Formation Formation { get; set; }
+
+        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, Vector3[] waypoints = null, IAircraftController aircraftController = null, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;
@@ -68,6 +82,11 @@ namespace AircraftController
             stateMachine = new AircraftStateMachine();
             movementHandler = new AircraftMovementHandler(movementData, transform, rigidbody);
             orientationController = new AircraftOrientationController(movementData, movementHandler, transform.GetChild(0));
+
+            if (aircraftController == null)
+            {
+                this.aircraftInputController = new AircraftAI.AircraftAIController(this, this, waypoints);
+            }
 
             stateOnGround = new OnGround(stateMachine, this);
             stateTakeOff = new TakeOff(stateMachine, this);
@@ -89,6 +108,7 @@ namespace AircraftController
 
         public void Update(float simulationDeltaTime)
         {
+            aircraftInputController.Update(simulationDeltaTime);
             stateMachine.currentState.Update(simulationDeltaTime);
             movementHandler.Update(simulationDeltaTime);
             orientationController.Update(simulationDeltaTime);
@@ -133,5 +153,14 @@ namespace AircraftController
             movementHandler.SetThrottle(requiredThrottle);
         }
 
+        Vector3 IRelativePositionProvider.GetRelativePosition(Vector3 point)
+        {
+            return transform.InverseTransformPoint(point);
+        }
+
+        Vector3 IRelativePositionProvider.GetGlobalPosition(Vector3 localPosition)
+        {
+            return transform.TransformPoint(localPosition);
+        }
     }
 }

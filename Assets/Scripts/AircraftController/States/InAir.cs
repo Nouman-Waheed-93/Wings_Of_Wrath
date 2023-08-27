@@ -1,8 +1,8 @@
 namespace AircraftController
 {
-    public class InAir : State
+    public class InAir : AircraftState
     {
-        public InAir(AircraftStateMachine stateMachine, AircraftController aircraftController) : base(stateMachine, aircraftController)
+        public InAir(AircraftStateMachine stateMachine, Aircraft aircraftController) : base(stateMachine, aircraftController)
         {
             
         }
@@ -23,7 +23,7 @@ namespace AircraftController
             {
                 MoveToFinalApproach();
             }
-            aircraftController.SeekSpeed(aircraftController.MovementHandler.AerodynamicMovementData.normalAirSpeed);
+            aircraftController.SeekSpeed(aircraftController.DesiredSpeed);
             aircraftController.CalculateAndSetPitch(GlobalAircraftControllerSettings.flightAltitude, 100);
             aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
         }

@@ -8,7 +8,7 @@ namespace AircraftController
         Airstrip airstrip;
         private void OnTriggerEnter(Collider other)
         {
-            Aircraft landingAircraft = other.GetComponentInParent<Aircraft>();
+            AircraftMonoBehaviour landingAircraft = other.GetComponentInParent<AircraftMonoBehaviour>();
             if (landingAircraft == null)
                 return;
             if(landingAircraft.Team != airstrip.Team)

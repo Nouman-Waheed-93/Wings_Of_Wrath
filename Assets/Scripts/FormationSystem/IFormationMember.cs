@@ -9,6 +9,8 @@ namespace FormationSystem
 
         public Vector3 Position { get; set; } //The relative position to formation leader.
 
-        public ITransform Transform { get; }
+        public IRelativePositionProvider Transform { get; }
+
+        public Formation Formation { get; set; }
     }
 }

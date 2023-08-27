@@ -1,11 +1,11 @@
 namespace AircraftController
 {
-    public abstract class State
+    public abstract class AircraftState
     {
         protected AircraftStateMachine stateMachine;
-        protected AircraftController aircraftController;
+        protected Aircraft aircraftController;
 
-        public State(AircraftStateMachine stateMachine, AircraftController aircraftController)
+        public AircraftState(AircraftStateMachine stateMachine, Aircraft aircraftController)
         {
             this.stateMachine = stateMachine;
             this.aircraftController = aircraftController;

@@ -7,7 +7,7 @@ using Assert = UnityEngine.Assertions.Assert;
 
 public class AircraftControllerPMTests
 {
-    private AircraftController.AircraftController aircraftController;
+    private AircraftController.Aircraft aircraftController;
     private GameObject aircraftGameObject;
 
     [SetUp]
@@ -20,7 +20,7 @@ public class AircraftControllerPMTests
         rigidbody.useGravity = false;
 
         aircraftController =
-            new AircraftController.AircraftController(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
+            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
     }
 
     [UnityTest]

@@ -2,14 +2,14 @@ namespace AircraftController
 {
     public class AircraftStateMachine
     {
-        public State currentState { get; private set; }
+        public AircraftState currentState { get; private set; }
 
-        public void Initialize(State initState)
+        public void Initialize(AircraftState initState)
         {
             currentState = initState;
         }
 
-        public void ChangeState(State newState)
+        public void ChangeState(AircraftState newState)
         {
             currentState?.Exit();
 

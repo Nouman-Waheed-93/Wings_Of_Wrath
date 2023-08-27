@@ -6,43 +6,68 @@ using FormationSystem;
 
 namespace AircraftController
 {
-    public class AircraftAIController: IFormationMember
+    namespace AircraftAI
     {
-        private Vector3[] wayPoints;
-        private IAircraftController aircraft;
-        private int currentIndex;
-        private IRelativePositionProvider transform;
-
-        public Formation Formation { get; set; }
-        public int PositionIndex { get; set; }
-        Vector3 IFormationMember.Position { get; set; }
-        ITransform IFormationMember.Transform { get => transform; }
-
-        public AircraftAIController(IAircraftController aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
+        public class AircraftAIController : IAircraftController
         {
-            this.aircraft = aircraft;
-            this.transform = transform;
-            this.wayPoints = wayPoints;
-        }
+            private IAircraft aircraft;
+            public IRelativePositionProvider transform { get; private set; }
 
-        public void Update(float simulationDeltaTime)
-        {
-            Vector3 targetPosition = wayPoints[currentIndex];
-            if(Formation != null)
+            private AIStateMachine stateMachine = new AIStateMachine();
+            private StateFollowWaypoints stateFollowWaypoints;
+
+            public bool IsAfterBurnerOn => true;
+
+            private float turnInput;
+            private float desiredSpeed;
+
+            public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
             {
-                targetPosition = Formation.leader.Transform.position + Formation.GetMemberPosition(PositionIndex);
+                this.aircraft = aircraft;
+                this.transform = transform;
+                stateFollowWaypoints = new StateFollowWaypoints(stateMachine, this, wayPoints);
+                stateMachine.Initialize(stateFollowWaypoints);
             }
-            Vector3 relative = transform.GetRelativePosition(targetPosition);
-            float turnInput = Mathf.Atan2(relative.x, relative.z);
-            aircraft.TurnInput  = turnInput;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 20)
+            public void Update(float simulationDeltaTime)
             {
-                currentIndex++;
-                if (currentIndex >= wayPoints.Length)
+                stateMachine.currentState.Update(simulationDeltaTime);
+            }
+
+            public float GetDesiredSpeed()
+            {
+                return desiredSpeed;
+
+                if (aircraft.formationMember.Formation != null && aircraft.formationMember.PositionIndex != 0)
                 {
-                    currentIndex = 0;
+                    float verticalDistance = -aircraft.formationMember.Formation.leader.Transform.GetRelativePosition(transform.position).z;
+                    float desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed;
+                    if (verticalDistance > 100)
+                        desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed;
+                    else if (verticalDistance > 20)
+                        desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed;
+                    else
+                        desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
+
+                    return desiredSpeed;
                 }
+                return aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed;
+            }
+
+            public float GetTurn()
+            {
+                return turnInput;
+            }
+
+            public void SetThrottleNormal()
+            {
+                desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed;
+            }
+
+            public void TurnTowardsPosition(Vector3 targetPosition)
+            {
+                Vector3 relative = transform.GetRelativePosition(targetPosition);
+                turnInput = Mathf.Atan2(relative.x, relative.z) / (Mathf.PI * 0.5f);
             }
         }
     }

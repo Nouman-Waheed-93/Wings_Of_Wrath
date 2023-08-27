@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace AircraftController
 {
-    public class FinalApproach : State
+    public class FinalApproach : AircraftState
     {
-        public FinalApproach(AircraftStateMachine stateMachine, AircraftController aircraftController) 
+        public FinalApproach(AircraftStateMachine stateMachine, Aircraft aircraftController) 
             : base(stateMachine, aircraftController) { }
 
         public override void Enter()

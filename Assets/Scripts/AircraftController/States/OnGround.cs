@@ -1,9 +1,9 @@
 namespace AircraftController
 {
-    public class OnGround : State
+    public class OnGround : AircraftState
     {
         private bool isEngineStarted;
-        public OnGround(AircraftStateMachine stateMachine, AircraftController aircraftController): base(stateMachine, aircraftController)
+        public OnGround(AircraftStateMachine stateMachine, Aircraft aircraftController): base(stateMachine, aircraftController)
         {
         }
 

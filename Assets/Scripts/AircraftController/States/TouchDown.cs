@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace AircraftController
 {
-    public class TouchDown : State
+    public class TouchDown : AircraftState
     {
-        public TouchDown(AircraftStateMachine stateMachine, AircraftController aircraftController) :
+        public TouchDown(AircraftStateMachine stateMachine, Aircraft aircraftController) :
             base(stateMachine, aircraftController)
         {
         }
