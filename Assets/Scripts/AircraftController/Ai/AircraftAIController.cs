@@ -62,16 +62,16 @@ namespace AircraftController
                 IFormationMember leader = aircraft.formationMember.Formation.leader;
                 IFormationMember myFormationMember = aircraft.formationMember;
 
-                float verticalDistance = -leader.Transform.GetRelativePosition(transform.position).z;
-                if (verticalDistance > 100)
-                    desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed;
-                else if (verticalDistance > 10)
-                    desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed;
-                else
-                    desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
-
-                Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPosition(myFormationMember.PositionIndex) * 10;
+                Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPosition(myFormationMember.PositionIndex) * 30;
                 Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
+
+                Debug.DrawLine(transform.position, targetPosition, Color.red);
+                Arrive(targetPosition);
+
+                targetPosition += leader.Transform.forward * desiredSpeed;
+
+                Debug.DrawLine(transform.position, targetPosition, Color.blue);
+
                 float dot = Vector3.Dot(transform.forward, targetPosition - transform.position);
                 bool isTargetBehind = dot < 0;
                 float distance = Vector3.Distance(transform.position, targetPosition);
@@ -80,6 +80,21 @@ namespace AircraftController
                     targetPosition = transform.position + transform.forward;
                 }
                 TurnTowardsPosition(targetPosition);
+                distance = Mathf.Clamp(distance, 0, 50);
+                float turnDistanceMultiplier = Mathf.Clamp01(distance * 0.01f);
+                turnInput *= turnDistanceMultiplier;
+            }
+
+            private void Arrive(Vector3 targetPosition)
+            {
+                Vector3 ToPosition = targetPosition - transform.position;
+
+                float decelerationRate = 2;
+                float decelerationMultiplier = 0.3f;
+                float distance = ToPosition.magnitude;
+                float speed = distance / (decelerationRate * decelerationMultiplier);
+                speed = Mathf.Clamp(speed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+                desiredSpeed = speed;
             }
         }
     }

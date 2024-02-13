@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 99
+  controlID: 125
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 21
+  controlID: 126
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 116
+  controlID: 127
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -189,8 +189,8 @@ MonoBehaviour:
     y: 0
     width: 788
     height: 391
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -215,8 +215,8 @@ MonoBehaviour:
     y: 0
     width: 215
     height: 391
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 22
+  controlID: 99
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -318,8 +318,8 @@ MonoBehaviour:
     y: 0
     width: 363
     height: 635
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -386,7 +386,7 @@ MonoBehaviour:
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
     m_HSlider: 0
-    m_VSlider: 1
+    m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
     m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
@@ -399,7 +399,7 @@ MonoBehaviour:
       y: 21
       width: 213
       height: 349
-    m_Scale: {x: 0.44375, y: 0.44375}
+    m_Scale: {x: 0.43625, y: 0.43625}
     m_Translation: {x: 106.5, y: 174.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -407,12 +407,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -240
-      y: -393.23944
-      width: 480
-      height: 786.4789
+      x: -244.12607
+      y: -400
+      width: 488.25214
+      height: 800
     m_MinimalGUI: 1
-  m_defaultScale: 0.44375
+  m_defaultScale: 0.43625
   m_LastWindowPixelSize: {x: 213, y: 370}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
@@ -679,9 +679,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -566.8485, y: 100, z: -769.84204}
+    m_Target: {x: 221.82355, y: 99.99993, z: -771.1548}
     speed: 2
-    m_Value: {x: -566.8485, y: 100, z: -769.84204}
+    m_Value: {x: 221.82355, y: 99.99993, z: -771.1548}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -730,11 +730,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
     speed: 2
-    m_Value: {x: -0.7071068, y: 0, z: -0, w: -0.7071068}
+    m_Value: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_Size:
-    m_Target: 67.10559
+    m_Target: 63.65782
     speed: 2
-    m_Value: 67.10559
+    m_Value: 63.46742
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -758,7 +758,7 @@ MonoBehaviour:
   m_ReplacementString: 
   m_SceneVisActive: 1
   m_LastLockedObject: {fileID: 0}
-  m_ViewIsLockedToObject: 1
+  m_ViewIsLockedToObject: 0
 --- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -792,9 +792,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 2cfbffff
+      m_SelectedIDs: b6560000
+      m_LastClickedID: 22198
+      m_ExpandedIDs: 48acffff96b1ffff62b7fffff4befffffac9ffff40cfffff84d4ffff0cdaffffeee0ffff12e6ffff18edffff7af4ffff2cfbffff94560000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -861,22 +861,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/AircraftController/Ai/State
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/AircraftController/Ai/State
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\dell\Documents\GitHub\Wings_Of_Wrath
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 191}
-    m_SelectedIDs: 34580000
-    m_LastClickedID: 22580
-    m_ExpandedIDs: 00000000fc570000fe57000000580000025800001258000036580000
+    scrollPos: {x: 0, y: 31}
+    m_SelectedIDs: fc570000
+    m_LastClickedID: 22524
+    m_ExpandedIDs: 00000000fc570000fe5700000058000002580000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -931,7 +931,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000aa6b0000b06b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -956,7 +956,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 62}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 226
