@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Common;
 using FormationSystem;
+using Utilities;
 
 namespace AircraftController
 {
@@ -17,6 +18,8 @@ namespace AircraftController
             public StateFollowWaypoints stateFollowWaypoints { get; private set; }
             public StateFollowFormation stateFollowFormation { get; private set; }
 
+            private PIDController speedPIDController;
+
             public bool IsAfterBurnerOn => true;
 
             private float turnInput;
@@ -26,6 +29,7 @@ namespace AircraftController
             {
                 this.aircraft = aircraft;
                 this.transform = transform;
+                speedPIDController = new PIDController();
                 stateFollowWaypoints = new StateFollowWaypoints(stateMachine, this, wayPoints);
                 stateFollowFormation = new StateFollowFormation(stateMachine, this);
                 stateMachine.Initialize(stateFollowWaypoints);
@@ -68,20 +72,22 @@ namespace AircraftController
                 Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
 
+                float dot = Vector3.Dot(transform.forward, targetPosition - transform.position);
+                bool isTargetBehind = dot < -0.75f;
+                float distance = Vector3.Distance(transform.position, targetPosition);
+                if (isTargetBehind && distance < 100)
+                {
+                    targetPosition = transform.position + transform.forward;
+                    desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
+                }
+
                 targetPosition += leader.Transform.forward * desiredSpeed;
 
                 Debug.DrawLine(transform.position, targetPosition, Color.blue);
 
-                float dot = Vector3.Dot(transform.forward, targetPosition - transform.position);
-                bool isTargetBehind = dot < 0;
-                float distance = Vector3.Distance(transform.position, targetPosition);
-                if (isTargetBehind && distance < 50)
-                {
-                    targetPosition = transform.position + transform.forward;
-                }
                 TurnTowardsPosition(targetPosition);
                 distance = Mathf.Clamp(distance, 0, 50);
-                float turnDistanceMultiplier = Mathf.Clamp01(distance * 0.01f);
+                float turnDistanceMultiplier = Mathf.Clamp01(distance * 0.1f);
                 turnInput *= turnDistanceMultiplier;
             }
 
@@ -89,12 +95,10 @@ namespace AircraftController
             {
                 Vector3 ToPosition = targetPosition - transform.position;
 
-                float decelerationRate = 2;
-                float decelerationMultiplier = 0.3f;
-                float distance = ToPosition.magnitude;
-                float speed = distance / (decelerationRate * decelerationMultiplier);
-                speed = Mathf.Clamp(speed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-                desiredSpeed = speed;
+                float distanceAhead = Vector3.Dot(ToPosition, transform.forward);
+                desiredSpeed = speedPIDController.Seek(0, distanceAhead) * -1 * aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed;
+                desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+                Debug.Log("Dist : " + distanceAhead + " desiredSpeed : " + desiredSpeed);
             }
         }
     }
