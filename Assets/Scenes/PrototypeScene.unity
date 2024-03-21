@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316466, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -421,12 +421,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aircraftPrefab: {fileID: 1604655157, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}
-  count: 2
+  count: 3
   position: {x: 157, y: 100, z: 1180}
   wayPoints:
   - {fileID: 1544074665}
   - {fileID: 1457636679}
-  - {fileID: 1308330129}
+  - {fileID: 1705215643}
 --- !u!4 &759199350
 Transform:
   m_ObjectHideFlags: 0
@@ -1370,7 +1370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457636678}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1222, y: 100, z: -1416}
+  m_LocalPosition: {x: -1375, y: 100, z: -1599}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1401,7 +1401,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544074664}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417, y: 100, z: 50}
+  m_LocalPosition: {x: 1274, y: 100, z: 1350}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1780,7 +1780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705215642}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7, y: 100, z: 467}
+  m_LocalPosition: {x: -1509, y: 100, z: 1513}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
