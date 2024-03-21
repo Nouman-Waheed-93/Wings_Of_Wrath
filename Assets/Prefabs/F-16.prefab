@@ -337,6 +337,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementData: {fileID: 11400000, guid: bc6ddd266af170b4e935b05e59081150, type: 2}
   team: 0
+  startsInAir: 0
+  startAltitude: 0
+  startSpeed: 0
+  wayPoints: []
+  pCoefficient: 0.6
+  iCoefficient: 0.0001
+  dCoefficient: 0.2
 --- !u!1001 &7613771096087139801
 PrefabInstance:
   m_ObjectHideFlags: 0

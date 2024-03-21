@@ -19,6 +19,7 @@ namespace AircraftController
             public StateFollowFormation stateFollowFormation { get; private set; }
 
             private PIDController speedPIDController;
+            public PIDController SpeedPIDController { get => speedPIDController; }
 
             public bool IsAfterBurnerOn => true;
 
@@ -30,6 +31,8 @@ namespace AircraftController
                 this.aircraft = aircraft;
                 this.transform = transform;
                 speedPIDController = new PIDController();
+                speedPIDController.minimum = -1;
+                speedPIDController.maximum = 0;
                 stateFollowWaypoints = new StateFollowWaypoints(stateMachine, this, wayPoints);
                 stateFollowFormation = new StateFollowFormation(stateMachine, this);
                 stateMachine.Initialize(stateFollowWaypoints);
@@ -78,12 +81,12 @@ namespace AircraftController
                 if (isTargetBehind && distance < 100)
                 {
                     targetPosition = transform.position + transform.forward;
-                    desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
+                 //   desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
                 }
 
                 targetPosition += leader.Transform.forward * desiredSpeed;
 
-                Debug.DrawLine(transform.position, targetPosition, Color.blue);
+              //  Debug.DrawLine(transform.position, targetPosition, Color.blue);
 
                 TurnTowardsPosition(targetPosition);
                 distance = Mathf.Clamp(distance, 0, 50);
@@ -95,10 +98,11 @@ namespace AircraftController
             {
                 Vector3 ToPosition = targetPosition - transform.position;
 
-                float distanceAhead = Vector3.Dot(ToPosition, transform.forward);
-                desiredSpeed = speedPIDController.Seek(0, distanceAhead) * -1 * aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed;
+                float distanceAhead = Vector3.Dot(ToPosition, transform.forward) / 20;
+                float pidVal = speedPIDController.Seek(0, distanceAhead);
+                desiredSpeed = pidVal * -1 * aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed;
                 desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-                Debug.Log("Dist : " + distanceAhead + " desiredSpeed : " + desiredSpeed);
+                Debug.Log("PIDVal " + pidVal + "Dist : " + distanceAhead + " desiredSpeed : " + desiredSpeed);
             }
         }
     }

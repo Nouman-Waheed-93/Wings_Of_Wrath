@@ -6,8 +6,8 @@ namespace Utilities
     public class PIDController
     {
         //Our PID coefficients for tuning the controller
-        public float pCoeff = 1f;
-        public float iCoeff = .0004f;
+        public float pCoeff = 0.6f;
+        public float iCoeff = .0002f;
         public float dCoeff = .4f;
         public float minimum = -1;
         public float maximum = 1;
