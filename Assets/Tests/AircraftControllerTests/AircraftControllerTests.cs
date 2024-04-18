@@ -21,7 +21,7 @@ public class AircraftControllerTests
         rigidbody.useGravity = false;
         
         aircraftController =
-            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
+            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, new Vector3[1]);
     }
 
     [Test]
