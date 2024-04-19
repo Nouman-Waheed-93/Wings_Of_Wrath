@@ -15,6 +15,8 @@ namespace AircraftController
             public IRelativePositionProvider transform { get; private set; }
 
             private AIStateMachine stateMachine = new AIStateMachine();
+            public AIStateMachine StateMachine { get => stateMachine; }
+
             public StateFollowWaypoints stateFollowWaypoints { get; private set; }
             public StateFollowFormation stateFollowFormation { get; private set; }
 
