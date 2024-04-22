@@ -40,12 +40,9 @@ public class AircraftAITests
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
         
-        AircraftAIController aiLeader = GetNewAIAircraft();
-        aiLeader.aircraft.formationMember.Formation = formation;
-
         AircraftAIController aiController = GetNewAIAircraft();
         aiController.aircraft.formationMember.Formation = formation;
-        
+        aiController.aircraft.formationMember.PositionIndex.Returns(1);
         aiController.Update(0);
         Assert.AreEqual(aiController.stateFollowFormation, aiController.StateMachine.currentState);
     }
