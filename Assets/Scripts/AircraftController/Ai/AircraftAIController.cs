@@ -65,7 +65,7 @@ namespace AircraftController
                 IFormationMember leader = aircraft.formationMember.Formation.leader;
                 IFormationMember myFormationMember = aircraft.formationMember;
 
-                Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPosition(myFormationMember.PositionIndex) * 30;
+                Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
                 Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
                 Debug.DrawLine(transform.position, targetPosition, Color.red);

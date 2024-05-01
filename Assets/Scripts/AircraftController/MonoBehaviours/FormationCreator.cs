@@ -15,11 +15,14 @@ namespace AircraftController
         [SerializeField]
         private Vector3 position;
         [SerializeField]
+        private float spacing;
+        [SerializeField]
         private Transform[] wayPoints;
 
         private IEnumerator Start()
         {
             currentFormation = new ArrowHead();
+            currentFormation.spacing = this.spacing;
             for (int i = 0; i < count; i++)
             {
                 AircraftMonoBehaviour newAircraft = Instantiate(aircraftPrefab, position + currentFormation.GetMemberPosition(i), Quaternion.identity, transform);

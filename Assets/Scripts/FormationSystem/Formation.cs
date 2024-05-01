@@ -8,6 +8,8 @@ namespace FormationSystem
     {
         public int MemberCount { get { return members.Count; } }
 
+        public float spacing { get; set; } //The distance to keep from the adjacent member.
+
         public IFormationMember leader { get; private set; }
 
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
@@ -23,6 +25,11 @@ namespace FormationSystem
         }
 
         public abstract Vector3 GetMemberPosition(int memberIndex);
+
+        public Vector3 GetMemberPositionSpaced(int memberIndex)
+        {
+            return GetMemberPosition(memberIndex) * spacing;
+        }
 
         public virtual void RemoveMember(IFormationMember memberToRemove)
         {

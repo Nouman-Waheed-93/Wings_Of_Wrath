@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 759199350}
   - component: {fileID: 759199349}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: FormationCreator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,6 +423,7 @@ MonoBehaviour:
   aircraftPrefab: {fileID: 1604655157, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}
   count: 3
   position: {x: 157, y: 100, z: 1180}
+  spacing: 0
   wayPoints:
   - {fileID: 1544074665}
   - {fileID: 1457636679}
