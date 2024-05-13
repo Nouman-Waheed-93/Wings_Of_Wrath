@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 1604655158}
   - component: {fileID: 1604655157}
   m_Layer: 0
-  m_Name: F-16
+  m_Name: TestAircraft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

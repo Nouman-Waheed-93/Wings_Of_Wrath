@@ -6,6 +6,8 @@ using NUnit.Framework;
 using NSubstitute;
 using AircraftController;
 using Locomotion;
+using System.Threading.Tasks;
+using UnityEngine.TestTools;
 
 public class AircraftAITests
 {
@@ -17,44 +19,48 @@ public class AircraftAITests
 
     private GameObject gameObject;
 
-    [Test]
-    public void Aircraft_Follows_Waypoints_When_It_Is_Not_In_Formation()
+    [UnityTest]
+    public IEnumerator Aircraft_Follows_Waypoints_When_It_Is_Not_In_Formation()
     {
-        AircraftAIController aiController = GetNewAIAircraft();
+        AircraftAIController aiController = null;
+        yield return GetNewAIAircraft((AircraftAIController)=> { aiController = AircraftAIController; });
         aiController.aircraft.formationMember.Formation = null;
         aiController.Update(0);
         Assert.AreEqual(aiController.stateFollowWaypoints, aiController.StateMachine.currentState);
     }
 
-    [Test]
-    public void Aircraft_Follows_Waypoints_When_It_Is_The_Leader()
+    [UnityTest]
+    public IEnumerator Aircraft_Follows_Waypoints_When_It_Is_The_Leader()
     {
-        AircraftAIController aiController = GetNewAIAircraft();
+        AircraftAIController aiController = null;
+        yield return GetNewAIAircraft((AircraftAIController) => { aiController = AircraftAIController; });
         aiController.aircraft.formationMember.Formation = Substitute.For<FormationSystem.Formation>();
         aiController.Update(0);
         Assert.AreEqual(aiController.stateFollowWaypoints, aiController.StateMachine.currentState);
     }
 
-    [Test]
-    public void Aircraft_Turns_Towards_Correct_Position_In_Formation()
+    [UnityTest]
+    public IEnumerator Aircraft_Turns_Towards_Correct_Position_In_Formation()
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
         formation.spacing = 10;
 
-        AircraftAIController leader = GetNewAIAircraft();
-        AircraftAIController aiController = GetNewAIAircraft();
+        AircraftAIController leader = null;
+        yield return GetNewAIAircraft((AircraftAIController) => { leader = AircraftAIController; });
+        AircraftAIController aiController = null;
+        yield return GetNewAIAircraft((AircraftAIController) => { aiController = AircraftAIController; });
 
         formation.AddMember(leader.aircraft.formationMember);
         leader.aircraft.formationMember.Formation = formation;
 
         formation.AddMember(aiController.aircraft.formationMember);
         aiController.aircraft.formationMember.Formation = formation;
-        aiController.aircraft.formationMember.PositionIndex.Returns(1);
         
         leader.transform.position.Returns(Vector3.zero);
         leader.transform.rotation.Returns(Quaternion.identity);
         leader.transform.forward.Returns(new Vector3(0, 0, 1));
 
+        aiController.StateMachine.ChangeState(aiController.stateFollowFormation);
         aiController.transform.position.Returns(new Vector3(100, 0, -100));
         aiController.transform.rotation.Returns(Quaternion.identity);
         aiController.transform.forward.Returns(new Vector3(0, 0, 1));
@@ -69,13 +75,15 @@ public class AircraftAITests
 
     }
 
-    [Test]
-    public void Aircraft_Follows_Leader_When_It_Is_Not_The_Leader()
+    [UnityTest]
+    public IEnumerator Aircraft_Follows_Leader_When_It_Is_Not_The_Leader()
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
 
-        AircraftAIController leader = GetNewAIAircraft();
-        AircraftAIController aiController = GetNewAIAircraft();
+        AircraftAIController leader = null;
+        yield return GetNewAIAircraft((AircraftAIController) => { leader = AircraftAIController; });
+        AircraftAIController aiController = null;
+        yield return GetNewAIAircraft((AircraftAIController) => { aiController = AircraftAIController; });
 
         formation.AddMember(leader.aircraft.formationMember);
         leader.aircraft.formationMember.Formation = formation;
@@ -87,17 +95,12 @@ public class AircraftAITests
         Assert.AreEqual(aiController.stateFollowFormation, aiController.StateMachine.currentState, "Incorrect State");
     }
 
-    private AircraftAIController GetNewAIAircraft()
+    private IEnumerator GetNewAIAircraft(System.Action<AircraftAIController> callback = null)
     {
-        IAircraft aircraft = Substitute.For<IAircraft>();
-        gameObject = new GameObject();
-        Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-        AircraftMovementData movementData = ScriptableObject.CreateInstance<AircraftMovementData>();
-        AircraftMovementHandler aircraftMovementHandler = new AircraftMovementHandler(movementData, gameObject.transform, rigidbody);
-        aircraft.MovementHandler.Returns(aircraftMovementHandler);
-        AircraftAIController aiController = new AircraftAIController(aircraft,
-            Substitute.For<Common.IRelativePositionProvider>(), wayPoints);
-        return aiController;
+        GameObject aircraftPrefab = Resources.Load<GameObject>("TestAircraft");
+        GameObject testAircraft = GameObject.Instantiate(aircraftPrefab);
+        Aircraft aircraft = testAircraft.GetComponent<AircraftMonoBehaviour>().Aircraft;
+        yield return null;
+        callback?.Invoke((AircraftAIController)aircraft.AircraftInputController);
     }
-
 }

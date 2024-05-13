@@ -3,7 +3,9 @@ using Locomotion;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using NSubstitute;
 using Assert = UnityEngine.Assertions.Assert;
+using AircraftController;
 
 public class AircraftControllerPMTests
 {
@@ -20,7 +22,7 @@ public class AircraftControllerPMTests
         rigidbody.useGravity = false;
 
         aircraftController =
-            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
+            new AircraftController.Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, null, Substitute.For<IAircraftController>());
     }
 
     [UnityTest]
