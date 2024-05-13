@@ -87,6 +87,10 @@ namespace AircraftController
             {
                 this.aircraftInputController = new AircraftAI.AircraftAIController(this, this, waypoints);
             }
+            else
+            {
+                this.aircraftInputController = aircraftController;
+            }
 
             stateOnGround = new OnGround(stateMachine, this);
             stateTakeOff = new TakeOff(stateMachine, this);
@@ -95,11 +99,11 @@ namespace AircraftController
             stateTouchDown = new TouchDown(stateMachine, this);
             stateLanded = new Landed(stateMachine, this);
 
-            if (startsInAir) 
+            if (startsInAir)
             {
                 stateMachine.Initialize(stateInAir);
                 movementHandler.Initialize(startSpeed, startAltitude);
-            } 
+            }
             else
             {
                 stateMachine.Initialize(stateOnGround);

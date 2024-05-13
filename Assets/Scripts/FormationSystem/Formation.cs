@@ -10,7 +10,7 @@ namespace FormationSystem
 
         public float spacing { get; set; } //The distance to keep from the adjacent member.
 
-        public IFormationMember leader { get; private set; }
+        public virtual IFormationMember leader { get; private set; }
 
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
 
