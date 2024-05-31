@@ -41,6 +41,82 @@ public class AircraftAITests
     }
 
     [UnityTest]
+    public IEnumerator Aircraft_Turns_Towards_The_WayPoint()
+    {
+        AircraftAIController aircraft = GetNewAIAircraft();
+        yield return null;
+        //The waypoint was set to (-1000, 100, -1000) when the aircraft was created.
+
+        aircraft.transform.position = Vector3.zero;
+        aircraft.transform.rotation = Quaternion.identity;
+        aircraft.Update(1);
+        float turn = aircraft.GetTurn();
+        Assert.That(turn < 0, "Turn towards waypoint incorrect");
+
+        aircraft.transform.position = new Vector3(-1000, 100, 1000);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn != 0);
+
+
+        // Test case 1
+        aircraft.transform.position = Vector3.zero;
+        aircraft.transform.rotation = Quaternion.identity;
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn < 0, "Turn towards waypoint incorrect from origin.");
+
+        // Test case 2
+        aircraft.transform.position = new Vector3(-1000, 100, 1000);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn != 0, "Turn towards waypoint incorrect from different quadrant.");
+
+        // Test case 3
+        aircraft.transform.position = new Vector3(-500, 100, 500);
+        aircraft.transform.rotation = Quaternion.Euler(0, 45, 0);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn > 0, "Turn towards waypoint incorrect from negative X and positive Z.");
+
+        // Test case 4
+        aircraft.transform.position = new Vector3(500, 100, -500);
+        aircraft.transform.rotation = Quaternion.Euler(0, -45, 0);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn < 0, "Turn towards waypoint incorrect from positive X and negative Z.");
+
+        // Test case 5
+        aircraft.transform.position = new Vector3(2000, 100, 2000);
+        aircraft.transform.rotation = Quaternion.identity;
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn != 0, "Turn towards waypoint incorrect from far away.");
+
+        // Test case 8
+        aircraft.transform.position = new Vector3(0, 100, -1000);
+        aircraft.transform.rotation = Quaternion.Euler(0, 180, 0);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn > 0, "Turn towards waypoint incorrect from same Z but different X.");
+
+        // Test case 9
+        aircraft.transform.position = new Vector3(-1000, 100, 0);
+        aircraft.transform.rotation = Quaternion.Euler(0, 0, 0);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn != 0, "Turn towards waypoint incorrect from same X but different Z.");
+
+        // Test case 9
+        aircraft.transform.position = new Vector3(-1000, 100, -2000);
+        aircraft.transform.rotation = Quaternion.Euler(0, 0, 0);
+        aircraft.Update(1);
+        turn = aircraft.GetTurn();
+        Assert.That(turn == 0, "Turn towards waypoint incorrect when facing the waypoint.");
+
+    }
+
+    [UnityTest]
     public IEnumerator Aircraft_Turns_Towards_Correct_Position_In_Formation()
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
@@ -62,25 +138,25 @@ public class AircraftAITests
         aiController.StateMachine.ChangeState(aiController.stateFollowFormation);
 
         float turn = 0;
-        turn  = CheckTurn(leader, aiController, null, null, new Vector3(100, 0, -100), null);
+        turn  = CheckTurnInFormation(leader, aiController, null, null, new Vector3(100, 0, -100), null);
         Assert.That(turn < 0, "Turn calculated incorrectly");
 
-        turn  = CheckTurn(leader, aiController, null, null, new Vector3(-100, 0, -100));
+        turn  = CheckTurnInFormation(leader, aiController, null, null, new Vector3(-100, 0, -100));
         Assert.That(turn > 0, "Turn calculated incorrectly");
 
-        turn = CheckTurn(leader, aiController, null, null, new Vector3(0, 0, -10));
+        turn = CheckTurnInFormation(leader, aiController, null, null, new Vector3(0, 0, -10));
         Assert.That(turn > 0, "Turn calculated incorrectly");
 
-        turn = CheckTurn(leader, aiController, null, null, new Vector3(10, 0, -10));
+        turn = CheckTurnInFormation(leader, aiController, null, null, new Vector3(10, 0, -10));
         Assert.That(turn == 0, "Turn calculated incorrectly");
 
-        turn = CheckTurn(leader, aiController, null, null, new Vector3(15, 0, -10));
+        turn = CheckTurnInFormation(leader, aiController, null, null, new Vector3(15, 0, -10));
         Assert.That(turn < 0, "Turn calculated incorrectly");
         //Todo 2 ; Check if the desired speed is calculated perfectly.
         //Assert.AreEqual(60, aiController.GetDesiredSpeed());
     }
-
-    private float CheckTurn(AircraftAIController leader, AircraftAIController follower, Vector3? leaderPos = null, Quaternion? leaderRot = null, Vector3? followerPos = null, Quaternion? followerRot = null)
+    
+    private float CheckTurnInFormation(AircraftAIController leader, AircraftAIController follower, Vector3? leaderPos = null, Quaternion? leaderRot = null, Vector3? followerPos = null, Quaternion? followerRot = null)
     {
         Vector3 leaderPosition = Vector3.zero;
         if(leaderPos != null)

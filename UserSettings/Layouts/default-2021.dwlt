@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 68
+  controlID: 15
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 41
+  controlID: 112
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -679,9 +679,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 9996.035, y: -4.679013, z: -9981.901}
+    m_Target: {x: -25.400446, y: 1, z: -116.54467}
     speed: 2
-    m_Value: {x: 9996.035, y: -4.679013, z: -9981.901}
+    m_Value: {x: -25.400446, y: 1, z: -116.54467}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -728,13 +728,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.12425864, y: -0.112860896, z: 0.014226111, w: 0.9857143}
+    m_Target: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
     speed: 2
-    m_Value: {x: 0.12425784, y: -0.112860166, z: 0.014226019, w: 0.985708}
+    m_Value: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_Size:
-    m_Target: 10
+    m_Target: 64.78396
     speed: 2
-    m_Value: 10
+    m_Value: 64.78396
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -794,21 +794,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 567bffffcc7fffff7880fffff083ffff1499ffffc099ffffb09dffffaa9effff569fffffcea2ffff8ea9ffff3aaaffffb2adffff6ab2ffff16b3ffff8eb6ffff5ebbffff0abcffff82bfffff70c3ffff1cc4ffff94c7ffff72c9ffff1ecaffff96cdffffd2d0ffff7ed1fffff6d4ffffe8d7ffff94d8ffff0cdcffff1cdfffffc8dfffff40e3ffff38e9ffffe4e9ffff6eedffff64f0ffff10f1ffff8cf4ffff30fbffff
+      m_ExpandedIDs: 68a0ffff14a1ffff8ea4ffff88a5ffff34a6ffffa2a9ffff18b6ffffc4b6ffff32baffffdcbcffff88bdfffff6c0ffffe4c8ffff90c9fffffcccffffa6cfffff52d0ffffbed3ffffc8d6ffff74d7ffffe0daffff1adeffffc6deffff32e2ffff2ce3ffffd8e3ffff44e7ffffd0e9ffff7ceaffffeaedffff30fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Aircraft
-        m_OriginalName: Aircraft
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -5324
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 11}
       m_SearchString: 
@@ -861,22 +861,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\N-Lab\Wings_Of_Wrath
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 133}
-    m_SelectedIDs: c0590000
-    m_LastClickedID: 22976
-    m_ExpandedIDs: 00000000005800000258000004580000ba590000c4590000f659000000ca9a3b
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 00580000
+    m_LastClickedID: 22528
+    m_ExpandedIDs: 0000000000580000025800000458000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
