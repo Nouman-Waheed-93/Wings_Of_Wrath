@@ -45,7 +45,8 @@ public class AircraftAITests
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
         formation.spacing = 10;
-
+        formation.GetMemberPosition(0).Returns(Vector3.zero);
+        formation.GetMemberPosition(1).Returns(new Vector3(1, 0, 0));
         AircraftAIController leader = GetNewAIAircraft();
         AircraftAIController aiController = GetNewAIAircraft();
 
@@ -56,21 +57,62 @@ public class AircraftAITests
 
         formation.AddMember(aiController.aircraft.formationMember);
         aiController.aircraft.formationMember.Formation = formation;
-
-        leader.transform.position = Vector3.zero;
-        leader.transform.rotation = Quaternion.identity;
+        aiController.aircraft.formationMember.PositionIndex = 1;
 
         aiController.StateMachine.ChangeState(aiController.stateFollowFormation);
-        aiController.transform.position = new Vector3(100, 0, -100);
-        aiController.transform.rotation = Quaternion.identity;
- 
-        aiController.Update(0);
-        float turn = aiController.GetTurn();
 
-        Assert.AreEqual(1, turn, "Turn calculated incorrectly");
+        float turn = 0;
+        turn  = CheckTurn(leader, aiController, null, null, new Vector3(100, 0, -100), null);
+        Assert.That(turn < 0, "Turn calculated incorrectly");
+
+        turn  = CheckTurn(leader, aiController, null, null, new Vector3(-100, 0, -100));
+        Assert.That(turn > 0, "Turn calculated incorrectly");
+
+        turn = CheckTurn(leader, aiController, null, null, new Vector3(0, 0, -10));
+        Assert.That(turn > 0, "Turn calculated incorrectly");
+
+        turn = CheckTurn(leader, aiController, null, null, new Vector3(10, 0, -10));
+        Assert.That(turn == 0, "Turn calculated incorrectly");
+
+        turn = CheckTurn(leader, aiController, null, null, new Vector3(15, 0, -10));
+        Assert.That(turn < 0, "Turn calculated incorrectly");
         //Todo 2 ; Check if the desired speed is calculated perfectly.
-        //Assert.AreEqual(0, aiController.GetTurn());
         //Assert.AreEqual(60, aiController.GetDesiredSpeed());
+    }
+
+    private float CheckTurn(AircraftAIController leader, AircraftAIController follower, Vector3? leaderPos = null, Quaternion? leaderRot = null, Vector3? followerPos = null, Quaternion? followerRot = null)
+    {
+        Vector3 leaderPosition = Vector3.zero;
+        if(leaderPos != null)
+        {
+            leaderPosition = leaderPos.Value;
+        }
+
+        Quaternion leaderRotation = Quaternion.identity;
+        if (leaderRot != null)
+        {
+            leaderRotation = leaderRot.Value;
+        }
+
+        Vector3 followerPosition = Vector3.zero;
+        if (followerPos != null)
+        {
+            followerPosition = followerPos.Value;
+        }
+
+        Quaternion followerRotation = Quaternion.identity;
+        if (followerRot != null)
+        {
+            followerRotation = followerRot.Value;
+        }
+
+        leader.transform.position = leaderPosition;
+        leader.transform.rotation = leaderRotation;
+        follower.transform.position = followerPosition;
+        follower.transform.rotation = followerRotation;
+        follower.Update(0);
+        float turn = follower.GetTurn();
+        return turn;
     }
 
     [UnityTest]
