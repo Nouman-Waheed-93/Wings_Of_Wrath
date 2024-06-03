@@ -117,6 +117,56 @@ public class AircraftAITests
     }
 
     [UnityTest]
+    public IEnumerator Aircraft_Maintains_Correct_Speed_In_Formation()
+    {
+        FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
+        formation.spacing = 10;
+        formation.GetMemberPosition(0).Returns(Vector3.zero);
+        formation.GetMemberPosition(1).Returns(new Vector3(1, 0, 0));
+        AircraftAIController leader = GetNewAIAircraft();
+        AircraftAIController aiController = GetNewAIAircraft();
+
+        yield return null;
+        formation.AddMember(leader.aircraft.formationMember);
+        leader.aircraft.formationMember.Formation = formation;
+        formation.leader.Returns(leader.aircraft.formationMember);
+
+        formation.AddMember(aiController.aircraft.formationMember);
+        aiController.aircraft.formationMember.Formation = formation;
+        aiController.aircraft.formationMember.PositionIndex = 1;
+
+        aiController.StateMachine.ChangeState(aiController.stateFollowFormation);
+
+        float desiredSpeed = 0;
+        float leaderSpeed = leader.aircraft.MovementHandler.CurrSpeed;
+        leader.transform.position = Vector3.zero;
+        leader.transform.rotation = Quaternion.identity;
+        aiController.transform.position = new Vector3(0, 0, -100);
+        aiController.transform.rotation = Quaternion.identity;
+        aiController.Update(0);
+        leader.Update(0);
+        desiredSpeed = aiController.GetDesiredSpeed();
+        leaderSpeed = leader.GetDesiredSpeed();
+        Assert.That(desiredSpeed > leaderSpeed);
+
+        aiController.transform.position = Vector3.zero;
+        aiController.transform.rotation = Quaternion.identity;
+        aiController.Update(0);
+        leader.Update(0);
+        desiredSpeed = aiController.GetDesiredSpeed();
+        leaderSpeed = leader.GetDesiredSpeed();
+        Assert.That(desiredSpeed == leaderSpeed);
+
+        aiController.transform.position = new Vector3(0, 0, 100);
+        aiController.transform.rotation = Quaternion.identity;
+        aiController.Update(0);
+        leader.Update(0);
+        desiredSpeed = aiController.GetDesiredSpeed();
+        leaderSpeed = leader.GetDesiredSpeed();
+        Assert.That(desiredSpeed < leaderSpeed);
+    }
+
+    [UnityTest]
     public IEnumerator Aircraft_Turns_Towards_Correct_Position_In_Formation()
     {
         FormationSystem.Formation formation = Substitute.For<FormationSystem.Formation>();
