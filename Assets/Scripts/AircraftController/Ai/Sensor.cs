@@ -18,6 +18,13 @@ namespace AircraftController
             {
                 HasSomethingInFront = true;
             }
+            Color color = Color.green;
+            if (HasSomethingInFront)
+            {
+                color = Color.red;
+            }
+
+            Debug.DrawRay(transform.position, transform.forward * distance, color);
         }
 
     }

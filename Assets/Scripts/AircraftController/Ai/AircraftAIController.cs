@@ -4,6 +4,7 @@ using UnityEngine;
 using Common;
 using FormationSystem;
 using Utilities;
+using static UnityEngine.ParticleSystem;
 
 namespace AircraftController
 {
@@ -11,6 +12,7 @@ namespace AircraftController
     {
         public class AircraftAIController : IAircraftController
         {
+
             public IAircraft aircraft { get; private set; }
             public IRelativePositionProvider transform { get; private set; }
 
@@ -24,6 +26,8 @@ namespace AircraftController
 
             private float turnInput;
             private float desiredSpeed;
+
+            private LeaderTurnMonitor leaderTurnMonitor = new LeaderTurnMonitor();
 
             public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
             {
@@ -68,15 +72,34 @@ namespace AircraftController
                 Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
                 Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-                Debug.DrawLine(transform.position, targetPosition, Color.red);
+                //Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
 
                 float distance = Vector3.Distance(transform.position, targetPosition);
                 targetPosition += leader.Transform.forward * desiredSpeed;
-
-                Debug.DrawLine(transform.position, targetPosition, Color.green);
+                //Debug.DrawLine(transform.position, targetPosition, Color.green);
 
                 TurnTowardsPosition(targetPosition);
+
+                if (distance < myFormationMember.Formation.spacing * 1.1f)
+                {
+                    if (myFormationMember.Position.x > leader.Position.x)
+                    {
+                        if (leader.turnDir > 0.5f)
+                        {
+                            turnInput = leader.turnDir * 1.5f;
+                            Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
+                        }
+                    }
+                    else
+                    {
+                        if (leader.turnDir < -0.5f)
+                        {
+                            turnInput = leader.turnDir * 1.5f;
+                            Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
+                        }
+                    }
+                }
             }
 
             private void Arrive(Vector3 targetPosition)
@@ -90,7 +113,7 @@ namespace AircraftController
                     float lerpVal = distanceAhead / 50;
                     desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed, lerpVal);
                     desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-                    Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
+                 //   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
                 }
                 else
                 {
@@ -99,7 +122,7 @@ namespace AircraftController
                     lerpVal = 1 - lerpVal;
                     desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, lerpVal);
                     desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-                    Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
+              //      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
                 }
             }
         }

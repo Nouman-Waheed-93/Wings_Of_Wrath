@@ -48,6 +48,8 @@ namespace AircraftController
         public Landed StateLanded { get => stateLanded; }
         #endregion
 
+        float IFormationMember.turnDir { get => aircraftInputController.GetTurn(); }
+
         public float TurnInput { get => aircraftInputController.GetTurn(); }
         public float DesiredSpeed { get => aircraftInputController.GetDesiredSpeed(); }
 
@@ -70,6 +72,7 @@ namespace AircraftController
         Vector3 ITransform.position { get => transform.position; set => transform.position = value; }
         Quaternion ITransform.rotation { get => transform.rotation; set => transform.rotation = value; }
         Vector3 ITransform.forward => transform.forward;
+        Vector3 ITransform.right => transform.right;
 
         public IFormationMember formationMember { get => this; }
         int IFormationMember.PositionIndex { get; set; }
@@ -164,6 +167,23 @@ namespace AircraftController
 
             movementHandler.SetBrake(requiredBrakePressure);
             movementHandler.SetThrottle(requiredThrottle);
+        }
+
+        /// <summary>
+        /// This method returns true if there is an obstacle/ object
+        /// right in front.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsCollisionHazardAhead()
+        {
+            for(int i = 0; i< frontalSensors.Length; i++)
+            {
+                if (frontalSensors[i].HasSomethingInFront)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         Vector3 IRelativePositionProvider.GetRelativePosition(Vector3 point)

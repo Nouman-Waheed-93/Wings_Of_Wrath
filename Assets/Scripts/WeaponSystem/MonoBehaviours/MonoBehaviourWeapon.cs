@@ -18,6 +18,7 @@ namespace WeaponSystem
         public Vector3 position { get => transform.position; set => transform.position = value; }
         public Quaternion rotation { get => transform.rotation; set => transform.rotation = value; }
         public Vector3 forward => transform.forward;
+        public Vector3 right => transform.right;
 
         protected virtual void Awake()
         {

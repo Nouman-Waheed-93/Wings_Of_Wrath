@@ -21,6 +21,9 @@ namespace AircraftController
         [SerializeField]
         private Transform[] wayPoints;
 
+        [SerializeField]
+        private Sensor[] sensors;
+
         public float CurrSpeed { get { return aircraft.MovementHandler.CurrSpeed; } }
 
         private Aircraft aircraft;
@@ -30,6 +33,7 @@ namespace AircraftController
         {
             if(aircraft == null)
                 aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), null, startsInAir, startAltitude, startSpeed);
+            aircraft.SetSensors(sensors);
         }
 
         public void Init(Transform[] waypoints, bool startsInAir, float startAltitude, float startSpeed, IAircraftController aircraftController = null)
@@ -53,6 +57,7 @@ namespace AircraftController
         private void Update()
         {
             aircraft.Update(Time.deltaTime);
+            Debug.DrawRay(transform.position, transform.right * aircraft.AircraftInputController.GetTurn() * 10f, Color.blue);
         }
 
         public void PrepareToLand(Airstrip airstrip)
