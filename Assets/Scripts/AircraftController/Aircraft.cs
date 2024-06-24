@@ -25,6 +25,9 @@ namespace AircraftController
 
         private Rigidbody rigidbody; //do not remove even if it is not used. Only remove it in production review.
 
+        private ISensor[] frontalSensors;
+        public ISensor[] FrontalSensors { get; private set; }
+
         #region States
         private OnGround stateOnGround;
         public OnGround StateOnGround { get => stateOnGround; }
@@ -108,6 +111,12 @@ namespace AircraftController
             {
                 stateMachine.Initialize(stateOnGround);
             }
+        }
+
+        public Aircraft SetSensors(ISensor[] sensors)
+        {
+            this.frontalSensors = sensors;
+            return this;
         }
 
         public void Update(float simulationDeltaTime)
