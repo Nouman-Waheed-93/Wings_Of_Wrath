@@ -27,8 +27,6 @@ namespace AircraftController
             private float turnInput;
             private float desiredSpeed;
 
-            private LeaderTurnMonitor leaderTurnMonitor = new LeaderTurnMonitor();
-
             public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
             {
                 this.aircraft = aircraft;
@@ -87,7 +85,8 @@ namespace AircraftController
                     {
                         if (leader.turnDir > 0.5f)
                         {
-                            turnInput = leader.turnDir * 1.5f;
+                            turnInput = leader.turnDir * 1.2f;
+                            desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
                             Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
                         }
                     }
@@ -95,7 +94,8 @@ namespace AircraftController
                     {
                         if (leader.turnDir < -0.5f)
                         {
-                            turnInput = leader.turnDir * 1.5f;
+                            turnInput = leader.turnDir * 1.2f;
+                            desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
                             Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
                         }
                     }
