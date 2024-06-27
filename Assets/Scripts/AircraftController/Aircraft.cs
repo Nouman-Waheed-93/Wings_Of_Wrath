@@ -50,6 +50,8 @@ namespace AircraftController
 
         float IFormationMember.turnDir { get => aircraftInputController.GetTurn(); }
 
+        Vector3 IFormationMember.velocity { get => rigidbody.velocity; }
+
         public float TurnInput { get => aircraftInputController.GetTurn(); }
         public float DesiredSpeed { get => aircraftInputController.GetDesiredSpeed(); }
 

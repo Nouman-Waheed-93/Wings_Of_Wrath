@@ -5,6 +5,7 @@ using Common;
 using FormationSystem;
 using Utilities;
 using static UnityEngine.ParticleSystem;
+using static UnityEngine.GraphicsBuffer;
 
 namespace AircraftController
 {
@@ -26,6 +27,8 @@ namespace AircraftController
 
             private float turnInput;
             private float desiredSpeed;
+
+            private Dictionary<IFormationMember, PIDController> formationPIDControllers = new Dictionary<IFormationMember, PIDController>();
 
             public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
             {
@@ -70,54 +73,84 @@ namespace AircraftController
                 Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
                 Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-                Vector3 separationForce = CalculateSeparationForce(myFormationMember) * myFormationMember.Formation.spacing;
+                Vector3 separationForce = CalculateSeparationForce(myFormationMember);
 
                 TurnTowardsPosition(transform.position + separationForce);
-                float separationTurnInput = turnInput;
+
+                float separationInput = turnInput;
 
                 Debug.DrawRay(transform.position, separationForce, Color.cyan);
-                
-            //    Debug.DrawLine(transform.position, targetPosition, Color.red);
+
+                //Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
 
+                float leaderDir = FollowLeaderDirection(myFormationMember, leader);
+                if(leaderDir != 0)
+                {
+                    turnInput = leaderDir;
+                    return;
+                }
+
                 targetPosition += leader.Transform.forward * desiredSpeed;
-                
+
                 //Debug.DrawLine(transform.position, targetPosition, Color.green);
-
                 TurnTowardsPosition(targetPosition);
+                turnInput += separationInput;
 
-                turnInput += separationTurnInput;
             }
 
-            private Vector3 CalculateSeparationForce(IFormationMember myFormationMember)
+            private float FollowLeaderDirection(IFormationMember formationMember, IFormationMember leader)
             {
-                float separationDistance = myFormationMember.Formation.spacing; // Desired separation distance
-                float separationStrength = 10.0f; // Strength of the separation force
+                if(Vector3.Distance(formationMember.Transform.position, leader.Transform.position) < formationMember.Formation.spacing + 1f)
+                {
+                    if(Vector3.Angle(formationMember.Transform.forward, leader.Transform.forward) < 2f)
+                    {
+                        return leader.turnDir;
+                    }
+                }
+                return 0f;
+            }
+
+            private Vector3 CalculateSeparationForce(IFormationMember formationMember)
+            {
+                float separationStrength = 100.0f; // Strength of the separation force
 
                 Vector3 separationForce = Vector3.zero;
 
-                foreach (IFormationMember member in myFormationMember.Formation.Members)
-                {
-                    if (member != myFormationMember)
-                    {
-                        Vector3 toMember = myFormationMember.Transform.position - member.Transform.position;
-                        float distance = toMember.magnitude;
+                float radius = 5f;
+                float shortestTime = 1f;
 
-                        if (distance < separationDistance)
-                        {
-                            float repulsiveForceFactor = Mathf.Lerp(1f, 0f, distance / separationDistance);
-                            if(repulsiveForceFactor > 1)
-                            {
-                                Debug.Log($"REpulsive Factor : {repulsiveForceFactor}");
-                            }
-                            // Calculate the repulsive force inversely proportional to the distance
-                            Vector3 repulsiveForce = toMember.normalized / distance;
-                            separationForce += repulsiveForce * repulsiveForceFactor;
-                        }
+                foreach (IFormationMember target in formationMember.Formation.Members)
+                {
+                    if (target == formationMember)
+                    {
+                        continue;
+                    }
+
+                    Vector3 relativePos = transform.position - target.Transform.position;
+                    Vector3 relativeVel = formationMember.velocity - target.velocity;
+                    float distance = relativePos.magnitude;
+                    float relativeSpeed = relativeVel.magnitude;
+
+                    if (relativeSpeed == 0)
+                        continue;
+
+                    float timeToCollision = -1 * Vector3.Dot(relativePos, relativeVel) / (relativeSpeed * relativeSpeed);
+
+                    Vector3 separation = relativePos + relativeVel * timeToCollision;
+                    float minSeparation = separation.magnitude;
+
+                    if (minSeparation > radius + radius)
+                        continue;
+
+                    bool isCollisionHazard = (timeToCollision > 0) && (timeToCollision < shortestTime);
+                    if (isCollisionHazard)
+                    {
+                        Vector3 repulsiveForce = relativePos.normalized / distance;
+                        separationForce += repulsiveForce;
                     }
                 }
 
-                // Scale the separation force by the desired strength
                 separationForce *= separationStrength;
 
                 return (transform.forward * 0.1f) + separationForce;
@@ -134,7 +167,7 @@ namespace AircraftController
                     float lerpVal = distanceAhead / 50;
                     desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed, lerpVal);
                     desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-                 //   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
+                    //   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
                 }
                 else
                 {
@@ -143,7 +176,7 @@ namespace AircraftController
                     lerpVal = 1 - lerpVal;
                     desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, lerpVal);
                     desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-              //      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
+                    //      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
                 }
             }
         }

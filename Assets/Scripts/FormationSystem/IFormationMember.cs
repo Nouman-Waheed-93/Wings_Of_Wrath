@@ -11,6 +11,8 @@ namespace FormationSystem
 
         public float turnDir { get; }
 
+        public Vector3 velocity { get; }
+
         public IRelativePositionProvider Transform { get; }
 
         public Formation Formation { get; set; }
