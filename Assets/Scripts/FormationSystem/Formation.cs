@@ -13,6 +13,7 @@ namespace FormationSystem
         public virtual IFormationMember leader { get; private set; }
 
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
+        public HashSet<IFormationMember> Members { get { return members; } }
 
         public virtual void AddMember(IFormationMember member)
         {

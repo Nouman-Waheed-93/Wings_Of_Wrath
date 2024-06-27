@@ -70,36 +70,57 @@ namespace AircraftController
                 Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
                 Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-                //Debug.DrawLine(transform.position, targetPosition, Color.red);
+                Vector3 separationForce = CalculateSeparationForce(myFormationMember) * myFormationMember.Formation.spacing;
+
+                TurnTowardsPosition(transform.position + separationForce);
+                float separationTurnInput = turnInput;
+
+                Debug.DrawRay(transform.position, separationForce, Color.cyan);
+                
+            //    Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
 
-                float distance = Vector3.Distance(transform.position, targetPosition);
                 targetPosition += leader.Transform.forward * desiredSpeed;
+                
                 //Debug.DrawLine(transform.position, targetPosition, Color.green);
 
                 TurnTowardsPosition(targetPosition);
 
-                if (distance < myFormationMember.Formation.spacing * 1.1f)
+                turnInput += separationTurnInput;
+            }
+
+            private Vector3 CalculateSeparationForce(IFormationMember myFormationMember)
+            {
+                float separationDistance = myFormationMember.Formation.spacing; // Desired separation distance
+                float separationStrength = 10.0f; // Strength of the separation force
+
+                Vector3 separationForce = Vector3.zero;
+
+                foreach (IFormationMember member in myFormationMember.Formation.Members)
                 {
-                    if (myFormationMember.Position.x > leader.Position.x)
+                    if (member != myFormationMember)
                     {
-                        if (leader.turnDir > 0.5f)
+                        Vector3 toMember = myFormationMember.Transform.position - member.Transform.position;
+                        float distance = toMember.magnitude;
+
+                        if (distance < separationDistance)
                         {
-                            turnInput = leader.turnDir * 1.2f;
-                            desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
-                            Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
-                        }
-                    }
-                    else
-                    {
-                        if (leader.turnDir < -0.5f)
-                        {
-                            turnInput = leader.turnDir * 1.2f;
-                            desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
-                            Debug.DrawLine(transform.position, transform.forward * 100, Color.cyan);
+                            float repulsiveForceFactor = Mathf.Lerp(1f, 0f, distance / separationDistance);
+                            if(repulsiveForceFactor > 1)
+                            {
+                                Debug.Log($"REpulsive Factor : {repulsiveForceFactor}");
+                            }
+                            // Calculate the repulsive force inversely proportional to the distance
+                            Vector3 repulsiveForce = toMember.normalized / distance;
+                            separationForce += repulsiveForce * repulsiveForceFactor;
                         }
                     }
                 }
+
+                // Scale the separation force by the desired strength
+                separationForce *= separationStrength;
+
+                return (transform.forward * 0.1f) + separationForce;
             }
 
             private void Arrive(Vector3 targetPosition)

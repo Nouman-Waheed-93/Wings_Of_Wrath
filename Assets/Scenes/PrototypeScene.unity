@@ -423,7 +423,7 @@ MonoBehaviour:
   aircraftPrefab: {fileID: 1604655157, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}
   count: 3
   position: {x: 157, y: 100, z: 1180}
-  spacing: 10
+  spacing: 15
   wayPoints:
   - {fileID: 1544074665}
   - {fileID: 1457636679}
