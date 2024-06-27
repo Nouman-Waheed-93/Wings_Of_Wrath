@@ -75,50 +75,38 @@ namespace AircraftController
 
                 Vector3 separationForce = CalculateSeparationForce(myFormationMember);
 
-                TurnTowardsPosition(transform.position + separationForce);
+                Vector3 separationDirection = transform.forward * 0.1f + separationForce;
 
+                TurnTowardsPosition(transform.position + separationDirection);
                 float separationInput = turnInput;
 
-                Debug.DrawRay(transform.position, separationForce, Color.cyan);
+                Debug.DrawRay(transform.position, separationDirection, Color.cyan);
 
                 //Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
 
-                float leaderDir = FollowLeaderDirection(myFormationMember, leader);
-                if(leaderDir != 0)
-                {
-                    turnInput = leaderDir;
-                    return;
-                }
-
                 targetPosition += leader.Transform.forward * desiredSpeed;
 
-                //Debug.DrawLine(transform.position, targetPosition, Color.green);
                 TurnTowardsPosition(targetPosition);
-                turnInput += separationInput;
 
+                turnInput += separationInput;
             }
 
-            private float FollowLeaderDirection(IFormationMember formationMember, IFormationMember leader)
+            private bool IsAccuratelyInFormation(IFormationMember formationMember, IFormationMember leader, Vector3 targetPosition)
             {
-                if(Vector3.Distance(formationMember.Transform.position, leader.Transform.position) < formationMember.Formation.spacing + 1f)
+                if (Vector3.Distance(formationMember.Transform.position, targetPosition) < formationMember.Formation.spacing)
                 {
-                    if(Vector3.Angle(formationMember.Transform.forward, leader.Transform.forward) < 2f)
-                    {
-                        return leader.turnDir;
-                    }
+                    return true;
                 }
-                return 0f;
+                return false;
             }
 
             private Vector3 CalculateSeparationForce(IFormationMember formationMember)
             {
-                float separationStrength = 100.0f; // Strength of the separation force
+                float separationDistance = formationMember.Formation.spacing;
+                float separationStrength = 10.0f; // Strength of the separation force
 
                 Vector3 separationForce = Vector3.zero;
-
-                float radius = 5f;
-                float shortestTime = 1f;
 
                 foreach (IFormationMember target in formationMember.Formation.Members)
                 {
@@ -140,6 +128,10 @@ namespace AircraftController
                     Vector3 separation = relativePos + relativeVel * timeToCollision;
                     float minSeparation = separation.magnitude;
 
+                    float distanceCoefficient = separationDistance / distance;
+
+                    float shortestTime = Mathf.Lerp(0.01f, 10f, distanceCoefficient);
+                    float radius = Mathf.Lerp(5f, 15f, distanceCoefficient);
                     if (minSeparation > radius + radius)
                         continue;
 
@@ -153,7 +145,7 @@ namespace AircraftController
 
                 separationForce *= separationStrength;
 
-                return (transform.forward * 0.1f) + separationForce;
+                return separationForce;
             }
 
             private void Arrive(Vector3 targetPosition)
