@@ -74,7 +74,7 @@ namespace AircraftController
 				altitudeOffset = myPositionInTheFormation.y;
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-				Arrive(targetPosition);
+				Arrive(targetPosition); //This arrive is not so good because, it does not take into account the relative Velocity
 				targetPosition += leader.Transform.forward * desiredSpeed;
 				TurnTowardsPosition(targetPosition);
 			}
@@ -124,7 +124,7 @@ namespace AircraftController
 				{
 					float lerpVal = distanceAhead / 50;
 					desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed, lerpVal);
-					desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+				//	desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
 					//   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
 				}
 				else
@@ -133,7 +133,7 @@ namespace AircraftController
 					lerpVal = Mathf.Clamp01(lerpVal);
 					lerpVal = 1 - lerpVal;
 					desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, lerpVal);
-					desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+					//desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
 					//      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
 				}
 			}
