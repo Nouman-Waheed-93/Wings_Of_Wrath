@@ -5,7 +5,6 @@ using Common;
 using FormationSystem;
 using Utilities;
 using static UnityEngine.ParticleSystem;
-using static UnityEngine.GraphicsBuffer;
 
 namespace AircraftController
 {
@@ -27,8 +26,6 @@ namespace AircraftController
 
             private float turnInput;
             private float desiredSpeed;
-
-            private Dictionary<IFormationMember, PIDController> formationPIDControllers = new Dictionary<IFormationMember, PIDController>();
 
             public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
             {
@@ -75,48 +72,47 @@ namespace AircraftController
 
                 Vector3 separationForce = CalculateSeparationForce(myFormationMember);
 
-                Vector3 separationDirection = transform.forward * 0.1f + separationForce;
+                turnInput = 0;
+                if (separationForce.sqrMagnitude > 0)
+                {
+                    TurnTowardsPosition(transform.position + separationForce);
+                    //   turnInput *= 2;
+                }
 
-                TurnTowardsPosition(transform.position + separationDirection);
-                float separationInput = turnInput;
+                Debug.DrawRay(transform.position, separationForce, Color.cyan);
 
-                Debug.DrawRay(transform.position, separationDirection, Color.cyan);
-
-                //Debug.DrawLine(transform.position, targetPosition, Color.red);
+                //    Debug.DrawLine(transform.position, targetPosition, Color.red);
                 Arrive(targetPosition);
+
+                if (turnInput != 0)
+                {
+                    return;
+                }
 
                 targetPosition += leader.Transform.forward * desiredSpeed;
 
+                //Debug.DrawLine(transform.position, targetPosition, Color.green);
+
                 TurnTowardsPosition(targetPosition);
-
-                turnInput += separationInput;
             }
 
-            private bool IsAccuratelyInFormation(IFormationMember formationMember, IFormationMember leader, Vector3 targetPosition)
+            private Vector3 CalculateSeparationForce(IFormationMember myFormationMember)
             {
-                if (Vector3.Distance(formationMember.Transform.position, targetPosition) < formationMember.Formation.spacing)
-                {
-                    return true;
-                }
-                return false;
-            }
 
-            private Vector3 CalculateSeparationForce(IFormationMember formationMember)
-            {
-                float separationDistance = formationMember.Formation.spacing;
+                float separationDistance = myFormationMember.Formation.spacing;
                 float separationStrength = 10.0f; // Strength of the separation force
 
                 Vector3 separationForce = Vector3.zero;
 
-                foreach (IFormationMember target in formationMember.Formation.Members)
+                foreach (IFormationMember target in myFormationMember.Formation.Members)
                 {
-                    if (target == formationMember)
+                    if (target == myFormationMember)
                     {
                         continue;
                     }
 
                     Vector3 relativePos = transform.position - target.Transform.position;
-                    Vector3 relativeVel = formationMember.velocity - target.velocity;
+                    Vector3 relativeVel = myFormationMember.velocity - target.velocity;
                     float distance = relativePos.magnitude;
                     float relativeSpeed = relativeVel.magnitude;
 
@@ -130,20 +126,28 @@ namespace AircraftController
 
                     float distanceCoefficient = separationDistance / distance;
 
-                    float shortestTime = Mathf.Lerp(0.01f, 10f, distanceCoefficient);
-                    float radius = Mathf.Lerp(5f, 15f, distanceCoefficient);
-                    if (minSeparation > radius + radius)
-                        continue;
+                    float shortestTime = Mathf.Lerp(1f, 10f, distanceCoefficient);
+                    float maxRadius = separationDistance * 0.5f;
+                    float radius = Mathf.Lerp(5f, maxRadius, distanceCoefficient);
 
-                    bool isCollisionHazard = (timeToCollision > 0) && (timeToCollision < shortestTime);
-                    if (isCollisionHazard)
+                    bool isCollisionHazard = false;
+                    if (minSeparation < radius + radius)
+                        isCollisionHazard = (timeToCollision > 0) && (timeToCollision < shortestTime);
+
+                    bool distanceHazard = distance < separationDistance;
+                    if (isCollisionHazard || distanceHazard)
                     {
                         Vector3 repulsiveForce = relativePos.normalized / distance;
                         separationForce += repulsiveForce;
                     }
                 }
 
-                separationForce *= separationStrength;
+                if (separationForce == Vector3.zero)
+                    return separationForce;
+
+                separationForce = separationForce.normalized * separationStrength;
+
+                separationForce -= transform.forward * 100f;
 
                 return separationForce;
             }
