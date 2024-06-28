@@ -32,36 +32,37 @@ namespace AircraftController
                 MoveToFinalApproach();
             }
 
-            CollisionAvoidance(simulationDeltaTime);
-
+            //CollisionAvoidance(simulationDeltaTime);
+            
             aircraftController.SeekSpeed(aircraftController.DesiredSpeed);
-            aircraftController.CalculateAndSetPitch(altitudeTarget, pitchDistance);
+            aircraftController.CalculateAndSetPitch(altitudeTarget + aircraftController.AircraftInputController.AltitudeOffset, pitchDistance);
             aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
         }
 
         private void CollisionAvoidance(float simulationDeltaTime)
         {
-            if (collisionAvoidanceTime > 0)
-            {
-                collisionAvoidanceTime -= simulationDeltaTime;
-            }
-            else if (pitchDistance != 100)
-            {
-                pitchDistance = 100;
-                altitudeTarget = GlobalAircraftControllerSettings.flightAltitude;
-            }
-            else if (aircraftController.IsCollisionHazardAhead())
-            {
-                collisionAvoidanceTime = 0.5f;
-                pitchDistance = 10f;
-                altitudeTarget -= 10f;
-            }
+            //if (collisionAvoidanceTime > 0)
+            //{
+            //    collisionAvoidanceTime -= simulationDeltaTime;
+            //}
+            //else if (pitchDistance != 100)
+            //{
+            //    pitchDistance = 100;
+            //    altitudeTarget = GlobalAircraftControllerSettings.flightAltitude;
+            //}
+            //else if (aircraftController.IsCollisionHazardAhead())
+            //{
+            //    collisionAvoidanceTime = 0.5f;
+            //    pitchDistance = 10f;
+            //    altitudeTarget -= 10f;
+            //}
         }
 
         private bool IsInitialApproachDone()
         {
             return aircraftController.AirStripToLandOn != null;
         }
+
         private void MoveToFinalApproach()
         {
             stateMachine.ChangeState(aircraftController.StateFinalApproach);

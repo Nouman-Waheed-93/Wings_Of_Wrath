@@ -8,7 +8,7 @@ namespace FormationSystem
         {
             CheckIndexValidity(memberIndex);
 
-            return new Vector3(0, 0, -memberIndex);
+            return new Vector3(0, -memberIndex, -memberIndex);
         }
     }
 }

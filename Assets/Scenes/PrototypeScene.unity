@@ -423,7 +423,8 @@ MonoBehaviour:
   aircraftPrefab: {fileID: 1604655157, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}
   count: 3
   position: {x: 157, y: 100, z: 1180}
-  spacing: 15
+  spacing: 10
+  altitudeSpacing: 3
   wayPoints:
   - {fileID: 1544074665}
   - {fileID: 1457636679}
@@ -461,7 +462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &773255942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1618,6 +1619,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: F-16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6900703714199412117, guid: d91ac27617af7144d9f31619f2e7210e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91ac27617af7144d9f31619f2e7210e, type: 3}

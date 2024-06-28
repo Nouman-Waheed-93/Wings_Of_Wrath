@@ -17,9 +17,9 @@ namespace FormationSystem
                 return Vector3.zero;
 
             if (memberIndex % 2 == 0)
-                return new Vector3(-0.707f, 0, -0.707f) * GetMemberLayer(memberIndex, true);
+                return new Vector3(-0.707f, -1, -0.707f) * GetMemberLayer(memberIndex, true);
             else
-                return new Vector3(0.707f, 0, -0.707f) * GetMemberLayer(memberIndex, false);
+                return new Vector3(0.707f, -1, -0.707f) * GetMemberLayer(memberIndex, false);
         }
     }
 }

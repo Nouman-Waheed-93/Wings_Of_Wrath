@@ -7,6 +7,7 @@ namespace AircraftController
         public void Initialize(AircraftState initState)
         {
             currentState = initState;
+            currentState.Enter();
         }
 
         public void ChangeState(AircraftState newState)

@@ -10,6 +10,8 @@ namespace FormationSystem
 
         public float spacing { get; set; } //The distance to keep from the adjacent member.
 
+        public float altitudeSpacing { get; set; }
+
         public virtual IFormationMember leader { get; private set; }
 
         protected HashSet<IFormationMember> members = new HashSet<IFormationMember>();
@@ -29,7 +31,11 @@ namespace FormationSystem
 
         public Vector3 GetMemberPositionSpaced(int memberIndex)
         {
-            return GetMemberPosition(memberIndex) * spacing;
+            Vector3 spacedPosition = GetMemberPosition(memberIndex);
+            float altitude = spacedPosition.y * altitudeSpacing;
+            spacedPosition *= spacing;
+            spacedPosition.y = altitude;
+            return spacedPosition;
         }
 
         public virtual void RemoveMember(IFormationMember memberToRemove)
