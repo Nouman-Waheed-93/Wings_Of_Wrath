@@ -30,6 +30,8 @@ namespace AircraftController
 			private float turnInput;
 			private float desiredSpeed;
 
+			private RelativeVelocityCalculator relativeVelToLeader;
+
 			public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
 			{
 				this.aircraft = aircraft;
@@ -42,9 +44,14 @@ namespace AircraftController
 			public void Update(float simulationDeltaTime)
 			{
 				stateMachine.currentState.Update(simulationDeltaTime);
-			}
 
-			public float GetDesiredSpeed()
+				if(relativeVelToLeader != null)
+				{
+                    relativeVelToLeader.Update(simulationDeltaTime);
+                }
+            }
+
+            public float GetDesiredSpeed()
 			{
 				return desiredSpeed;
 			}
@@ -74,7 +81,13 @@ namespace AircraftController
 				altitudeOffset = myPositionInTheFormation.y;
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-				Arrive(targetPosition); //This arrive is not so good because, it does not take into account the relative Velocity
+                if (relativeVelToLeader == null)
+                {
+                    relativeVelToLeader = new RelativeVelocityCalculator(transform, leader.Transform);
+                }
+
+                Arrive(targetPosition); //This arrive is not so good because, it does not take into account the relative Velocity
+				
 				targetPosition += leader.Transform.forward * desiredSpeed;
 				TurnTowardsPosition(targetPosition);
 			}
@@ -124,9 +137,10 @@ namespace AircraftController
 				{
 					float lerpVal = distanceAhead / 50;
 					desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed, lerpVal);
-				//	desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-					//   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
-				}
+                    //	desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+                    //   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
+                    AdjustDesiredVelocityAccordingToClosureSpeed();
+                }
 				else
 				{
 					float lerpVal = (distanceAhead * -1) / 100;
@@ -136,6 +150,22 @@ namespace AircraftController
 					//desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
 					//      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
 				}
+
+            }
+		
+			private void AdjustDesiredVelocityAccordingToClosureSpeed()
+			{
+				Debug.Log($"closureSpeed {relativeVelToLeader.ClosureSpeed}");
+
+                if (relativeVelToLeader.ClosureSpeed == 0)
+                {
+                    return;
+                }
+
+				float differential = desiredSpeed / -relativeVelToLeader.ClosureSpeed;
+				Debug.Log($"Differential {differential}");
+				desiredSpeed *= differential * 0.1f;
+				desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
 			}
 		}
 	}
