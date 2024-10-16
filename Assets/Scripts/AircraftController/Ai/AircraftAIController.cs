@@ -27,7 +27,7 @@ namespace AircraftController
 
 			public bool IsAfterBurnerOn => true;
 
-			private float turnInput;
+            private float turnInput;
 			private float desiredSpeed;
 
 			private RelativeVelocityCalculator relativeVelToLeader;
@@ -137,9 +137,10 @@ namespace AircraftController
 				{
 					float lerpVal = distanceAhead / 50;
 					desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed, lerpVal);
-                    //	desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
+                    
+					//	desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
                     //   Debug.Log("Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
-                    AdjustDesiredVelocityAccordingToClosureSpeed();
+                    //AdjustDesiredVelocityAccordingToClosureSpeed();
                 }
 				else
 				{
@@ -147,10 +148,19 @@ namespace AircraftController
 					lerpVal = Mathf.Clamp01(lerpVal);
 					lerpVal = 1 - lerpVal;
 					desiredSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.normalAirSpeed, lerpVal);
+					
 					//desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
 					//      Debug.Log("reverse Lerp val is " + lerpVal + " desiredSpeed " + desiredSpeed);
 				}
 
+                if (aircraft.MovementHandler.CurrSpeed > desiredSpeed)
+                {
+                    aircraft.MovementHandler.SetBrake(1);
+                }
+                else
+                {
+                    aircraft.MovementHandler.SetBrake(0);
+                }
             }
 		
 			private void AdjustDesiredVelocityAccordingToClosureSpeed()

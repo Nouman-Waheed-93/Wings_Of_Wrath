@@ -10,7 +10,7 @@ namespace AircraftController
         public override void Enter()
         {
             isEngineStarted = false;
-            //Play clear for take off dialog sequence
+            //Play the clear for take off dialog sequence
         }
 
         public override void Update(float simulationTime)

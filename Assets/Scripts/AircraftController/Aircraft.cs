@@ -164,11 +164,16 @@ namespace AircraftController
         {
             //calculate required throttle
             float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed;
-            //calculate required brakePressure
-            float requiredBrakePressure = (movementHandler.CurrSpeed - targetSpeed) * 0.5f;
-
-            movementHandler.SetBrake(requiredBrakePressure);
             movementHandler.SetThrottle(requiredThrottle);
+        }
+
+        //Remove if the break is already handled elsewhere
+        private float CalculateRequiredBrakePressure(float targetSpeed)
+        {
+            float speedDifference = movementHandler.CurrSpeed - targetSpeed;
+            float clampedSpeedDifference = Mathf.Clamp(speedDifference, 10, 30);
+            float requiredBrakePressure = clampedSpeedDifference / 20f;
+            return requiredBrakePressure;
         }
 
         /// <summary>
