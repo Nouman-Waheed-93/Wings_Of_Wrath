@@ -8,8 +8,11 @@ namespace Locomotion
         private MovementData movementData;
 
         private float targetSpeed;
+        
         private float currAcceleration;
+        
         private float currDeceleration;
+        
         private float currBrake;
 
         protected float currSpeed;

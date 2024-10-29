@@ -5,6 +5,8 @@ using Common;
 using FormationSystem;
 using Utilities;
 using static UnityEngine.ParticleSystem;
+using Locomotion;
+using UnityEngine.UIElements;
 
 namespace AircraftController
 {
@@ -27,16 +29,8 @@ namespace AircraftController
 
 			public bool IsAfterBurnerOn => true;
 
-			private PIDController speedPIDController = new PIDController() 
-			{ 
-				minimum = 0, 
-				maximum = 1
-            };
-
             private float turnInput;
 			private float desiredSpeed;
-
-			private RelativeVelocityCalculator relativeVelToLeader;
 
 			public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
 			{
@@ -50,11 +44,6 @@ namespace AircraftController
 			public void Update(float simulationDeltaTime)
 			{
 				stateMachine.currentState.Update(simulationDeltaTime);
-
-				if(relativeVelToLeader != null)
-				{
-                    relativeVelToLeader.Update(simulationDeltaTime);
-                }
             }
 
             public float GetDesiredSpeed()
@@ -87,24 +76,58 @@ namespace AircraftController
 				altitudeOffset = myPositionInTheFormation.y;
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-                if (relativeVelToLeader == null)
-                {
-                    relativeVelToLeader = new RelativeVelocityCalculator(transform, leader.Transform);
-                }
-
-                Arrive(targetPosition); //This arrive is not so good because, it does not take into account the relative Velocity
+				CalculateDesiredSpeedToFollowFormation(targetPosition, leader);
 				
 				targetPosition += leader.Transform.forward * desiredSpeed;
 				TurnTowardsPosition(targetPosition);
 			}
 
+			private void CalculateDesiredSpeedToFollowFormation(Vector3 targetPosition, IFormationMember leader)
+            {
+                IFormationMember myFormationMember = aircraft.formationMember;
+                float distanceToTargetPos = Vector3.Distance(targetPosition, transform.position);
+                float leaderSpeed = leader.velocity.magnitude;
 
-			/// <summary>
-			/// Not using this method for now. Because, it is only creating more chaos
-			/// </summary>
-			/// <param name="myFormationMember"></param>
-			/// <returns></returns>
-			private Vector3 CalculateSeparationForce(IFormationMember myFormationMember)
+                Vector3 relativeVelocity = myFormationMember.velocity - leader.velocity;
+				float closureSpeed = 0;// CalculateClosureSpeed(leader.Transform.position, myFormationMember.Transform.position, relativeVelocity);
+
+                float throttleRequiredForTargetSpeed = aircraft.GetRequiredThrottleForSpeed(leaderSpeed);
+
+                float decelerationAtTargetSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration, 0, throttleRequiredForTargetSpeed);
+                float distanceThatCanBeCoveredUntilZeroRelSpeed = (closureSpeed * closureSpeed) / (2 * decelerationAtTargetSpeed);
+
+                // If currSpeed is higher than the target speed and the aircraft can reach
+                // the target position by normal deceleration
+                // {Decelerate}
+                if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
+                    Mathf.Abs(distanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 1)
+                {
+                    desiredSpeed = leaderSpeed;
+                }
+                // else
+                // calculate the high speed that we need to achieve to close the distance.
+                // (we should not use the max speed
+                // because, the distance might not be large enough
+                // that we would need to achieve the max speed to close the distance)
+                //We can calculate the distance (D1) it will take to reach the high speed.
+                //We know the max speed and the target speed when at the target location. We also know the deceleration rate.
+                //We can calculate the distance (D2) it will take to reach target speed from the max speed.
+                //When we subtract these two distances (D1, D2) from the actual distance. We get the distance that we will be traveling
+                // on the max speed.
+                else
+                {
+                    /* ==========================Start Your work here=====================================
+					 */
+                }
+            }
+
+
+            /// <summary>
+            /// Not using this method for now. Because, it is only creating more chaos
+            /// </summary>
+            /// <param name="myFormationMember"></param>
+            /// <returns></returns>
+            private Vector3 CalculateSeparationForce(IFormationMember myFormationMember)
 			{
 				float separationDistance = myFormationMember.Formation.spacing; // Desired separation distance
 				float separationStrength = 1.0f; // Strength of the separation force
@@ -133,30 +156,6 @@ namespace AircraftController
 				return separationForce;
 			}
 
-			private void Arrive(Vector3 targetPosition)
-			{
-				Vector3 ToPosition = targetPosition - transform.position;
-
-				float distanceAhead = Vector3.Dot(ToPosition, transform.forward);
-
-				float factor = speedPIDController.Seek(0, -distanceAhead);
-				desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed * factor;
-            }
-		
-			private void AdjustDesiredVelocityAccordingToClosureSpeed()
-			{
-				Debug.Log($"closureSpeed {relativeVelToLeader.ClosureSpeed}");
-
-                if (relativeVelToLeader.ClosureSpeed == 0)
-                {
-                    return;
-                }
-
-				float differential = desiredSpeed / -relativeVelToLeader.ClosureSpeed;
-				Debug.Log($"Differential {differential}");
-				desiredSpeed *= differential * 0.1f;
-				desiredSpeed = Mathf.Clamp(desiredSpeed, aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed, aircraft.MovementHandler.AerodynamicMovementData.highAirSpeed);
-			}
 		}
 	}
 }

@@ -163,8 +163,13 @@ namespace AircraftController
         public void SeekSpeed(float targetSpeed)
         {
             //calculate required throttle
-            float requiredThrottle = targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed;
+            float requiredThrottle = GetRequiredThrottleForSpeed(targetSpeed);
             movementHandler.SetThrottle(requiredThrottle);
+        }
+
+        public float GetRequiredThrottleForSpeed(float targetSpeed)
+        {
+            return targetSpeed / movementHandler.AerodynamicMovementData.maxSpeed;
         }
 
         //Remove if the break is already handled elsewhere

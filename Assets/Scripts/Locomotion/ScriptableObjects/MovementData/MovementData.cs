@@ -10,7 +10,9 @@ namespace Locomotion
 
         [Tooltip("Normal deceleration on releasing throttle.")]
         public float maxDeceleration = 1f;
+        [Tooltip("Max Brake deceleration.")]
         public float maxBrake = 2f;
+
         public float maxTurn = 1f;
     }
 }
