@@ -89,18 +89,18 @@ namespace AircraftController
                 float leaderSpeed = leader.velocity.magnitude;
 
                 Vector3 relativeVelocity = myFormationMember.velocity - leader.velocity;
-				float closureSpeed = 0;// CalculateClosureSpeed(leader.Transform.position, myFormationMember.Transform.position, relativeVelocity);
+				float closureSpeed = RelativeVelocityUtility.CalculateClosureSpeed(leader.Transform.position, aircraft.Transform.position, relativeVelocity);// CalculateClosureSpeed(leader.Transform.position, myFormationMember.Transform.position, relativeVelocity);
 
                 float throttleRequiredForTargetSpeed = aircraft.GetRequiredThrottleForSpeed(leaderSpeed);
 
                 float decelerationAtTargetSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration, 0, throttleRequiredForTargetSpeed);
-                float distanceThatCanBeCoveredUntilZeroRelSpeed = (closureSpeed * closureSpeed) / (2 * decelerationAtTargetSpeed);
+                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, decelerationAtTargetSpeed);
 
                 // If currSpeed is higher than the target speed and the aircraft can reach
                 // the target position by normal deceleration
                 // {Decelerate}
                 if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
-                    Mathf.Abs(distanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 1)
+                    Mathf.Abs(distanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
                 {
                     desiredSpeed = leaderSpeed;
                 }
