@@ -1,6 +1,7 @@
 using UnityEngine;
 using Locomotion;
 using Common;
+using UnityEditor;
 
 namespace AircraftController
 {
@@ -34,6 +35,11 @@ namespace AircraftController
             if(aircraft == null)
                 aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), null, startsInAir, startAltitude, startSpeed);
             aircraft.SetSensors(sensors);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Handles.Label(transform.position, CurrSpeed.ToString());
         }
 
         public void Init(Transform[] waypoints, bool startsInAir, float startAltitude, float startSpeed, IAircraftController aircraftController = null)

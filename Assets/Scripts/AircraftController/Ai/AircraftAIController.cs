@@ -85,7 +85,7 @@ namespace AircraftController
 			private void CalculateDesiredSpeedToFollowFormation(Vector3 targetPosition, IFormationMember leader)
             {
                 IFormationMember myFormationMember = aircraft.formationMember;
-                float distanceToTargetPos = Vector3.Distance(targetPosition, transform.position);
+                float forwardDistanceToTargetPos = GetDistanceAhead(targetPosition);
                 float leaderSpeed = leader.velocity.magnitude;
 
                 Vector3 relativeVelocity = myFormationMember.velocity - leader.velocity;
@@ -94,13 +94,31 @@ namespace AircraftController
                 float throttleRequiredForTargetSpeed = aircraft.GetRequiredThrottleForSpeed(leaderSpeed);
 
                 float decelerationAtTargetSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration, 0, throttleRequiredForTargetSpeed);
-                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, decelerationAtTargetSpeed);
+                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, decelerationAtTargetSpeed + aircraft.MovementHandler.AerodynamicMovementData.maxBrake);
+
+				//Guzara if statement below, with guzara jugaar
+				if(forwardDistanceToTargetPos < -0.1f)
+				{
+					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
+					return;
+
+                    if (aircraft.MovementHandler.CurrSpeed < leaderSpeed &&
+                    Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
+                    {
+                        desiredSpeed = leaderSpeed;
+                    }
+                    else
+                    {
+                        float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration;
+                        desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
+                    }
+                }
 
                 // If currSpeed is higher than the target speed and the aircraft can reach
                 // the target position by normal deceleration
                 // {Decelerate}
                 if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
-                    Mathf.Abs(distanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
+                    Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
                 {
                     desiredSpeed = leaderSpeed;
                 }
@@ -117,8 +135,9 @@ namespace AircraftController
                 else
                 {
 					float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxAcceleration;
-					desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(distanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
+					desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
                 }
+				Debug.DrawLine(transform.position, targetPosition, Color.blue);
             }
 
 
@@ -155,6 +174,14 @@ namespace AircraftController
 
 				return separationForce;
 			}
+
+			private float GetDistanceAhead(Vector3 targetPosition)
+			{
+                Vector3 ToPosition = targetPosition - transform.position;
+
+                float distanceAhead = Vector3.Dot(ToPosition, transform.forward);
+				return distanceAhead;
+            }
 
 		}
 	}

@@ -29,7 +29,7 @@ namespace AircraftController
             for (int i = 0; i < count; i++)
             {
                 AircraftMonoBehaviour newAircraft = Instantiate(aircraftPrefab, position + currentFormation.GetMemberPosition(i), Quaternion.identity, transform);
-                newAircraft.Init(wayPoints, true, 100, 100, null);
+                newAircraft.Init(wayPoints, true, 100, 80, null);
                 yield return null;
                 currentFormation.AddMember(newAircraft.Aircraft);
                 newAircraft.Aircraft.Formation = currentFormation;
