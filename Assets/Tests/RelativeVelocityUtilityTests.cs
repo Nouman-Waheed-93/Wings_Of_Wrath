@@ -41,4 +41,11 @@ public class RelativeVelocityUtilityTests
         Assert.AreEqual(Mathf.Infinity, AircraftController.RelativeVelocityUtility.GetDistanceToReachSpeed(50, 100, -2), "Error while trying to reach a higher speed with deceleration");
     }
 
+    [Test]
+    public void MaxSpeedRequiredToSeekIsCorrectlyCalculated()
+    {
+        Assert.AreEqual(5,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(10, 0, 0, 1, -1));
+    }
+
 }

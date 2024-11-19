@@ -116,8 +116,8 @@ namespace AircraftController
                 // on the max speed.
                 else
                 {
-                    /* ==========================Start Your work here=====================================
-					 */
+					float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxAcceleration;
+					desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(distanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
                 }
             }
 
