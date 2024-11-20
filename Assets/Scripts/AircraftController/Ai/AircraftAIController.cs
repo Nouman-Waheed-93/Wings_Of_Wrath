@@ -120,7 +120,8 @@ namespace AircraftController
                 if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
                     Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
                 {
-                    desiredSpeed = leaderSpeed;
+					Debug.Log("on leader speed");
+					desiredSpeed = leaderSpeed;
                 }
                 // else
                 // calculate the high speed that we need to achieve to close the distance.
@@ -135,9 +136,13 @@ namespace AircraftController
                 else
                 {
 					float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxAcceleration;
-					desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
+					float currSpeedDifference = aircraft.MovementHandler.CurrSpeed - leaderSpeed;
+					float relativeSpeedAfterReaching = 0;
+					float desiredRelativeSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, currSpeedDifference, relativeSpeedAfterReaching, acceleration, -decelerationAtTargetSpeed);
+                    desiredSpeed = leaderSpeed + desiredRelativeSpeed;
+					Debug.Log("Actually trying to catch up with desired speed " + desiredSpeed);
                 }
-				Debug.DrawLine(transform.position, targetPosition, Color.blue);
+                Debug.DrawLine(transform.position, targetPosition, Color.blue);
             }
 
 

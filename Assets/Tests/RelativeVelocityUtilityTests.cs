@@ -44,8 +44,11 @@ public class RelativeVelocityUtilityTests
     [Test]
     public void MaxSpeedRequiredToSeekIsCorrectlyCalculated()
     {
-        Assert.AreEqual(5,
-            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(10, 0, 0, 1, -1));
+        Assert.AreApproximatelyEqual(14.14f,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(100, 0, 0, 2, -2), 0.01f);
+    
+        Assert.AreApproximatelyEqual(16.33f, 
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(108, 0, 0, 4, -2), 0.01f);
     }
 
 }

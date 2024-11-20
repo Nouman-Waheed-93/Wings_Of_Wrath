@@ -38,6 +38,8 @@ namespace AircraftController
         /// <returns></returns>
         public static float GetMaxSpeedRequiredToSeek(float distance, float initalSpeed, float finalSpeed, float acceleration, float deceleration)
         {
+            Debug.Log("Values received for max speed calculation are :");
+            Debug.Log($"distance : {distance}, currSpeed : {initalSpeed}, finalSpeed : {finalSpeed}, acceleration : {acceleration}, deceleration : {deceleration}");
             //The equation used is derived from the formula of acceleration.
             float var1 = 2 * acceleration * deceleration * distance;
             float var2 = deceleration * initalSpeed * initalSpeed;
