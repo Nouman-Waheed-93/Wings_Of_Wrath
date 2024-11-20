@@ -63,6 +63,7 @@ namespace AircraftController
 
 			public void TurnTowardsPosition(Vector3 targetPosition)
 			{
+				Debug.DrawLine(transform.position, targetPosition, Color.cyan);
 				Vector3 relative = transform.GetRelativePosition(targetPosition);
 				turnInput = Mathf.Atan2(relative.x, relative.z) / (Mathf.PI * 0.5f);
 			}
@@ -77,8 +78,8 @@ namespace AircraftController
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
 				CalculateDesiredSpeedToFollowFormation(targetPosition, leader);
-				
-				targetPosition += leader.Transform.forward * desiredSpeed;
+
+				targetPosition += leader.Transform.forward * leader.velocity.magnitude;
 				TurnTowardsPosition(targetPosition);
 			}
 
@@ -101,17 +102,6 @@ namespace AircraftController
 				{
 					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
 					return;
-
-                    if (aircraft.MovementHandler.CurrSpeed < leaderSpeed &&
-                    Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
-                    {
-                        desiredSpeed = leaderSpeed;
-                    }
-                    else
-                    {
-                        float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration;
-                        desiredSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, aircraft.MovementHandler.CurrSpeed, leaderSpeed, acceleration, decelerationAtTargetSpeed);
-                    }
                 }
 
                 // If currSpeed is higher than the target speed and the aircraft can reach
@@ -142,6 +132,7 @@ namespace AircraftController
                     desiredSpeed = leaderSpeed + desiredRelativeSpeed;
 					Debug.Log("Actually trying to catch up with desired speed " + desiredSpeed);
                 }
+				desiredSpeed += Random.Range(-0.5f, 0.5f);
                 Debug.DrawLine(transform.position, targetPosition, Color.blue);
             }
 

@@ -28,7 +28,7 @@ namespace AircraftController
             currentFormation.altitudeSpacing = this.altitudeSpacing;
             for (int i = 0; i < count; i++)
             {
-                AircraftMonoBehaviour newAircraft = Instantiate(aircraftPrefab, position + currentFormation.GetMemberPosition(i), Quaternion.identity, transform);
+                AircraftMonoBehaviour newAircraft = Instantiate(aircraftPrefab, position + currentFormation.GetMemberPositionSpaced(i), Quaternion.identity, transform);
                 newAircraft.Init(wayPoints, true, 100, 80, null);
                 yield return null;
                 currentFormation.AddMember(newAircraft.Aircraft);
