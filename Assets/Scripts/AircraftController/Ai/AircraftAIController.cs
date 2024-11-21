@@ -104,16 +104,16 @@ namespace AircraftController
 					return;
                 }
 
-                // If currSpeed is higher than the target speed and the aircraft can reach
-                // the target position by normal deceleration
-                // {Decelerate}
+                /* If currSpeed is higher than the target speed and the aircraft can reach
+                 the target position by normal deceleration
+                 {Decelerate} */
                 if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
                     Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
                 {
 					Debug.Log("on leader speed");
 					desiredSpeed = leaderSpeed;
                 }
-                // else
+                /* else
                 // calculate the high speed that we need to achieve to close the distance.
                 // (we should not use the max speed
                 // because, the distance might not be large enough
@@ -122,7 +122,7 @@ namespace AircraftController
                 //We know the max speed and the target speed when at the target location. We also know the deceleration rate.
                 //We can calculate the distance (D2) it will take to reach target speed from the max speed.
                 //When we subtract these two distances (D1, D2) from the actual distance. We get the distance that we will be traveling
-                // on the max speed.
+                // on the max speed.*/
                 else
                 {
 					float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxAcceleration;

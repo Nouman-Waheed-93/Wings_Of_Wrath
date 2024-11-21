@@ -48,7 +48,19 @@ public class RelativeVelocityUtilityTests
             AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(100, 0, 0, 2, -2), 0.01f);
     
         Assert.AreApproximatelyEqual(16.33f, 
-            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(108, 0, 0, 4, -2), 0.01f);
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(100, 0, 0, 4, -2), 0.01f); 
+
+        Assert.AreApproximatelyEqual(16.33f,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(100, 0, 0, 2, -4), 0.01f);
+
+        Assert.AreApproximatelyEqual(7.07f,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(10, 0, 0, 5, -5), 0.01f);
+        
+        Assert.AreApproximatelyEqual(31.62f,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(1000, 0, 0, 1, -1), 0.01f);  
+        
+        Assert.AreApproximatelyEqual(27.39f,
+            AircraftController.RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(500, 0, 0, 3, -1), 0.01f);
     }
 
 }
