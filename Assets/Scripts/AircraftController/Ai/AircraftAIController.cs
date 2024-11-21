@@ -95,7 +95,7 @@ namespace AircraftController
                 float throttleRequiredForTargetSpeed = aircraft.GetRequiredThrottleForSpeed(leaderSpeed);
 
                 float decelerationAtTargetSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration, 0, throttleRequiredForTargetSpeed);
-                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, decelerationAtTargetSpeed + aircraft.MovementHandler.AerodynamicMovementData.maxBrake);
+                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, -decelerationAtTargetSpeed);
 
 				//Guzara if statement below, with guzara jugaar
 				if(forwardDistanceToTargetPos < -0.1f)
@@ -108,31 +108,16 @@ namespace AircraftController
                  the target position by normal deceleration
                  {Decelerate} */
                 if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
-                    Mathf.Abs(forwardDistanceToTargetPos - distanceThatCanBeCoveredUntilZeroRelSpeed) < 0.1f)
+                    distanceThatCanBeCoveredUntilZeroRelSpeed > forwardDistanceToTargetPos - 0.1f)
                 {
-					Debug.Log("on leader speed");
+					//--To Do : Set lower desired speed when the zero rel speed distance is too big --//
 					desiredSpeed = leaderSpeed;
-                }
-                /* else
-                // calculate the high speed that we need to achieve to close the distance.
-                // (we should not use the max speed
-                // because, the distance might not be large enough
-                // that we would need to achieve the max speed to close the distance)
-                //We can calculate the distance (D1) it will take to reach the high speed.
-                //We know the max speed and the target speed when at the target location. We also know the deceleration rate.
-                //We can calculate the distance (D2) it will take to reach target speed from the max speed.
-                //When we subtract these two distances (D1, D2) from the actual distance. We get the distance that we will be traveling
-                // on the max speed.*/
+				}
                 else
                 {
-					float acceleration = aircraft.MovementHandler.AerodynamicMovementData.maxAcceleration;
-					float currSpeedDifference = aircraft.MovementHandler.CurrSpeed - leaderSpeed;
-					float relativeSpeedAfterReaching = 0;
-					float desiredRelativeSpeed = RelativeVelocityUtility.GetMaxSpeedRequiredToSeek(forwardDistanceToTargetPos, currSpeedDifference, relativeSpeedAfterReaching, acceleration, -decelerationAtTargetSpeed);
-                    desiredSpeed = leaderSpeed + desiredRelativeSpeed;
-					Debug.Log("Actually trying to catch up with desired speed " + desiredSpeed);
+					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.maxSpeed;
                 }
-				desiredSpeed += Random.Range(-0.5f, 0.5f);
+                //	desiredSpeed += Random.Range(-0.5f, 0.5f);
                 Debug.DrawLine(transform.position, targetPosition, Color.blue);
             }
 
