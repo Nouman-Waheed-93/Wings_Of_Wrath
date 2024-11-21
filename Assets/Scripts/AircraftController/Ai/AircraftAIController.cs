@@ -98,9 +98,10 @@ namespace AircraftController
                 float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, -decelerationAtTargetSpeed);
 
 				//Guzara if statement below, with guzara jugaar
-				if(forwardDistanceToTargetPos < -0.1f)
+				if(forwardDistanceToTargetPos < -1f)
 				{
 					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
+					aircraft.MovementHandler.SetBrake(1);
 					return;
                 }
 
@@ -112,9 +113,19 @@ namespace AircraftController
                 {
 					//--To Do : Set lower desired speed when the zero rel speed distance is too big --//
 					desiredSpeed = leaderSpeed;
+					if(distanceThatCanBeCoveredUntilZeroRelSpeed - forwardDistanceToTargetPos > 3)
+					{
+						//hit the brakes
+						aircraft.MovementHandler.SetBrake(1);
+					}
+					else
+					{
+						aircraft.MovementHandler.SetBrake(0);
+					}
 				}
                 else
                 {
+					aircraft.MovementHandler.SetBrake(0);
 					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.maxSpeed;
                 }
                 //	desiredSpeed += Random.Range(-0.5f, 0.5f);
