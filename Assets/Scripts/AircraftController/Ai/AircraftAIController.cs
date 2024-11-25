@@ -77,61 +77,11 @@ namespace AircraftController
 				altitudeOffset = myPositionInTheFormation.y;
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-				CalculateDesiredSpeedToFollowFormation(targetPosition, leader);
+				aircraft.SetSpeedToFollow(targetPosition, leader);
 
 				targetPosition += leader.Transform.forward * leader.velocity.magnitude;
 				TurnTowardsPosition(targetPosition);
 			}
-
-			private void CalculateDesiredSpeedToFollowFormation(Vector3 targetPosition, IFormationMember leader)
-            {
-                IFormationMember myFormationMember = aircraft.formationMember;
-                float forwardDistanceToTargetPos = GetDistanceAhead(targetPosition);
-                float leaderSpeed = leader.velocity.magnitude;
-
-                Vector3 relativeVelocity = myFormationMember.velocity - leader.velocity;
-				float closureSpeed = RelativeVelocityUtility.CalculateClosureSpeed(leader.Transform.position, aircraft.Transform.position, relativeVelocity);// CalculateClosureSpeed(leader.Transform.position, myFormationMember.Transform.position, relativeVelocity);
-
-                float throttleRequiredForTargetSpeed = aircraft.GetRequiredThrottleForSpeed(leaderSpeed);
-
-                float decelerationAtTargetSpeed = Mathf.Lerp(aircraft.MovementHandler.AerodynamicMovementData.maxDeceleration, 0, throttleRequiredForTargetSpeed);
-                float distanceThatCanBeCoveredUntilZeroRelSpeed = RelativeVelocityUtility.GetDistanceToReachSpeed(closureSpeed, 0, -decelerationAtTargetSpeed);
-
-				//Guzara if statement below, with guzara jugaar
-				if(forwardDistanceToTargetPos < -1f)
-				{
-					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.lowAirSpeed;
-					aircraft.MovementHandler.SetBrake(1);
-					return;
-                }
-
-                /* If currSpeed is higher than the target speed and the aircraft can reach
-                 the target position by normal deceleration
-                 {Decelerate} */
-                if (aircraft.MovementHandler.CurrSpeed > leaderSpeed &&
-                    distanceThatCanBeCoveredUntilZeroRelSpeed > forwardDistanceToTargetPos - 0.1f)
-                {
-					//--To Do : Set lower desired speed when the zero rel speed distance is too big --//
-					desiredSpeed = leaderSpeed;
-					if(distanceThatCanBeCoveredUntilZeroRelSpeed - forwardDistanceToTargetPos > 3)
-					{
-						//hit the brakes
-						aircraft.MovementHandler.SetBrake(1);
-					}
-					else
-					{
-						aircraft.MovementHandler.SetBrake(0);
-					}
-				}
-                else
-                {
-					aircraft.MovementHandler.SetBrake(0);
-					desiredSpeed = aircraft.MovementHandler.AerodynamicMovementData.maxSpeed;
-                }
-                //	desiredSpeed += Random.Range(-0.5f, 0.5f);
-                Debug.DrawLine(transform.position, targetPosition, Color.blue);
-            }
-
 
             /// <summary>
             /// Not using this method for now. Because, it is only creating more chaos
@@ -166,14 +116,6 @@ namespace AircraftController
 
 				return separationForce;
 			}
-
-			private float GetDistanceAhead(Vector3 targetPosition)
-			{
-                Vector3 ToPosition = targetPosition - transform.position;
-
-                float distanceAhead = Vector3.Dot(ToPosition, transform.forward);
-				return distanceAhead;
-            }
 
 		}
 	}
