@@ -77,7 +77,7 @@ namespace AircraftController
 				altitudeOffset = myPositionInTheFormation.y;
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
-				aircraft.SetSpeedToFollow(targetPosition, leader);
+				desiredSpeed = aircraft.GetSpeedToFollow(targetPosition, leader);
 
 				targetPosition += leader.Transform.forward * leader.velocity.magnitude;
 				TurnTowardsPosition(targetPosition);
@@ -116,7 +116,6 @@ namespace AircraftController
 
 				return separationForce;
 			}
-
 		}
 	}
 }

@@ -181,7 +181,7 @@ namespace AircraftController
             return requiredBrakePressure;
         }
 
-        public void SetSpeedToFollow(Vector3 targetPosition, IFormationMember toFollow)
+        public float GetSpeedToFollow(Vector3 targetPosition, IFormationMember toFollow)
         {
             IFormationMember myFormationMember = formationMember;
             float forwardDistanceToTargetPos = GetDistanceAhead(targetPosition);
@@ -198,9 +198,8 @@ namespace AircraftController
             //Guzara if statement below, with guzara jugaar
             if (forwardDistanceToTargetPos < -1f)
             {
-                SeekSpeed(MovementHandler.AerodynamicMovementData.lowAirSpeed);
+                return movementHandler.AerodynamicMovementData.lowAirSpeed;
                 MovementHandler.SetBrake(1);
-                return;
             }
 
             /* If currSpeed is higher than the target speed and the aircraft can reach
@@ -210,7 +209,7 @@ namespace AircraftController
                 distanceThatCanBeCoveredUntilZeroRelSpeed > forwardDistanceToTargetPos - 0.1f)
             {
                 //--To Do : Set lower desired speed when the zero rel speed distance is too big --//
-                SeekSpeed(leaderSpeed);
+
                 if (distanceThatCanBeCoveredUntilZeroRelSpeed - forwardDistanceToTargetPos > 3)
                 {
                     //hit the brakes
@@ -220,11 +219,12 @@ namespace AircraftController
                 {
                     MovementHandler.SetBrake(0);
                 }
+                return leaderSpeed;
             }
             else
             {
                 MovementHandler.SetBrake(0);
-                SeekSpeed(MovementHandler.AerodynamicMovementData.maxSpeed);
+                return movementHandler.AerodynamicMovementData.maxSpeed;
             }
             //	desiredSpeed += Random.Range(-0.5f, 0.5f);
             Debug.DrawLine(transform.position, targetPosition, Color.blue);

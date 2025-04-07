@@ -27,7 +27,7 @@ namespace AircraftController
         void CalculateAndSetPitch(Vector3 targetPosition);
         bool HasDeviatedFromLine(Vector3 lineStart, Vector3 lineEnd, float acceptableDeviation);
         void SeekSpeed(float targetSpeed);
-        void SetSpeedToFollow(Vector3 targetPosition, IFormationMember toFollow);
+        float GetSpeedToFollow(Vector3 targetPosition, IFormationMember toFollow);
         float GetRequiredThrottleForSpeed(float targetSpeed);
     }
 }
