@@ -4,9 +4,6 @@ using UnityEngine;
 using Common;
 using FormationSystem;
 using Utilities;
-using static UnityEngine.ParticleSystem;
-using Locomotion;
-using UnityEngine.UIElements;
 
 namespace AircraftController
 {
@@ -75,13 +72,35 @@ namespace AircraftController
 
 				Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
 				altitudeOffset = myPositionInTheFormation.y;
-				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
+				//Predict my position in the formation based on leader's angular velocity
+				Vector3 myPositionTurned = Quaternion.AngleAxis(leader.angularVelocity.y * Mathf.Rad2Deg, Vector3.up) * myPositionInTheFormation;
+                Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionTurned);
 
 				desiredSpeed = aircraft.GetSpeedToFollow(targetPosition, leader);
-
-				targetPosition += leader.Transform.forward * leader.velocity.magnitude;
+				
+				Vector3 leaderPredictedPosition = PredictPosition(leader.Transform, leader.velocity.magnitude, leader.angularVelocity.y * Mathf.Rad2Deg);
+				
+				targetPosition += leaderPredictedPosition;
 				TurnTowardsPosition(targetPosition);
 			}
+
+            Vector3 PredictPosition(IRelativePositionProvider transform, float forwardSpeed, float angularSpeedY)
+            {
+				Vector3 currentPosition = Vector3.zero;
+
+				Vector3 halfWayForward = transform.forward * forwardSpeed * 0.5f;
+
+				Debug.DrawRay(transform.position, halfWayForward, Color.blue);
+
+                Vector3 halfWayTurned = Quaternion.AngleAxis(angularSpeedY, Vector3.up) * halfWayForward;
+
+				Debug.DrawRay(transform.position + halfWayForward, halfWayTurned, Color.red);
+
+                Vector3 predictedPosition = currentPosition + halfWayForward + halfWayTurned;
+
+                return predictedPosition;
+            }
+
 
             /// <summary>
             /// Not using this method for now. Because, it is only creating more chaos

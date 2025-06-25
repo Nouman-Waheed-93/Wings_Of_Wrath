@@ -9,9 +9,9 @@ namespace FormationSystem
 
         public Vector3 Position { get; set; } //The relative position to formation leader.
 
-        public float turnDir { get; }
-
         public Vector3 velocity { get; }
+
+        public Vector3 angularVelocity { get; }
 
         public IRelativePositionProvider Transform { get; }
 

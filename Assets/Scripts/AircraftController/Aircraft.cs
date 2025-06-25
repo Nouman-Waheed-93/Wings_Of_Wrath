@@ -48,9 +48,8 @@ namespace AircraftController
         public Landed StateLanded { get => stateLanded; }
         #endregion
 
-        float IFormationMember.turnDir { get => aircraftInputController.GetTurn(); }
-
         Vector3 IFormationMember.velocity { get => rigidbody.velocity; }
+        Vector3 IFormationMember.angularVelocity { get => rigidbody.angularVelocity; }
 
         public float TurnInput { get => aircraftInputController.GetTurn(); }
         public float DesiredSpeed { get => aircraftInputController.GetDesiredSpeed(); }
