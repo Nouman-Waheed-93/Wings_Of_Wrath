@@ -76,18 +76,41 @@ namespace AircraftController
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 
 				desiredSpeed = aircraft.GetSpeedToFollow(targetPosition, leader);
+
+
+                //Todo: better prediction time calculation. Hint: We can calculate the prediction time based on the leader's angular velocity
+                float predictionTime = 1;
+				if(leader.angularVelocity.y > 0.5f && myPositionInTheFormation.x < 0)
+				{
+					predictionTime = 0.2f; // If leader is turning right and I am on the left side, predict less
+                }
+                else if (leader.angularVelocity.y < -0.5f && myPositionInTheFormation.x > 0)
+				{
+					predictionTime = 0.2f; // If leader is turning left and I am on the right side, predict less
+                }
 				
-				Vector3 leaderPredictedPosition = PredictPosition(leader.Transform, leader.velocity.magnitude, leader.angularVelocity.y * Mathf.Rad2Deg);
+				Vector3 leaderPredictedPosition = PredictPosition(leader.Transform, leader.velocity.magnitude, leader.angularVelocity.y * Mathf.Rad2Deg, predictionTime);
                 
                 targetPosition += leaderPredictedPosition;
 				TurnTowardsPosition(targetPosition);
 			}
 
-            Vector3 PredictPosition(IRelativePositionProvider transform, float forwardSpeed, float angularSpeedY)
+			/// <summary>
+			/// 
+			/// </summary>
+			/// <param name="transform"></param>
+			/// <param name="forwardSpeed"></param>
+			/// <param name="angularSpeedY"></param>
+			/// <param name="predictionTime">How far in the future to predict</param>
+			/// <returns></returns>
+            Vector3 PredictPosition(IRelativePositionProvider transform, float forwardSpeed, float angularSpeedY, float predictionTime)
             {
 				Vector3 currentPosition = Vector3.zero;
 
-				Vector3 halfWayForward = transform.forward * forwardSpeed * 0.5f;
+				forwardSpeed *= predictionTime;
+                angularSpeedY *= predictionTime;
+
+                Vector3 halfWayForward = transform.forward * forwardSpeed * 0.5f;
 
 				Debug.DrawRay(transform.position, halfWayForward, Color.blue);
 
