@@ -182,6 +182,8 @@ namespace AircraftController
 
         public float GetSpeedToFollow(Vector3 targetPosition, IFormationMember toFollow)
         {
+            Debug.DrawLine(transform.position, targetPosition, Color.white);
+         
             IFormationMember myFormationMember = formationMember;
             float forwardDistanceToTargetPos = GetDistanceAhead(targetPosition);
             float leaderSpeed = toFollow.velocity.magnitude;
@@ -197,8 +199,8 @@ namespace AircraftController
             //Guzara if statement below, with guzara jugaar
             if (forwardDistanceToTargetPos < -1f)
             {
-                return movementHandler.AerodynamicMovementData.lowAirSpeed;
                 MovementHandler.SetBrake(1);
+                return movementHandler.AerodynamicMovementData.lowAirSpeed;
             }
 
             /* If currSpeed is higher than the target speed and the aircraft can reach
@@ -226,7 +228,6 @@ namespace AircraftController
                 return movementHandler.AerodynamicMovementData.maxSpeed;
             }
             //	desiredSpeed += Random.Range(-0.5f, 0.5f);
-            Debug.DrawLine(transform.position, targetPosition, Color.blue);
         }
 
         /// <summary>
