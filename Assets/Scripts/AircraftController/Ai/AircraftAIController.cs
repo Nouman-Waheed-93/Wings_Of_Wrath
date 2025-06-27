@@ -75,32 +75,58 @@ namespace AircraftController
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
 				desiredSpeed = aircraft.GetSpeedToFollow(targetPosition, leader);
 
-
-                //Todo: better prediction time calculation. Hint: We can calculate the prediction time based on the leader's angular velocity
-                float predictionTime = 1;
-				if(leader.angularVelocity.y > 0.5f && myPositionInTheFormation.x < 0)
-				{
-					predictionTime = 0.2f; // If leader is turning right and I am on the left side, predict less
-                }
-                else if (leader.angularVelocity.y < -0.5f && myPositionInTheFormation.x > 0)
-				{
-					predictionTime = 0.2f; // If leader is turning left and I am on the right side, predict less
-                }
-				
+                float predictionTime = CalculatePredictionTime(leader, myFormationMember, myPositionInTheFormation);
+                
 				Vector3 leaderPredictedPosition = PredictPosition(leader.Transform, leader.velocity.magnitude, leader.angularVelocity.y * Mathf.Rad2Deg, predictionTime);
                 
                 targetPosition += leaderPredictedPosition;
 				TurnTowardsPosition(targetPosition);
 			}
 
-			/// <summary>
-			/// 
-			/// </summary>
-			/// <param name="transform"></param>
-			/// <param name="forwardSpeed"></param>
-			/// <param name="angularSpeedY"></param>
-			/// <param name="predictionTime">How far in the future to predict</param>
-			/// <returns></returns>
+            /// <summary>
+            /// This is a proof of concept(Jugaar) method to calculate prediction time, for smoother formation following.
+            /// </summary>
+            /// <param name="leader"></param>
+            /// <param name="myFormationMember"></param>
+            /// <param name="myPositionInTheFormation"></param>
+            /// <returns></returns>
+            private float CalculatePredictionTime(IFormationMember leader, IFormationMember myFormationMember, Vector3 myPositionInTheFormation)
+            {
+                float predictionTime = 1;
+                float SidewaysDistanceToLeader = Mathf.Abs(myPositionInTheFormation.x) / myFormationMember.Formation.spacing;
+                if (SidewaysDistanceToLeader > 1)
+                {
+                    SidewaysDistanceToLeader *= 0.6f;
+                }
+
+                if (leader.angularVelocity.y > 0.1f && myPositionInTheFormation.x < 0)
+                {
+                    predictionTime = 0.5f / SidewaysDistanceToLeader; // If leader is turning right and I am on the left side, predict less
+                }
+                else if (leader.angularVelocity.y < -0.1f && myPositionInTheFormation.x > 0)
+                {
+                    predictionTime = 0.5f / SidewaysDistanceToLeader; // If leader is turning left and I am on the right side, predict less
+                }
+                else if (leader.angularVelocity.y > 0.1f && myPositionInTheFormation.x > 0)
+                {
+                    predictionTime = 1.5f * SidewaysDistanceToLeader; // If leader is turning right and I am on the right side, predict more
+                }
+                else if (leader.angularVelocity.y < -0.1f && myPositionInTheFormation.x < 0)
+                {
+                    predictionTime = 1.5f * SidewaysDistanceToLeader; // If leader is turning left and I am on the left side, predict more
+                }
+
+				return predictionTime;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="transform"></param>
+            /// <param name="forwardSpeed"></param>
+            /// <param name="angularSpeedY"></param>
+            /// <param name="predictionTime">How far in the future to predict</param>
+            /// <returns></returns>
             Vector3 PredictPosition(IRelativePositionProvider transform, float forwardSpeed, float angularSpeedY, float predictionTime)
             {
 				Vector3 currentPosition = Vector3.zero;
