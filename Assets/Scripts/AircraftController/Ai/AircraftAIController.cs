@@ -72,9 +72,7 @@ namespace AircraftController
 
 				Vector3 myPositionInTheFormation = myFormationMember.Formation.GetMemberPositionSpaced(myFormationMember.PositionIndex);
 				altitudeOffset = myPositionInTheFormation.y;
-				//Predict my position in the formation based on leader's angular velocity
 				Vector3 targetPosition = leader.Transform.GetGlobalPosition(myPositionInTheFormation);
-
 				desiredSpeed = aircraft.GetSpeedToFollow(targetPosition, leader);
 
 
