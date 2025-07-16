@@ -6,7 +6,7 @@ namespace AircraftController
 {
     public interface IAircraft
     {
-        bool AfterBurnerInput { get; }
+        bool AfterBurnerInput { get; set; }
         Airstrip AirStripToLandOn { get; set; }
         AircraftMovementHandler MovementHandler { get; }
         AircraftOrientationController OrientationController { get; }
@@ -19,7 +19,9 @@ namespace AircraftController
         TouchDown StateTouchDown { get; }
         float Throttle { get; set; }
         Transform Transform { get; }
-        float TurnInput { get; }
+        float TurnInput { get; set; }
+        float DesiredSpeed { get; set; }
+        float AltitudeOffset { get; set; }
 
         IFormationMember formationMember { get; }
 

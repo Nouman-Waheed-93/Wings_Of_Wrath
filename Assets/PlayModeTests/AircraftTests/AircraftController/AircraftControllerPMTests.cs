@@ -20,9 +20,8 @@ public class AircraftControllerPMTests
         aircraftModelGO.transform.parent = aircraftGameObject.transform;
         Rigidbody rigidbody = aircraftGameObject.AddComponent<Rigidbody>();
         rigidbody.useGravity = false;
-        IAircraftController aircraftController = Substitute.For<IAircraftController>();
         aircraft =
-            new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, null, aircraftController);
+            new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, null);
     }
 
     [UnityTest]

@@ -17,9 +17,6 @@ namespace AircraftController
         private AircraftMovementHandler movementHandler;
         public AircraftMovementHandler MovementHandler { get => movementHandler; }
 
-        private IAircraftController aircraftInputController;
-        public IAircraftController AircraftInputController { get => aircraftInputController; set => aircraftInputController = value; }
-
         private Transform transform;
         public Transform Transform { get => transform; }
 
@@ -51,10 +48,11 @@ namespace AircraftController
         Vector3 IFormationMember.velocity { get => rigidbody.velocity; }
         Vector3 IFormationMember.angularVelocity { get => rigidbody.angularVelocity; }
 
-        public float TurnInput { get => aircraftInputController.GetTurn(); }
-        public float DesiredSpeed { get => aircraftInputController.GetDesiredSpeed(); }
+        public float TurnInput { get; set; }
+        public float DesiredSpeed { get; set; }
+        public float AltitudeOffset { get; set; } = 0f; //This is used to adjust the altitude of the aircraft in formation flying.
 
-        public bool AfterBurnerInput { get => aircraftInputController.IsAfterBurnerOn; }
+        public bool AfterBurnerInput { get; set; }
 
         private float throttle;
         public float Throttle
@@ -81,7 +79,7 @@ namespace AircraftController
         IRelativePositionProvider IFormationMember.Transform => this;
         public Formation Formation { get; set; }
 
-        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, Vector3[] waypoints = null, IAircraftController aircraftController = null, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
+        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, Vector3[] waypoints = null, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;
@@ -89,15 +87,6 @@ namespace AircraftController
             stateMachine = new AircraftStateMachine();
             movementHandler = new AircraftMovementHandler(movementData, transform, rigidbody);
             orientationController = new AircraftOrientationController(movementData, movementHandler, transform.GetChild(0));
-
-            if (aircraftController == null)
-            {
-                this.aircraftInputController = new AircraftAI.AircraftAIController(this, this, waypoints);
-            }
-            else
-            {
-                this.aircraftInputController = aircraftController;
-            }
 
             stateOnGround = new OnGround(stateMachine, this);
             stateTakeOff = new TakeOff(stateMachine, this);
@@ -125,7 +114,6 @@ namespace AircraftController
 
         public void Update(float simulationDeltaTime)
         {
-            aircraftInputController.Update(simulationDeltaTime);
             stateMachine.currentState.Update(simulationDeltaTime);
             movementHandler.Update(simulationDeltaTime);
             orientationController.Update(simulationDeltaTime);

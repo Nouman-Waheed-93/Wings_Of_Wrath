@@ -4,12 +4,13 @@ using UnityEngine;
 using Common;
 using FormationSystem;
 using Utilities;
+using Zenject;
 
 namespace AircraftController
 {
 	namespace AircraftAI
 	{
-		public class AircraftAIController : IAircraftController
+		public class AircraftAIController : IAircraftController, ITickable
 		{
 
 			public IAircraft aircraft { get; private set; }
@@ -38,9 +39,18 @@ namespace AircraftController
 				stateMachine.Initialize(stateFollowWaypoints);
 			}
 
-			public void Update(float simulationDeltaTime)
+            public void Tick()
+            {
+				Update(Time.deltaTime);
+            }
+
+            public void Update(float simulationDeltaTime)
 			{
-				stateMachine.currentState.Update(simulationDeltaTime);
+                stateMachine.currentState.Update(simulationDeltaTime);
+                aircraft.DesiredSpeed = desiredSpeed;
+                aircraft.TurnInput = turnInput;
+                aircraft.AfterBurnerInput = IsAfterBurnerOn;
+                aircraft.AltitudeOffset = altitudeOffset;
             }
 
             public float GetDesiredSpeed()
@@ -181,6 +191,6 @@ namespace AircraftController
 
 				return separationForce;
 			}
-		}
+        }
 	}
 }

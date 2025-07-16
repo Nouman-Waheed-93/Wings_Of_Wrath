@@ -33,7 +33,7 @@ namespace AircraftController
         private void Start()
         {
             if(aircraft == null)
-                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), null, startsInAir, startAltitude, startSpeed);
+                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), startsInAir, startAltitude, startSpeed);
             aircraft.SetSensors(sensors);
         }
 
@@ -42,12 +42,12 @@ namespace AircraftController
             Handles.Label(transform.position, CurrSpeed.ToString());
         }
 
-        public void Init(Transform[] waypoints, bool startsInAir, float startAltitude, float startSpeed, IAircraftController aircraftController = null)
+        public void Init(Transform[] waypoints, bool startsInAir, float startAltitude, float startSpeed)
         {
             this.wayPoints = waypoints;
 
             if(aircraft == null)
-                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), aircraftController, startsInAir, startAltitude, startSpeed);
+                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), startsInAir, startAltitude, startSpeed);
         }
 
         private Vector3[] GetWayPointPositions()
@@ -63,7 +63,6 @@ namespace AircraftController
         private void Update()
         {
             aircraft.Update(Time.deltaTime);
-            Debug.DrawRay(transform.position, transform.right * aircraft.AircraftInputController.GetTurn() * 10f, Color.blue);
         }
 
         public void PrepareToLand(Airstrip airstrip)

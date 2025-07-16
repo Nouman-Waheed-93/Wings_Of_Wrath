@@ -277,7 +277,9 @@ public class AircraftAITests
         Aircraft aircraft =
             new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, wayPoints);
 
-        return (AircraftAIController)aircraft.AircraftInputController;
+        AircraftAIController aircraftAIController = new AircraftAIController(aircraft, aircraft.formationMember.Transform, wayPoints);
+
+        return aircraftAIController;
     }
 
     [TearDown]

@@ -35,7 +35,7 @@ namespace AircraftController
             //CollisionAvoidance(simulationDeltaTime);
             
             aircraftController.SeekSpeed(aircraftController.DesiredSpeed);
-            aircraftController.CalculateAndSetPitch(altitudeTarget + aircraftController.AircraftInputController.AltitudeOffset, pitchDistance);
+            aircraftController.CalculateAndSetPitch(altitudeTarget + aircraftController.AltitudeOffset, pitchDistance);
             aircraftController.MovementHandler.Turn(aircraftController.TurnInput);
         }
 
