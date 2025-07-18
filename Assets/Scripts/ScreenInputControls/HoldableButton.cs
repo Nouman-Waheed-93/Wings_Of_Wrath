@@ -5,7 +5,7 @@ namespace ScreenInputControls
 {
     public abstract class HoldableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        protected bool isHeldDown;
+        public bool isHeldDown { get; private set; }
 
         public virtual void OnPointerDown(PointerEventData eventData) 
         {

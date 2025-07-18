@@ -15,18 +15,18 @@ namespace ScreenInputControls
         [SerializeField]
         private float maxAngle;
 
-        public UnityEvent<float> onDirectionChange;
+        public float Direction { get; private set; }
 
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
-            GiveThumbInput(eventData.position);
+            UpdateThumbInput(eventData.position);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
-            onDirectionChange?.Invoke(0);
+            Direction = 0;
         }
 
         void IPointerMoveHandler.OnPointerMove(PointerEventData eventData)
@@ -34,14 +34,13 @@ namespace ScreenInputControls
             if (!isHeldDown)
                 return;
 
-            GiveThumbInput(eventData.position);
+            UpdateThumbInput(eventData.position);
         }
         
-        private void GiveThumbInput(Vector2 thumbPosition)
+        private void UpdateThumbInput(Vector2 thumbPosition)
         {
             Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(target.position);
-            float direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition, maxAngle);
-            onDirectionChange?.Invoke(direction);
+            Direction = ThumbDriftLogic.CalculateDirection(targetScreenPosition, thumbPosition, maxAngle);
         }
     }
 }

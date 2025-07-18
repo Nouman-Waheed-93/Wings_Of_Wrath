@@ -33,7 +33,8 @@ namespace AircraftController
 
         private void OnDrawGizmos()
         {
-            Handles.Label(transform.position, CurrSpeed.ToString());
+            if(Application.isPlaying)
+                Handles.Label(transform.position, CurrSpeed.ToString());
         }
 
         [Inject]
@@ -44,13 +45,7 @@ namespace AircraftController
             this.aircraft = aircraft;
             this.formationMember = formationMember;
             this.aircraftController = controller;
-            //aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), true, 100, 80);
         }
-
-        //private void Update()
-        //{
-        //    aircraft.Update(Time.deltaTime);
-        //}
 
         public void PrepareToLand(Airstrip airstrip)
         {

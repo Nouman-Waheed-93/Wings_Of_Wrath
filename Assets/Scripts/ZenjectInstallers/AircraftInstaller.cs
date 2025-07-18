@@ -17,6 +17,8 @@ namespace ZenjectInstallers
         private Rigidbody rigidbody;
         [SerializeField]
         private Transform aircraftTransform;
+        [SerializeField]
+        private bool isAIControlled = true;
 
         public override void InstallBindings()
         {
@@ -25,7 +27,10 @@ namespace ZenjectInstallers
             Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
                 .WithArguments(movementData, aircraftTransform, rigidbody, true, 100.0f, 80.0f);
 
-            Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle().NonLazy();
+            if(isAIControlled)
+                Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle().NonLazy();
+            else 
+                Container.BindInterfacesAndSelfTo<AircraftPlayerController>().AsSingle().NonLazy();
         }
     }
 }
