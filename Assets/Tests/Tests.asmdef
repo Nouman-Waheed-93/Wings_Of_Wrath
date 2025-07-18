@@ -11,7 +11,8 @@
         "Locomotion",
         "HealthSystemAssembly",
         "WeaponSystem",
-        "Common"
+        "Common",
+        "Zenject"
     ],
     "includePlatforms": [
         "Editor"

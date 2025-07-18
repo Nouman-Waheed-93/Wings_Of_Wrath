@@ -521,6 +521,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 10
+--- !u!1 &6755094397297533780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400013695984989949}
+  - component: {fileID: 9212165935142684877}
+  m_Layer: 0
+  m_Name: Installer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400013695984989949
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755094397297533780}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6087905188102575368}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9212165935142684877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755094397297533780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f16b53ec0d27ecf4aaad5d7eee1a79dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementData: {fileID: 11400000, guid: bc6ddd266af170b4e935b05e59081150, type: 2}
+  rigidbody: {fileID: 1604655158}
+  aircraftTransform: {fileID: 6087905188102575368}
+  wayPoints: []
 --- !u!1 &6900703714199412117
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +580,7 @@ GameObject:
   - component: {fileID: 6087905188102575368}
   - component: {fileID: 1604655158}
   - component: {fileID: 1604655157}
+  - component: {fileID: 8875805196594098338}
   m_Layer: 0
   m_Name: TestAircraft
   m_TagString: Untagged
@@ -555,6 +604,7 @@ Transform:
   - {fileID: 1494172181}
   - {fileID: 1082844012}
   - {fileID: 1218614834}
+  - {fileID: 400013695984989949}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -586,21 +636,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bece779cc0fe3024c8246aa677985dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementData: {fileID: 11400000, guid: bc6ddd266af170b4e935b05e59081150, type: 2}
-  team: 0
-  startsInAir: 0
-  startAltitude: 0
-  startSpeed: 0
-  wayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   sensors:
   - {fileID: 8900919222387801858}
   - {fileID: 339922604710040553}
   - {fileID: 1208735735532716362}
+--- !u!114 &8875805196594098338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6900703714199412117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 9212165935142684877}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!1001 &7613771096087139801
 PrefabInstance:
   m_ObjectHideFlags: 0

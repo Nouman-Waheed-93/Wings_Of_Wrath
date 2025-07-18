@@ -2,72 +2,63 @@ using UnityEngine;
 using Locomotion;
 using Common;
 using UnityEditor;
+using Zenject;
+using FormationSystem;
 
 namespace AircraftController
 {
     public class AircraftMonoBehaviour : MonoBehaviour, ISpeedProvider
     {
-        [SerializeField]
-        private AircraftMovementData movementData;
-
-        [SerializeField]
         private Team team;
         public Team Team { get => team; set => team = value; }
-        [SerializeField]
-        private bool startsInAir;
-        [SerializeField]
-        private float startAltitude;
-        [SerializeField]
-        private float startSpeed;
-        [SerializeField]
-        private Transform[] wayPoints;
-
+        
         [SerializeField]
         private Sensor[] sensors;
 
         public float CurrSpeed { get { return aircraft.MovementHandler.CurrSpeed; } }
 
-        private Aircraft aircraft;
-        public Aircraft Aircraft { get => aircraft; }
+        private IAircraft aircraft;
+        public IAircraft Aircraft { get => aircraft; }
 
-        private void Start()
-        {
-            if(aircraft == null)
-                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), startsInAir, startAltitude, startSpeed);
-            aircraft.SetSensors(sensors);
-        }
+        private IFormationMember formationMember;
+        public IFormationMember FormationMember { get => formationMember; }
+
+        private IAircraftController aircraftController;
+        public IAircraftController AircraftController { get => aircraftController; }
+
+        //private void Start()
+        //{
+        //    aircraft.SetSensors(sensors);
+        //}
 
         private void OnDrawGizmos()
         {
             Handles.Label(transform.position, CurrSpeed.ToString());
         }
 
-        public void Init(Transform[] waypoints, bool startsInAir, float startAltitude, float startSpeed)
+        [Inject]
+        public void Init(IAircraft aircraft, IFormationMember formationMember, IAircraftController controller, Team team)
         {
-            this.wayPoints = waypoints;
-
-            if(aircraft == null)
-                aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), GetWayPointPositions(), startsInAir, startAltitude, startSpeed);
+            this.team = team;
+         
+            this.aircraft = aircraft;
+            this.formationMember = formationMember;
+            this.aircraftController = controller;
+            //aircraft = new Aircraft(movementData, transform, GetComponent<Rigidbody>(), true, 100, 80);
         }
 
-        private Vector3[] GetWayPointPositions()
-        {
-            Vector3[] wayPoints = new Vector3[this.wayPoints.Length];
-            for (int i = 0; i < wayPoints.Length; i++)
-            {
-                wayPoints[i] = this.wayPoints[i].position;
-            }
-            return wayPoints;
-        }
-
-        private void Update()
-        {
-            aircraft.Update(Time.deltaTime);
-        }
+        //private void Update()
+        //{
+        //    aircraft.Update(Time.deltaTime);
+        //}
 
         public void PrepareToLand(Airstrip airstrip)
         {
             aircraft.AirStripToLandOn = airstrip;
+        }
+
+        public class Factory : PlaceholderFactory<AircraftMonoBehaviour>
+        {
         }
     }
 }

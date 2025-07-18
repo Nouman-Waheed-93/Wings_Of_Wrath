@@ -262,24 +262,25 @@ public class AircraftAITests
 
     private AircraftAIController GetNewAIAircraft()
     {
-        GameObject aircraftGameObject = new GameObject("Aircraft");
-        gameObjectsToDestroyOnTearDown.Add(aircraftGameObject);
-        GameObject aircraftModelGO = new GameObject("Model");
-        aircraftModelGO.transform.parent = aircraftGameObject.transform;
-        Rigidbody rigidbody = aircraftGameObject.AddComponent<Rigidbody>();
-        rigidbody.useGravity = false;
+        //GameObject aircraftGameObject = new GameObject("Aircraft");
+        //gameObjectsToDestroyOnTearDown.Add(aircraftGameObject);
+        //GameObject aircraftModelGO = new GameObject("Model");
+        //aircraftModelGO.transform.parent = aircraftGameObject.transform;
+        //Rigidbody rigidbody = aircraftGameObject.AddComponent<Rigidbody>();
+        //rigidbody.useGravity = false;
 
-        Vector3[] wayPoints = {
-            new Vector3(-1000, 100, -1000),
-            new Vector3(1000, 100, 1000)
-        };
+        //Vector3[] wayPoints = {
+        //    new Vector3(-1000, 100, -1000),
+        //    new Vector3(1000, 100, 1000)
+        //};
 
-        Aircraft aircraft =
-            new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody, wayPoints);
+        //Aircraft aircraft =
+        //    new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
 
-        AircraftAIController aircraftAIController = new AircraftAIController(aircraft, aircraft.formationMember.Transform, wayPoints);
-
-        return aircraftAIController;
+        //AircraftAIController aircraftAIController = new AircraftAIController(aircraft, aircraft.formationMember.Transform);
+        //aircraftAIController.SetWaypoints(wayPoints);
+        //return aircraftAIController;
+        return null;
     }
 
     [TearDown]

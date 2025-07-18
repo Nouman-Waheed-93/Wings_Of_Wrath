@@ -30,13 +30,23 @@ namespace AircraftController
             private float turnInput;
 			private float desiredSpeed;
 
-			public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform, Vector3[] wayPoints)
+			public AircraftAIController(IAircraft aircraft, IRelativePositionProvider transform)
 			{
 				this.aircraft = aircraft;
 				this.transform = transform;
-				stateFollowWaypoints = new StateFollowWaypoints(stateMachine, this, wayPoints);
-				stateFollowFormation = new StateFollowFormation(stateMachine, this);
+				stateFollowWaypoints = new StateFollowWaypoints(stateMachine, this, new Vector3[0]); // Initialize with empty waypoints
+                stateFollowFormation = new StateFollowFormation(stateMachine, this);
 				stateMachine.Initialize(stateFollowWaypoints);
+			}
+
+			public void SetWaypoints(Vector3[] waypoints)
+			{
+				StateFollowWaypoints newWaypointState = new StateFollowWaypoints(stateMachine, this, waypoints);
+                if (stateMachine.currentState == stateFollowWaypoints) 
+				{
+					stateMachine.Initialize(newWaypointState);
+                }
+				stateFollowWaypoints = newWaypointState;
 			}
 
             public void Tick()
@@ -191,6 +201,10 @@ namespace AircraftController
 
 				return separationForce;
 			}
-        }
+
+
+			public class Factory : PlaceholderFactory<AircraftAIController> { }
+
+		}
 	}
 }

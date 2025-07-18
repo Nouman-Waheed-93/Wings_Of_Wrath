@@ -3,10 +3,11 @@ using Locomotion;
 using Utilities;
 using Common;
 using FormationSystem;
+using Zenject;
 
 namespace AircraftController
 {
-    public class Aircraft : IAircraft, IRelativePositionProvider, IFormationMember
+    public class Aircraft : IAircraft, IRelativePositionProvider, IFormationMember, ITickable
     {
         private AircraftStateMachine stateMachine;
         public AircraftStateMachine StateMachine { get => stateMachine; }
@@ -79,7 +80,7 @@ namespace AircraftController
         IRelativePositionProvider IFormationMember.Transform => this;
         public Formation Formation { get; set; }
 
-        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, Vector3[] waypoints = null, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
+        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;
@@ -251,6 +252,11 @@ namespace AircraftController
         Vector3 IRelativePositionProvider.GetGlobalPosition(Vector3 localPosition)
         {
             return transform.TransformPoint(localPosition);
+        }
+
+        public void Tick()
+        {
+            Update(Time.deltaTime);
         }
     }
 }

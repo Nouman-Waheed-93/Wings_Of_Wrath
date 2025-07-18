@@ -27,14 +27,17 @@ namespace AircraftController
 
             public override void Update(float simulationDeltaTime)
             {
-                aircraftController.TurnTowardsPosition(wayPoints[currentIndex]);
-
-                if (Vector3.Distance(aircraftController.transform.position, wayPoints[currentIndex]) <= GlobalAircraftControllerSettings.wayPointReachedDistance)
+                if (wayPoints != null && wayPoints.Length > 0) // If there are any waypoints
                 {
-                    currentIndex++;
-                    if (currentIndex >= wayPoints.Length)
+                    aircraftController.TurnTowardsPosition(wayPoints[currentIndex]);
+
+                    if (Vector3.Distance(aircraftController.transform.position, wayPoints[currentIndex]) <= GlobalAircraftControllerSettings.wayPointReachedDistance)
                     {
-                        currentIndex = 0;
+                        currentIndex++;
+                        if (currentIndex >= wayPoints.Length)
+                        {
+                            currentIndex = 0;
+                        }
                     }
                 }
 
