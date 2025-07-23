@@ -24,13 +24,19 @@ namespace ZenjectInstallers
         {
             Container.Bind<Team>().FromInstance(Team.Blue).AsSingle();
 
-            Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
-                .WithArguments(movementData, aircraftTransform, rigidbody, true, 100.0f, 80.0f);
 
-            if(isAIControlled)
+            if (isAIControlled)
+            {
+                Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
+                    .WithArguments(movementData, aircraftTransform, rigidbody, true, 100.0f, 80.0f);
                 Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle().NonLazy();
-            else 
+            }
+            else
+            {
+                Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
+                    .WithArguments(movementData, aircraftTransform, rigidbody);
                 Container.BindInterfacesAndSelfTo<AircraftPlayerController>().AsSingle().NonLazy();
+            }
         }
     }
 }
