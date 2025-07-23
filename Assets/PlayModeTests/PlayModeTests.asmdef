@@ -8,7 +8,8 @@
         "Locomotion",
         "FormationSystem",
         "Common",
-        "Zenject"
+        "Zenject",
+        "Zenject-TestFramework"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
