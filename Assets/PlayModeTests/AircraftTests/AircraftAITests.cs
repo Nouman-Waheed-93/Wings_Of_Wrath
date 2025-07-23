@@ -9,8 +9,10 @@ using Locomotion;
 using System.Threading.Tasks;
 using UnityEngine.TestTools;
 using FormationSystem;
+using Zenject;
+using Common;
 
-public class AircraftAITests
+public class AircraftAITests //: ZenjectIntegrationTestFixture
 {
     private Vector3[] wayPoints =
         {
@@ -262,24 +264,36 @@ public class AircraftAITests
 
     private AircraftAIController GetNewAIAircraft()
     {
+        //PreInstall();
+        ////Prepare an ai aircraft for testing.
+        
         //GameObject aircraftGameObject = new GameObject("Aircraft");
         //gameObjectsToDestroyOnTearDown.Add(aircraftGameObject);
-        //GameObject aircraftModelGO = new GameObject("Model");
-        //aircraftModelGO.transform.parent = aircraftGameObject.transform;
+        ////GameObject aircraftModelGO = new GameObject("Model");
+        ////aircraftModelGO.transform.parent = aircraftGameObject.transform;
         //Rigidbody rigidbody = aircraftGameObject.AddComponent<Rigidbody>();
         //rigidbody.useGravity = false;
+
+
+        //Container.Bind<Team>().FromInstance(Team.Blue).AsSingle();
+        //Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
+        //    .WithArguments(Substitute.For<IAircraftMovementData>(), aircraftGameObject.transform, rigidbody, true, 100, 80);
+        //Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle();
+        //Container.Bind<AircraftMonoBehaviour>().FromNewComponentOn(aircraftGameObject).AsSingle();
+
+        //PostInstall();
 
         //Vector3[] wayPoints = {
         //    new Vector3(-1000, 100, -1000),
         //    new Vector3(1000, 100, 1000)
         //};
+        //Container.Resolve<AircraftAIController>().SetWaypoints(wayPoints);
+        ////Aircraft aircraft =
+        ////    new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
 
-        //Aircraft aircraft =
-        //    new Aircraft(ScriptableObject.CreateInstance<AircraftMovementData>(), aircraftGameObject.transform, rigidbody);
-
-        //AircraftAIController aircraftAIController = new AircraftAIController(aircraft, aircraft.formationMember.Transform);
-        //aircraftAIController.SetWaypoints(wayPoints);
-        //return aircraftAIController;
+        ////AircraftAIController aircraftAIController = new AircraftAIController(aircraft, aircraft.formationMember.Transform);
+        ////aircraftAIController.SetWaypoints(wayPoints);
+        ////return aircraftAIController;
         return null;
     }
 

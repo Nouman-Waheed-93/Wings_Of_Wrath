@@ -9,14 +9,14 @@ namespace AircraftController
 
         private Transform transform;
 
-        private AircraftMovementData movementData;
+        private IAircraftMovementData movementData;
 
         private float currPitch;
 
         private float pitchOffset; //angle in degrees
         public float PitchOffset { get => pitchOffset; set => pitchOffset = value; }
 
-        public AircraftOrientationController(AircraftMovementData movementData, IPitchYaw turnFactorCalculator, Transform transform)
+        public AircraftOrientationController(IAircraftMovementData movementData, IPitchYaw turnFactorCalculator, Transform transform)
         {
             this.movementData = movementData;
             this.turnFactor = turnFactorCalculator;

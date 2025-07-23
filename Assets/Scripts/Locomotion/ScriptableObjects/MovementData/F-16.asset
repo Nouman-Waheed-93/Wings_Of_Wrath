@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1f607dbf1c15a4b92ed18da809d14b, type: 3}
   m_Name: F-16
   m_EditorClassIdentifier: 
-  maxSpeed: 100
-  maxAcceleration: 10
-  maxDeceleration: 1
-  maxBrake: 2
-  maxTurn: 3
-  takeOffSpeed: 30
-  lowAirSpeed: 40
-  normalAirSpeed: 80
-  highAirSpeed: 100
-  maxPitch: 1
-  maxPitchAngle: 30
-  pitchSpeed: 1
-  maxRollAngle: 90
-  rollSpeed: 1
+  <maxSpeed>k__BackingField: 100
+  <maxAcceleration>k__BackingField: 10
+  <maxDeceleration>k__BackingField: 1
+  <maxBrake>k__BackingField: 2
+  <maxTurn>k__BackingField: 3
+  <takeOffSpeed>k__BackingField: 30
+  <lowAirSpeed>k__BackingField: 40
+  <normalAirSpeed>k__BackingField: 80
+  <highAirSpeed>k__BackingField: 100
+  <maxPitch>k__BackingField: 1
+  <maxPitchAngle>k__BackingField: 30
+  <pitchSpeed>k__BackingField: 1
+  <maxRollAngle>k__BackingField: 90
+  <rollSpeed>k__BackingField: 1

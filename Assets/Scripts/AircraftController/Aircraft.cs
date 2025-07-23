@@ -80,7 +80,7 @@ namespace AircraftController
         IRelativePositionProvider IFormationMember.Transform => this;
         public Formation Formation { get; set; }
 
-        public Aircraft(AircraftMovementData movementData, Transform transform, Rigidbody rigidbody, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
+        public Aircraft(IAircraftMovementData movementData, Transform transform, Rigidbody rigidbody, bool startsInAir = false, float startAltitude = 0f, float startSpeed = 0f)
         {
             this.transform = transform;
             this.rigidbody = rigidbody;

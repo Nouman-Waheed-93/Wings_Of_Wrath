@@ -5,7 +5,7 @@ namespace Locomotion
     public class MovementHandler : IAcceleratable, ITurnable
     {
         [SerializeField]
-        private MovementData movementData;
+        private IMovementData movementData;
 
         private float targetSpeed;
         
@@ -24,7 +24,7 @@ namespace Locomotion
 
         protected Rigidbody rigidbody;
 
-        public MovementHandler(MovementData movementData, Transform transform, Rigidbody rigidbody)
+        public MovementHandler(IMovementData movementData, Transform transform, Rigidbody rigidbody)
         {
             this.movementData = movementData;
             this.transform = transform;

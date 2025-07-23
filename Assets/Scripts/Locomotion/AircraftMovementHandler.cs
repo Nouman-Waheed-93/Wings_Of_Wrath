@@ -5,8 +5,8 @@ namespace Locomotion
 {
     public class AircraftMovementHandler : MovementHandler, IPitchYaw
     {
-        private AircraftMovementData aerodynamicMovementData;
-        public AircraftMovementData AerodynamicMovementData { get => aerodynamicMovementData; }
+        private IAircraftMovementData aerodynamicMovementData;
+        public IAircraftMovementData AerodynamicMovementData { get => aerodynamicMovementData; }
 
         private TargetValueSeeker pitchSeeker;
         private TargetValueSeeker turnSeeker;
@@ -29,7 +29,7 @@ namespace Locomotion
 
         public float Altitude { get { return transform.position.y; } }
 
-        public AircraftMovementHandler(AircraftMovementData aerodynamicMovementData, Transform transform, Rigidbody rigidbody):base(aerodynamicMovementData, transform, rigidbody)
+        public AircraftMovementHandler(IAircraftMovementData aerodynamicMovementData, Transform transform, Rigidbody rigidbody):base(aerodynamicMovementData, transform, rigidbody)
         {
             this.aerodynamicMovementData = aerodynamicMovementData;
             pitchSeeker = new TargetValueSeeker(aerodynamicMovementData.pitchSpeed);

@@ -2,17 +2,30 @@ using UnityEngine;
 
 namespace Locomotion
 {
-    [CreateAssetMenu(fileName = "MovementData", menuName = "ScriptableObjects/MovementData")]
-    public class MovementData : ScriptableObject
+    public interface IMovementData
     {
-        public float maxSpeed = 50f;
-        public float maxAcceleration = 3f;
+        float maxSpeed { get; }
+        float maxAcceleration { get; }
+        float maxDeceleration { get; }
+        float maxBrake { get; }
+        float maxTurn { get; }
+    }
 
-        [Tooltip("Normal deceleration on releasing throttle.")]
-        public float maxDeceleration = 1f;
-        [Tooltip("Max Brake deceleration.")]
-        public float maxBrake = 2f;
+    [CreateAssetMenu(fileName = "MovementData", menuName = "ScriptableObjects/MovementData")]
+    public class MovementData : ScriptableObject, IMovementData
+    {
+        [field: SerializeField]
+        public float maxSpeed { get; private set; } = 50f;
+        
+        [field: SerializeField]
+        public float maxAcceleration { get; private set; } = 3f;
 
-        public float maxTurn = 1f;
+        [field: SerializeField, Tooltip("Normal deceleration on releasing throttle.")]
+        public float maxDeceleration { get; private set; } = 1f;
+        [field: SerializeField, Tooltip("Max Brake deceleration.")]
+        public float maxBrake { get; private set; } = 2f;
+
+        [field: SerializeField]
+        public float maxTurn { get; private set; } = 1f;
     }
 }

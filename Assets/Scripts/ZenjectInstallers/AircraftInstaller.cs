@@ -29,13 +29,13 @@ namespace ZenjectInstallers
             {
                 Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
                     .WithArguments(movementData, aircraftTransform, rigidbody, true, 100.0f, 80.0f);
-                Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle().NonLazy();
+                Container.BindInterfacesAndSelfTo<AircraftAIController>().AsSingle();
             }
             else
             {
                 Container.BindInterfacesAndSelfTo<Aircraft>().AsSingle()
                     .WithArguments(movementData, aircraftTransform, rigidbody);
-                Container.BindInterfacesAndSelfTo<AircraftPlayerController>().AsSingle().NonLazy();
+                Container.BindInterfacesAndSelfTo<AircraftPlayerController>().AsSingle();
             }
         }
     }
